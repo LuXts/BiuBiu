@@ -15,11 +15,6 @@ namespace BiuBiuServer.Database
         /// <inheritdoc />
         public async UnaryResult<UserInfo> GetUserInfo(ulong userId)
         {
-            if (userId == 128341984)
-            {
-                return UserInfo.NullUser;
-            }
-
             throw new System.NotImplementedException();
         }
 
@@ -68,6 +63,18 @@ namespace BiuBiuServer.Database
         public async UnaryResult<List<UserInfo>> GetTeamUserInfo(ulong teamId)
         {
             throw new System.NotImplementedException();
+        }
+
+        // TODO: 获取好友信息
+        public UnaryResult<List<UserInfo>> GetUserFriendsId(ulong userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        // TODO: 获取群成员信息
+        public UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong teamId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

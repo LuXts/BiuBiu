@@ -42,5 +42,15 @@ namespace BiuBiuServer.Tests
         {
             throw new System.NotImplementedException();
         }
+
+        public UnaryResult<List<UserInfo>> GetUserFriendsId(ulong userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong teamId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

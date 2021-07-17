@@ -42,6 +42,7 @@ namespace BiuBiuServer.Database
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 // TODO: 打日志
                 return false;
             }
@@ -78,6 +79,7 @@ namespace BiuBiuServer.Database
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 // TODO: 打日志
                 return MessageResponse.Failed;
             }

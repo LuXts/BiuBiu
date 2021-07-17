@@ -41,9 +41,11 @@ namespace BiuBiuServer.Services
 
         /// <inheritdoc />
         [Authorize]
-        public UnaryResult<bool> SetUserPassword(ulong userId, string oldPassword, string newPassword)
+        public UnaryResult<bool> SetUserPassword(ulong userId
+            , string oldPassword, string newPassword)
         {
-            return _imInfoDatabaseDriven.SetUserPassword(userId, oldPassword, newPassword);
+            return _imInfoDatabaseDriven.SetUserPassword(userId, oldPassword
+                , newPassword);
         }
 
         /// <inheritdoc />
@@ -65,6 +67,18 @@ namespace BiuBiuServer.Services
         public UnaryResult<List<UserInfo>> GetTeamUserInfo(ulong teamId)
         {
             return _imInfoDatabaseDriven.GetTeamUserInfo(teamId);
+        }
+
+        [Authorize]
+        public UnaryResult<List<UserInfo>> GetUserFriendsId(ulong userId)
+        {
+            return _imInfoDatabaseDriven.GetUserFriendsId(userId);
+        }
+
+        [Authorize]
+        public UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong teamId)
+        {
+            return _imInfoDatabaseDriven.GetUserTeamsId(teamId);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BiuBiuServer.Interfaces;
+using BiuBiuShare.ImInfos;
 using BiuBiuShare.UserManagement;
 using MagicOnion;
 
@@ -6,7 +7,7 @@ namespace BiuBiuServer.Tests
 {
     public class AdminDatabaseDrivenTest : IAdminDatabaseDriven
     {
-        public async  UnaryResult<bool> ChangePassword(ulong userId, string oldPassword, string newPassword)
+        public async UnaryResult<bool> ChangePassword(ulong userId, string oldPassword, string newPassword)
         {
             throw new System.NotImplementedException();
         }
@@ -26,7 +27,7 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
-        public async UnaryResult<string> RegisteredUsers(RegistrationInformation registrationInformations)
+        public async UnaryResult<string> RegisteredUsers(RegisterInfo registerInfos)
         {
             throw new System.NotImplementedException();
         }
@@ -36,7 +37,7 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
-        public UnaryResult<int> RegisteredUsers(ulong userId, RegistrationInformation registrationInformations)
+        public UnaryResult<int> RegisteredUsers(ulong userId, RegisterInfo registerInfos)
         {
             throw new System.NotImplementedException();
         }
@@ -46,7 +47,7 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
-        public async  UnaryResult<UserInfo> SelectByUserId(ulong userId)
+        public async UnaryResult<UserInfo> SelectByUserId(ulong userId)
         {
             throw new System.NotImplementedException();
         }

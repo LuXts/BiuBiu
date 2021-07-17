@@ -18,9 +18,10 @@ namespace BiuBiuServer.Services
     [Authorize]
     public class TalkService : ServiceBase<ITalkService>, ITalkService
     {
-        private ITalkSqlDatabaseDriven _sqlDriven;
-        private ITalkNoSqlDatabaseDriven _noSQLDriven = new TalkNoSqlDatabaseDriven();
+        private readonly ITalkSqlDatabaseDriven _sqlDriven;
+        private readonly ITalkNoSqlDatabaseDriven _noSQLDriven = new TalkNoSqlDatabaseDriven();
 
+        // TODO: 发送信息
         /// <inheritdoc />
         public async UnaryResult<MessageResponse> SendMessageAsync(Message message)
         {
@@ -36,7 +37,7 @@ namespace BiuBiuServer.Services
         /// <inheritdoc />
         public async UnaryResult<MessageResponse> GetMessageAsync(ulong messageId)
         {
-            throw new System.NotImplementedException();
+            return await _noSQLDriven.GetMessagesAsync(messageId);
         }
 
         /// <inheritdoc />
@@ -46,17 +47,35 @@ namespace BiuBiuServer.Services
         }
 
         /// <inheritdoc />
-        public async UnaryResult<List<MessageResponse>> GetMessagesRecordAsync(ulong SourceId, ulong TargetId
+        public async UnaryResult<List<MessageResponse>> GetMessagesRecordAsync(ulong sourceId, ulong targetId
             , ulong startTime, ulong endTime)
         {
-            throw new System.NotImplementedException();
+            var list = await _sqlDriven.GetMessagesRecordAsync(sourceId, targetId
+                , startTime, endTime);
+            List<MessageResponse> messageList
+                = new List<MessageResponse>(list.Count);
+            foreach (ulong userId in list)
+            {
+                messageList.Add(await GetMessageAsync(userId));
+            }
+
+            return messageList;
         }
 
         /// <inheritdoc />
-        public async UnaryResult<List<MessageResponse>> GetTeamMessagesRecordAsync(ulong TeamId, ulong startTime
+        public async UnaryResult<List<MessageResponse>> GetTeamMessagesRecordAsync(ulong teamId, ulong startTime
             , ulong endTime)
         {
-            throw new System.NotImplementedException();
+            var list = await _sqlDriven.GetTeamMessagesRecordAsync(teamId
+                , startTime, endTime);
+            List<MessageResponse> messageList
+                = new List<MessageResponse>(list.Count);
+            foreach (ulong userId in list)
+            {
+                messageList.Add(await GetMessageAsync(userId));
+            }
+
+            return messageList;
         }
     }
 }

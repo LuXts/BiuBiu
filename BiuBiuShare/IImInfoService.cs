@@ -59,5 +59,19 @@ namespace BiuBiuShare
         /// <param name="teamId">群组Id</param>
         /// <returns></returns>
         UnaryResult<List<UserInfo>> GetTeamUserInfo(ulong teamId);
+
+        /// <summary>
+        /// 获取某Id的好友信息列表
+        /// </summary>
+        /// <param name="userId">用户Id</param>
+        /// <returns>好友信息列表</returns>
+        UnaryResult<List<UserInfo>> GetUserFriendsId(ulong userId);
+
+        /// <summary>
+        /// 获取群组的群成员信息列表
+        /// </summary>
+        /// <param name="teamId">群组Id</param>
+        /// <returns>群成员信息列表</returns>
+        UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong teamId);
     }
 }

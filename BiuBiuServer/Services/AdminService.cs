@@ -7,19 +7,20 @@ using MagicOnion;
 using MagicOnion.Server;
 using System;
 using System.Threading;
+using BiuBiuShare.ImInfos;
 using MagicOnion.Server.Authentication;
 
 namespace BiuBiuServer.Services
 {
     [Authorize(Roles = new[] { "Administrators" })]
-    public class AdminService:ServiceBase<IAdminService>,IAdminService
+    public class AdminService : ServiceBase<IAdminService>, IAdminService
     {
         private readonly IAdminDatabaseDriven _adminDatabaseDatabaseDriven
             = new AdminDatabaseDrivenTest();
 
         public async UnaryResult<bool> ChangePassword(ulong userId, string newPassword)
         {
-            return await _adminDatabaseDatabaseDriven.ChangePassword(userId,newPassword);
+            return await _adminDatabaseDatabaseDriven.ChangePassword(userId, newPassword);
         }
 
         public async UnaryResult<bool> ChangeUserInfo(UserInfo newUserInfo)
@@ -32,11 +33,11 @@ namespace BiuBiuServer.Services
             return _adminDatabaseDatabaseDriven.DeleteUser(userId);
         }
 
-        public async UnaryResult<int> RegisteredUsers(RegistrationInformation registrationInformations)
+        public async UnaryResult<int> RegisteredUsers(RegisterInfo registerInfos)
         {
             //TODO：采用算法生成一个新的ID，将注册信息与用户ID写入数据库内
-            ulong userId=1;
-            return await _adminDatabaseDatabaseDriven.RegisteredUsers(userId,registrationInformations);
+            ulong userId = 1;
+            return await _adminDatabaseDatabaseDriven.RegisteredUsers(userId, registerInfos);
         }
 
         public async UnaryResult<bool> ReviewMessage(ulong userId, bool reviewResults)

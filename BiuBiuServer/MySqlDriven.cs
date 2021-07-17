@@ -9,7 +9,7 @@ namespace BiuBiuServer
         private readonly static string _password = "JL4i7nVuymwBnGr";
 
         private readonly static string _connectString =
-            @$"Data Source={_ip};Port=3306;User ID={_user};Password={_password};Initial Catalog=Test;Charset=utf8mb4;SslMode=none;Min pool size=1";
+            $"Data Source={_ip};Port=3306;User ID={_user};Password={_password};Initial Catalog=Test;Charset=utf8mb4;SslMode=none;Min pool size=1";
 
         private static IFreeSql _freeSql = new FreeSql.FreeSqlBuilder()
             .UseConnectionString(FreeSql.DataType.MySql, _connectString)
@@ -21,7 +21,7 @@ namespace BiuBiuServer
             return _freeSql;
         }
 
-        private readonly static string _noSqlConnectStr = "mongodb://localhost:27017";
+        private readonly static string _noSqlConnectStr = $"mongodb://{_ip}:27017";
 
         private static MongoClient _noSqlClient = new MongoClient(_noSqlConnectStr);
 

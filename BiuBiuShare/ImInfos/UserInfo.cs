@@ -16,6 +16,8 @@ namespace BiuBiuShare.ImInfos
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public ulong IconId { get; set; }
+        public bool Permissions { get; set; }
+        public ulong CurrentPassword { get; set; }
 
         /// <summary>
         /// 约定 UserId = 0 代表没有这个用户
