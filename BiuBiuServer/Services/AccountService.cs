@@ -15,6 +15,7 @@ namespace BiuBiuServer.Services
 {
     public class AccountService : ServiceBase<IAccountService>, IAccountService
     {
+        // TODO: 测试接口(等数据库驱动实现完成后替换)
         private readonly IAccountDatabaseDriven _accountDatabaseDriven
             = new AccountDatabaseDrivenTest();
 
