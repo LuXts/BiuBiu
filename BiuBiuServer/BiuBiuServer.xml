@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BiuBiuServer</name>
+    </assembly>
+    <members>
+        <member name="M:BiuBiuServer.Services.TalkService.SendMessageAsync(BiuBiuShare.TalkInfo.Message)">
+            <inheritdoc />
+        </member>
+        <member name="M:BiuBiuServer.Services.TalkService.SendDataAsync(System.UInt64,System.Boolean)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

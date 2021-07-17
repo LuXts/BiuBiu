@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiuBiuServer", "BiuBiuServer\BiuBiuServer.csproj", "{EB5C3466-8D0A-4205-8218-CACB8C68A6F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BiuBiuServer", "BiuBiuServer\BiuBiuServer.csproj", "{EB5C3466-8D0A-4205-8218-CACB8C68A6F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiuBiuWpfClient", "BiuBiuWpfClient\BiuBiuWpfClient.csproj", "{407EC1FB-B313-40AD-AC9A-04E048F3C0A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BiuBiuWpfClient", "BiuBiuWpfClient\BiuBiuWpfClient.csproj", "{407EC1FB-B313-40AD-AC9A-04E048F3C0A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiuBiuTerminalClient", "BiuBiuTerminalClient\BiuBiuTerminalClient.csproj", "{B8B2F434-DC23-4CFA-BDCB-9B6C71196F03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BiuBiuTerminalClient", "BiuBiuTerminalClient\BiuBiuTerminalClient.csproj", "{B8B2F434-DC23-4CFA-BDCB-9B6C71196F03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiuBiuShare", "BiuBiuShare\BiuBiuShare.csproj", "{10CA42F1-24C1-4586-ACF5-936E02AFD412}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BiuBiuShare", "BiuBiuShare\BiuBiuShare.csproj", "{10CA42F1-24C1-4586-ACF5-936E02AFD412}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

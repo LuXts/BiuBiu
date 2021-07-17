@@ -3,13 +3,26 @@ using MagicOnion;
 
 namespace BiuBiuServer.Interfaces
 {
-    public interface IAccountDatabaseDriven :
+    /// <summary>
+    /// 登录服务与数据库之间的驱动
+    /// </summary>
+    public interface IAccountDatabaseDriven
     {
-        // 函数功能：输入 电话号码/工号 和 密码 输出登录结果
+        /// <summary>
+        /// 输入 电话号码/工号 和 密码 输出登录结果
+        /// </summary>
+        /// <param name="signInId">电话号码/工号</param>
+        /// <param name="password">密码</param>
+        /// <returns>结果</returns>
         public UnaryResult<SignInResponse> CommonSign(string signInId
             , string password);
 
-        // 函数功能：输入 电话号码/工号 和 密码 输出管理员登录结果
+        /// <summary>
+        /// 输入 电话号码/工号 和 密码 输出登录结果
+        /// </summary>
+        /// <param name="signInId">电话号码/工号</param>
+        /// <param name="password">密码</param>
+        /// <returns>结果</returns>
         public UnaryResult<SignInResponse> AdministrantSign(
             string signInId, string password);
     }

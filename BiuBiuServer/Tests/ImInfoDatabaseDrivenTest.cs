@@ -22,7 +22,8 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
-        public UnaryResult<bool> SetUserPassword(ulong userId, string password)
+        public UnaryResult<bool> SetUserPassword(ulong userId
+            , string oldPassword, string newPassword)
         {
             throw new System.NotImplementedException();
         }

@@ -13,6 +13,9 @@ using MagicOnion.Server.Authentication.Jwt;
 
 namespace BiuBiuServer.Services
 {
+    /// <summary>
+    /// 登录服务实现
+    /// </summary>
     public class AccountService : ServiceBase<IAccountService>, IAccountService
     {
         // TODO: 测试接口(等数据库驱动实现完成后替换)

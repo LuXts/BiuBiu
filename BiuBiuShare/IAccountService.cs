@@ -3,14 +3,26 @@ using MagicOnion;
 
 namespace BiuBiuShare
 {
+    /// <summary>
+    /// 登录服务接口
+    /// </summary>
     public interface IAccountService : IService<IAccountService>
     {
-
-        // 参数：电话号码、工号  密码
-        // 输出：返回结果和令牌
+        /// <summary>
+        /// 普通用户登录
+        /// </summary>
+        /// <param name="signInId">电话号码/工号</param>
+        /// <param name="password">密码</param>
+        /// <returns>登录结果</returns>
         UnaryResult<SignInResponse> CommonSignInAsync(string signInId
             , string password);
 
+        /// <summary>
+        /// 管理员用户登录
+        /// </summary>
+        /// <param name="signInId">电话号码/工号</param>
+        /// <param name="password">密码</param>
+        /// <returns>登录结果</returns>
         UnaryResult<SignInResponse> AdministrantSignInAsync(
             string signInId, string password);
     }
