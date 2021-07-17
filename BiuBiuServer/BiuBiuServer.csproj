@@ -4,10 +4,6 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DocumentationFile>C:\Users\LuXts\source\repos\BiuBiu\BiuBiuServer\BiuBiuServer.xml</DocumentationFile>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<PackageReference Include="MagicOnion" Version="4.3.1" />
 		<PackageReference Include="MagicOnion.Abstractions" Version="4.3.1" />
@@ -25,4 +21,5 @@
 	<ItemGroup>
 		<ProjectReference Include="..\BiuBiuShare\BiuBiuShare.csproj" />
 	</ItemGroup>
-		</Project>
+</Project>
+</Project>
