@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using BiuBiuServer.Authentication;
+using BiuBiuServer.Database;
 using BiuBiuServer.Interfaces;
 using BiuBiuServer.Tests;
 using BiuBiuShare;
@@ -20,7 +21,7 @@ namespace BiuBiuServer.Services
     {
         // TODO: 测试接口(等数据库驱动实现完成后替换)
         private readonly IAccountDatabaseDriven _accountDatabaseDriven
-            = new AccountDatabaseDrivenTest();
+            = new AccountDatabaseDriven();
 
         private readonly IJwtAuthenticationProvider _jwtAuthProvider;
 

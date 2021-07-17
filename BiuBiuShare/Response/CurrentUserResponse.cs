@@ -14,6 +14,6 @@ namespace BiuBiuShare.Response
 
         public bool IsAuthenticated { get; set; }
         public string Name { get; set; }
-        public long UserId { get; set; }
+        public ulong UserId { get; set; }
     }
 }

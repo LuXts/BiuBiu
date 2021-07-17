@@ -16,6 +16,11 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
+        public UnaryResult<bool> ChangeUserInfo(UserInfo newUserInfo)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async UnaryResult<bool> DeleteUser(ulong userId)
         {
             throw new System.NotImplementedException();
@@ -31,12 +36,22 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
+        public UnaryResult<int> RegisteredUsers(ulong userId, RegistrationInformation registrationInformations)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async UnaryResult<UserInfo> SelectByJobNumber(string jobNumber)
         {
             throw new System.NotImplementedException();
         }
 
         public async  UnaryResult<UserInfo> SelectByUserId(ulong userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public UnaryResult<bool> ChangePassword(ulong userId, string newPassword)
         {
             throw new System.NotImplementedException();
         }

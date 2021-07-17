@@ -22,7 +22,7 @@ namespace BiuBiuTerminalClient
                     channel2
                     , new[]
                     {
-                        new AdminWithAuthenticationFilter("1250236422", "123456789"
+                        new AdminWithAuthenticationFilter("18578967136", "123456789"
                             , channel2)
                     });
             var n2 = await client2.SumAsync2(9, 4);

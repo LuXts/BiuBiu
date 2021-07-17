@@ -10,9 +10,9 @@ namespace BiuBiuServer.Tests
     public class AccountDatabaseDrivenTest : IAccountDatabaseDriven
     {
         private static readonly
-            IDictionary<string, (string Password, long UserId, string
+            IDictionary<string, (string Password, ulong UserId, string
                 DisplayName)> _dummyUsers
-                = new Dictionary<string, (string, long, string)>(StringComparer
+                = new Dictionary<string, (string, ulong, string)>(StringComparer
                     .OrdinalIgnoreCase)
                 {
                     {"1776137198", ("123456789", 1001, "Eustiana von Astraea")},
@@ -22,9 +22,9 @@ namespace BiuBiuServer.Tests
                 };
 
         private static readonly
-            IDictionary<string, (string Password, long UserId, string
+            IDictionary<string, (string Password, ulong UserId, string
                 DisplayName)> _adminDummyUsers
-                = new Dictionary<string, (string, long, string)>(StringComparer
+                = new Dictionary<string, (string, ulong, string)>(StringComparer
                     .OrdinalIgnoreCase)
                 {
                     {"1250236422", ("123456789", 1002, "Kiruya Momochi")},

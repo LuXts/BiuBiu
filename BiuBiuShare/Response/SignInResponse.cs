@@ -6,7 +6,7 @@ namespace BiuBiuShare.Response
     [MessagePackObject(true)]
     public class SignInResponse
     {
-        public long UserId { get; set; }
+        public ulong UserId { get; set; }
         public string DisplayName { get; set; }
         public byte[] Token { get; set; }
         public DateTimeOffset Expiration { get; set; }
@@ -19,7 +19,7 @@ namespace BiuBiuShare.Response
         {
         }
 
-        public SignInResponse(long userId, string displayName
+        public SignInResponse(ulong userId, string displayName
             , byte[] token, DateTimeOffset expiration)
         {
             Success = true;
