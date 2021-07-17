@@ -15,7 +15,8 @@ namespace BiuBiuServer.Tests
                 = new Dictionary<string, (string, long, string)>(StringComparer
                     .OrdinalIgnoreCase)
                 {
-                    {"1776137198", ("123456789", 1001, "Eustiana von Astraea")}
+                    {"1776137198", ("123456789", 1001, "Eustiana von Astraea")},
+                    {"177613asda8", ("123456789", 1001, "Eustiana von Astraea")}
                     , {"1250236422", ("123456789", 1002, "Kiruya Momochi")}
                     ,
                 };
