@@ -1,10 +1,13 @@
-﻿namespace BiuBiuServer
+﻿using MongoDB.Driver;
+
+namespace BiuBiuServer
 {
     public class MySqlDriven
     {
         private readonly static string _ip = "192.168.100.7";
         private readonly static string _user = "luxts";
         private readonly static string _password = "JL4i7nVuymwBnGr";
+
         private readonly static string _connectString =
             @$"Data Source={_ip};Port=3306;User ID={_user};Password={_password};Initial Catalog=Test;Charset=utf8mb4;SslMode=none;Min pool size=1";
 
@@ -16,6 +19,15 @@
         public static IFreeSql GetFreeSql()
         {
             return _freeSql;
+        }
+
+        private readonly static string _noSqlConnectStr = "mongodb://localhost:27017";
+
+        private static MongoClient _noSqlClient = new MongoClient(_noSqlConnectStr);
+
+        public static MongoClient GetNoSqlClient()
+        {
+            return _noSqlClient;
         }
     }
 }

@@ -24,9 +24,10 @@ namespace BiuBiuShare
         /// 发送非文本类消息后根据 Response 继续发送数据
         /// </summary>
         /// <param name="message">上一步获得的消息</param>
+        /// <param name="port">上传端口</param>
         /// <param name="respond">是否继续上传</param>
         /// <returns>上传是否成功</returns>
-        public UnaryResult<bool> SendDataAsync(MessageResponse message, bool respond);
+        public UnaryResult<bool> SendDataAsync(MessageResponse message, int port, bool respond);
 
         /// <summary>
         /// 查询某条消息
@@ -42,9 +43,10 @@ namespace BiuBiuShare
         /// 发送 GetMessageAsync 消息后根据 Response 的结果接收数据
         /// </summary>
         /// <param name="message">上一步获得的消息</param>
+        /// <param name="port">下载端口</param>
         /// <param name="respond">是否继续下载</param>
         /// <returns>返回是否成功</returns>
-        public UnaryResult<bool> GetDataAsync(MessageResponse message, bool respond);
+        public UnaryResult<bool> GetDataAsync(MessageResponse message, int port, bool respond);
 
         /// <summary>
         /// 获取一段时间内的私聊聊天记录

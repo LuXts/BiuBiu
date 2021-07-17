@@ -15,6 +15,7 @@ namespace BiuBiuServer.Interfaces
         public UnaryResult<bool> SendDataMessage(MessageResponse message
             , int port);
 
-        public UnaryResult<bool> GetDataMessage(ulong messageId, int port);
+        public UnaryResult<bool> GetDataMessage(MessageResponse message
+            , int port);
     }
 }

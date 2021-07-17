@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using BiuBiuServer.Interfaces;
 using BiuBiuShare.Response;
-using FreeSql.Sqlite;
 using MagicOnion;
 
 namespace BiuBiuServer.Database
@@ -42,7 +41,7 @@ namespace BiuBiuServer.Database
         {
             List<(string, ulong)> Target = await Fsql.Ado.QueryAsync<(string, ulong)>(
                 "select DisplayName,UserId from user" +
-                " where (PhoneNumber = ?si or JobNumber = ?si) and IsAdmin = 'true' and Password = ?pd",new{si=signInId,pd=password});
+                " where (PhoneNumber = ?si or JobNumber = ?si) and IsAdmin = 'true' and Password = ?pd", new { si = signInId, pd = password });
             if (Target.Count != 0)
             {
                 var VARIABLE = Target[0];

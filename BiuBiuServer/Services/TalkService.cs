@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using BiuBiuServer.Database;
 using BiuBiuServer.Interfaces;
+using BiuBiuServer.Tests;
 using BiuBiuShare;
 using BiuBiuShare.Response;
 using BiuBiuShare.TalkInfo;
@@ -17,7 +19,7 @@ namespace BiuBiuServer.Services
     public class TalkService : ServiceBase<ITalkService>, ITalkService
     {
         private ITalkSqlDatabaseDriven _sqlDriven;
-        private ITalkNoSqlDatabaseDriven _noSQLDriven;
+        private ITalkNoSqlDatabaseDriven _noSQLDriven = new TalkNoSqlDatabaseDriven();
 
         /// <inheritdoc />
         public async UnaryResult<MessageResponse> SendMessageAsync(Message message)
@@ -26,9 +28,9 @@ namespace BiuBiuServer.Services
         }
 
         /// <inheritdoc />
-        public async UnaryResult<bool> SendDataAsync(MessageResponse message, bool respond)
+        public async UnaryResult<bool> SendDataAsync(MessageResponse message, int port, bool respond)
         {
-            throw new System.NotImplementedException();
+            return await _noSQLDriven.SendDataMessage(message, port);
         }
 
         /// <inheritdoc />
@@ -38,9 +40,9 @@ namespace BiuBiuServer.Services
         }
 
         /// <inheritdoc />
-        public async UnaryResult<bool> GetDataAsync(MessageResponse message, bool respond)
+        public async UnaryResult<bool> GetDataAsync(MessageResponse message, int port, bool respond)
         {
-            throw new System.NotImplementedException();
+            return await _noSQLDriven.GetDataMessage(message, port);
         }
 
         /// <inheritdoc />
