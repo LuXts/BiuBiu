@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using BiuBiuServer.Authentication;
+using BiuBiuServer.Database;
 using BiuBiuServer.Interfaces;
 using BiuBiuServer.Tests;
 using BiuBiuShare;
@@ -16,7 +17,7 @@ namespace BiuBiuServer.Services
     public class AccountService : ServiceBase<IAccountService>, IAccountService
     {
         private readonly IAccountDatabaseDriven _accountDatabaseDriven
-            = new AccountDatabaseDrivenTest();
+            = new AccountDatabaseDriven();
 
         private readonly IJwtAuthenticationProvider _jwtAuthProvider;
 
