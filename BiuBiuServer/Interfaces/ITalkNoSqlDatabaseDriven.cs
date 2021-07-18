@@ -24,15 +24,12 @@ namespace BiuBiuServer.Interfaces
             , int port);
 
         // 获取一段时间内未接收的聊天记录
+        // targetId 可以为 UserId 也可以为 TeamId
         public UnaryResult<List<MessageResponse>> GetMessagesRecordAsync(
-            ulong userOrTeamId, ulong startTime, ulong endTime);
+            ulong targetId, ulong startTime, ulong endTime);
 
         // 获取一段时间内的私聊聊天记录
         public UnaryResult<List<MessageResponse>> GetChatMessagesRecordAsync(ulong sourceId
             , ulong targetId, ulong startTime, ulong endTime);
-
-        // 获取一段时间内的群聊聊天记录
-        public UnaryResult<List<MessageResponse>> GetTeamMessagesRecordAsync(ulong teamId
-            , ulong startTime, ulong endTime);
     }
 }

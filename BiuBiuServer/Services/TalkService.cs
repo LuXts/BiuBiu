@@ -47,35 +47,19 @@ namespace BiuBiuServer.Services
         }
 
         /// <inheritdoc />
-        public async UnaryResult<List<MessageResponse>> GetMessagesRecordAsync(ulong sourceId, ulong targetId
+        public async UnaryResult<List<MessageResponse>> GetChatMessagesRecordAsync(ulong sourceId, ulong targetId
             , ulong startTime, ulong endTime)
         {
-            var list = await _sqlDriven.GetMessagesRecordAsync(sourceId, targetId
-                , startTime, endTime);
-            List<MessageResponse> messageList
-                = new List<MessageResponse>(list.Count);
-            foreach (ulong userId in list)
-            {
-                messageList.Add(await GetMessageAsync(userId));
-            }
-
-            return messageList;
+            return await _noSQLDriven.GetChatMessagesRecordAsync(sourceId
+                , targetId, startTime, endTime);
         }
 
         /// <inheritdoc />
         public async UnaryResult<List<MessageResponse>> GetTeamMessagesRecordAsync(ulong teamId, ulong startTime
             , ulong endTime)
         {
-            var list = await _sqlDriven.GetTeamMessagesRecordAsync(teamId
-                , startTime, endTime);
-            List<MessageResponse> messageList
-                = new List<MessageResponse>(list.Count);
-            foreach (ulong userId in list)
-            {
-                messageList.Add(await GetMessageAsync(userId));
-            }
-
-            return messageList;
+            return await _noSQLDriven.GetMessagesRecordAsync(teamId, startTime
+                , endTime);
         }
     }
 }

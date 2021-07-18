@@ -49,16 +49,28 @@ namespace BiuBiuShare.ServiceInterfaces
         public UnaryResult<bool> GetDataAsync(MessageResponse message, int port, bool respond);
 
         /// <summary>
+        /// 获取某Id的未读消息（其实就是某时间点之后的所有消息）
+        /// </summary>
+        /// <param name="targetId">目标Id</param>
+        /// <param name="startTime">开始时间（通过 <c>BiuBiuShare.Tool.IdManagement</c> 转换）</param>
+        /// <param name="endTime">结束时间（通过 <c>BiuBiuShare.Tool.IdManagement</c> 转换）</param>
+        /// <returns>
+        /// 返回消息列表，消息列表为空时代表没查到
+        /// </returns>
+        public UnaryResult<List<MessageResponse>> GetNoReadMessageRecordAsync(
+            ulong targetId, ulong startTime, ulong endTime);
+
+        /// <summary>
         /// 获取一段时间内的私聊聊天记录
         /// </summary>
         /// <param name="sourceId">私聊中的一个人Id</param>
         /// <param name="targetId">私聊中的另一个人Id</param>
-        /// <param name="startTime">开始时间（通过  转换）</param>
-        /// <param name="endTime">结束时间（通过  转换）</param>
+        /// <param name="startTime">开始时间（通过 <c>BiuBiuShare.Tool.IdManagement</c> 转换）</param>
+        /// <param name="endTime">结束时间（通过 <c>BiuBiuShare.Tool.IdManagement</c> 转换）</param>
         /// <returns>
         /// 返回消息列表，消息列表为空时代表没查到
         /// </returns>
-        public UnaryResult<List<MessageResponse>> GetMessagesRecordAsync(
+        public UnaryResult<List<MessageResponse>> GetChatMessagesRecordAsync(
             ulong sourceId, ulong targetId, ulong startTime, ulong endTime);
 
         // 获取一段时间内 TeamId 里面的聊天记录
@@ -66,8 +78,8 @@ namespace BiuBiuShare.ServiceInterfaces
         /// 获取一段时间内的群聊聊天记录
         /// </summary>
         /// <param name="teamId">群组Id</param>
-        /// <param name="startTime">开始时间（通过  转换）</param>
-        /// <param name="endTime">结束时间（通过  转换）</param>
+        /// <param name="startTime">开始时间（通过 <c>BiuBiuShare.Tool.IdManagement</c> 转换）</param>
+        /// <param name="endTime">结束时间（通过 <c>BiuBiuShare.Tool.IdManagement</c> 转换）</param>
         /// <returns>
         /// 返回消息列表，消息列表为空时代表没查到
         /// </returns>
