@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -17,10 +18,20 @@ namespace BiuBiuServer.Database
             = MySqlDriven.GetNoSqlClient().GetDatabase("test");
 
         private readonly IMongoCollection<BsonDocument> _collection;
+        private readonly IGridFSBucket _bucket;
 
         public TalkNoSqlDatabaseDriven()
         {
             _collection = _database.GetCollection<BsonDocument>("Message");
+            _bucket = new GridFSBucket(_database
+                , new GridFSBucketOptions
+                {
+                    BucketName = "FileTest.dat"
+                    ,
+                    WriteConcern = WriteConcern.WMajority
+                    ,
+                    ReadPreference = ReadPreference.Secondary
+                });
         }
 
         public async UnaryResult<bool> AddMessageAsync(MessageResponse message)
@@ -96,19 +107,9 @@ namespace BiuBiuServer.Database
 
                 var client = listener.AcceptTcpClient();
                 NetworkStream ns = client.GetStream();
-
-                var bucket = new GridFSBucket(_database
-                    , new GridFSBucketOptions
-                    {
-                        BucketName = "FileTest.dat"
-                        ,
-                        WriteConcern = WriteConcern.WMajority
-                        ,
-                        ReadPreference = ReadPreference.Secondary
-                    });
                 if (ns.DataAvailable)
                 {
-                    bucket.UploadFromStream(
+                    _bucket.UploadFromStream(
                         message.MessageId.ToString() + ".tar", ns);
 
                     ns.Close();
@@ -142,20 +143,11 @@ namespace BiuBiuServer.Database
                 var client = listener.AcceptTcpClient();
                 NetworkStream ns = client.GetStream();
 
-                IGridFSBucket bucket = new GridFSBucket(_database
-                    , new GridFSBucketOptions
-                    {
-                        BucketName = "FileTest.dat"
-                        ,
-                        WriteConcern = WriteConcern.WMajority
-                        ,
-                        ReadPreference = ReadPreference.Secondary
-                    });
                 var filter = Builders<GridFSFileInfo>.Filter.And(
                     Builders<GridFSFileInfo>.Filter.Eq(x => x.Filename
                         , message.MessageId.ToString() + ".tar"));
-                var cursor = await bucket.Find(filter).FirstOrDefaultAsync();
-                bucket.DownloadToStream(cursor.Id, ns);
+                var cursor = await _bucket.Find(filter).FirstOrDefaultAsync();
+                _bucket.DownloadToStream(cursor.Id, ns);
                 ns.Close();
                 client.Close();
                 listener.Stop();
@@ -166,6 +158,18 @@ namespace BiuBiuServer.Database
                 Console.WriteLine(e.Message);
                 return false;
             }
+        }
+
+        public UnaryResult<List<ulong>> GetMessagesRecordAsync(ulong sourceId, ulong targetId
+            , ulong startTime, ulong endTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UnaryResult<List<ulong>> GetTeamMessagesRecordAsync(ulong teamId, ulong startTime
+            , ulong endTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

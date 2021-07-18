@@ -18,7 +18,6 @@ namespace BiuBiuServer.Services
     [Authorize]
     public class TalkService : ServiceBase<ITalkService>, ITalkService
     {
-        private readonly ITalkSqlDatabaseDriven _sqlDriven;
         private readonly ITalkNoSqlDatabaseDriven _noSQLDriven = new TalkNoSqlDatabaseDriven();
 
         // TODO: 发送信息
