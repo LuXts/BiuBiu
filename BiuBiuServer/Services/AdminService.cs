@@ -7,6 +7,7 @@ using MagicOnion;
 using MagicOnion.Server;
 using System;
 using System.Threading;
+using BiuBiuServer.Database;
 using BiuBiuShare.ImInfos;
 using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.Tool;
@@ -18,7 +19,7 @@ namespace BiuBiuServer.Services
     public class AdminService : ServiceBase<IAdminService>, IAdminService
     {
         private readonly IAdminDatabaseDriven _adminDatabaseDatabaseDriven
-            = new AdminDatabaseDrivenTest();
+            = new AdminDatabaseDriven();
 
         public async UnaryResult<bool> ChangePassword(ulong userId, string newPassword)
         {

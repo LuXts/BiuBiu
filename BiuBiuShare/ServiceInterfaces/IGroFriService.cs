@@ -6,11 +6,11 @@ namespace BiuBiuShare.ServiceInterfaces
 {
     public interface IGroFriService : IService<IGroFriService>
     {
-        UnaryResult<int> AddFriend(ulong senderId, ulong receiverId, string invitationMessage);
+        UnaryResult<bool> AddFriend(ulong senderId, ulong receiverId, string invitationMessage);
 
-        UnaryResult<int> AddGroup(ulong senderId, ulong groupId, string invitationMessage);
+        UnaryResult<bool> AddGroup(ulong senderId, ulong groupId, string invitationMessage);
 
-        UnaryResult<int> InviteUserToGroup(ulong senderId, ulong receiverId, ulong groupId, string invitationMessage);
+        UnaryResult<bool> InviteUserToGroup(ulong senderId, ulong receiverId, ulong groupId, string invitationMessage);
 
         UnaryResult<List<FriendRequest>> GetFriendRequest(ulong userId);
 
@@ -18,11 +18,11 @@ namespace BiuBiuShare.ServiceInterfaces
 
         UnaryResult<List<GroupRequest>> GetGroupRequest(ulong useId);
 
-        UnaryResult<bool> ReplyFriendRequest(ulong requestId, string replyResult);
+        UnaryResult<bool> ReplyFriendRequest(ulong requestId, bool replyResult);
 
-        UnaryResult<bool> ReplyGroupInvitation(ulong invitationId, string replyResult);
+        UnaryResult<bool> ReplyGroupInvitation(ulong invitationId, bool replyResult);
 
-        UnaryResult<bool> ReplyGroupIRequest(ulong requestId, string replyResult);
+        UnaryResult<bool> ReplyGroupIRequest(ulong requestId, bool replyResult);
 
         UnaryResult<bool> ExitGroup(ulong userId, ulong groupId);
 

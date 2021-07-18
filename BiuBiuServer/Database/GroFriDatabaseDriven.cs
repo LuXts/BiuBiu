@@ -39,39 +39,39 @@ namespace BiuBiuServer.Database
         {
             throw new System.NotImplementedException();
         }
-        //TODO:实现请求某用户的入群申请列表 用户Id 该用户的全部群组申请数组 tip：该用户为群主 即群主获取到加群申请
+        //TODO:实现请求某用户需要审核的入群申请列表 用户Id 该用户的需要审核的群组申请数组 tip：该用户为群主 即群主获取到加群申请
         public async UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId)
         {
             throw new System.NotImplementedException();
         }
 
-        //TODO:实现回复好友申请 申请ID、回复结果（“接受”“拒绝””忽略“） 是否成功修改好友申请信息
-        public async UnaryResult<bool> ReplyFriendRequest(ulong requestId, string replyResult)
+        //TODO:实现回复好友申请 申请ID、回复结果 是否成功修改好友申请信息
+        public async UnaryResult<bool> ReplyFriendRequest(ulong requestId, bool replyResult)
         {
             throw new System.NotImplementedException();
         }
-        //TODO:实现回复群组邀请 邀请ID 回复结果（接受、拒绝、忽略） 是否成功修改群组邀请信息
-        public async UnaryResult<bool> ReplyGroupInvitation(ulong invitationId, string replyResult)
+        //TODO:实现回复群组邀请 邀请ID 回复结果 是否成功修改群组邀请信息
+        public async UnaryResult<bool> ReplyGroupInvitation(ulong invitationId, bool replyResult)
         {
             throw new System.NotImplementedException();
         }
-        //TODO：实现回复入群申请 申请ID 回复结果同上 是否成功修改入群申请
-        public async UnaryResult<bool> ReplyGroupRequest(ulong requestId, string replyResult)
+        //TODO：实现回复入群申请 申请ID 回复结果 是否成功修改入群申请
+        public async UnaryResult<bool> ReplyGroupRequest(ulong requestId, bool replyResult)
         {
             throw new System.NotImplementedException();
         }
-        //TODO:函数功能：输入申请Id，申请者ID，被添加者ID，申请信息，写入数据库中；输出：返回int标识是否成功与失败原因tip:当同一个人邀请信息重复发送时，不重复写入,返回失败
-        public async UnaryResult<int> WriteFriendRequest(ulong friendRequestId, ulong senderId, ulong receiverId, string invitationMessage)
+        //TODO:函数功能：输入申请Id，申请者ID，被添加者ID，申请信息，写入数据库中；输出：是否成功 tip:当同一个人邀请信息重复发送时，不重复写入,不可向已是好友关系的人发邀请
+        public async UnaryResult<bool>WriteFriendRequest(ulong friendRequestId, ulong senderId, ulong receiverId, string invitationMessage)
         {
             throw new System.NotImplementedException();
         }
-        //TODO:实现某人邀请某人加入某群组数据写入，输入邀请Id，邀请者ID，被邀请者ID，群组id,邀请备注信息，写入数据库中；输出：返回int标识是否成功与失败原因 tip:邀请人必须为群主，不可重复发送
-        public async UnaryResult<int> WriteGroupInvitation(ulong groupInvitationId, ulong senderId, ulong receiver, ulong groupId, string invitationMe)
+        //TODO:实现某人邀请某人加入某群组数据写入，输入邀请Id，邀请者ID，被邀请者ID，群组id,邀请备注信息，写入数据库中；输出：是否成功 tip:不可重复发送、不可邀请在群内的用户
+        public async UnaryResult<bool>WriteGroupInvitation(ulong groupInvitationId, ulong senderId, ulong receiver, ulong groupId, string invitationMe)
         {
             throw new System.NotImplementedException();
         }
-        //TODO：实现某人申请加入某群聊数据写入 输入申请Id，申请者ID，群组ID，申请信息 返回int标识是否成功与失败原因 tip:不可重复写
-        public async UnaryResult<int> WriteGroupRequest(ulong groupRequestId, ulong senderId, ulong groupId, string invitationMessage)
+        //TODO：实现某人申请加入某群聊数据写入 输入申请Id，申请者ID，群组ID，申请信息 返回是否成功 tip:不可重复写、在群内的人员不可申请
+        public async UnaryResult<bool>WriteGroupRequest(ulong groupRequestId, ulong senderId, ulong groupId, string invitationMessage)
         {
             throw new System.NotImplementedException();
         }
