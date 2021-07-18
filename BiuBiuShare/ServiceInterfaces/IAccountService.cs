@@ -1,7 +1,7 @@
 ﻿using BiuBiuShare.Response;
 using MagicOnion;
 
-namespace BiuBiuShare
+namespace BiuBiuShare.ServiceInterfaces
 {
     /// <summary>
     /// 登录服务接口

@@ -4,6 +4,7 @@ using BiuBiuServer.Interfaces;
 using BiuBiuServer.Tests;
 using BiuBiuShare;
 using BiuBiuShare.Response;
+using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.TalkInfo;
 using MagicOnion;
 using MagicOnion.Server;

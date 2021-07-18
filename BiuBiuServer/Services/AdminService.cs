@@ -8,6 +8,7 @@ using MagicOnion.Server;
 using System;
 using System.Threading;
 using BiuBiuShare.ImInfos;
+using BiuBiuShare.ServiceInterfaces;
 using MagicOnion.Server.Authentication;
 
 namespace BiuBiuServer.Services
@@ -36,8 +37,8 @@ namespace BiuBiuServer.Services
         public async UnaryResult<int> RegisteredUsers(RegisterInfo registerInfos)
         {
             //TODO：采用算法生成一个新的ID，将注册信息与用户ID写入数据库内
-            ulong userId=0;
-            return await _adminDatabaseDatabaseDriven.RegisteredUsers(userId,registrationInformations);
+            ulong userId = 0;
+            return await _adminDatabaseDatabaseDriven.RegisteredUsers(userId, registrationInformations);
         }
 
         public async UnaryResult<bool> ReviewMessage(ulong userId, bool reviewResults)

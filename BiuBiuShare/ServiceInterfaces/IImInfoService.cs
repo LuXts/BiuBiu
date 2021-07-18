@@ -2,7 +2,7 @@
 using BiuBiuShare.ImInfos;
 using MagicOnion;
 
-namespace BiuBiuShare
+namespace BiuBiuShare.ServiceInterfaces
 {
     /// <summary>
     /// 用户群组信息服务接口

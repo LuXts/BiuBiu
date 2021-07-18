@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BiuBiuShare;
+using BiuBiuShare.ServiceInterfaces;
 using Grpc.Core;
 using Grpc.Net.Client;
 using MagicOnion.Client;

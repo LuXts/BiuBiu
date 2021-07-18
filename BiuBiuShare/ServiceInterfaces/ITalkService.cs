@@ -3,7 +3,7 @@ using BiuBiuShare.Response;
 using BiuBiuShare.TalkInfo;
 using MagicOnion;
 
-namespace BiuBiuShare
+namespace BiuBiuShare.ServiceInterfaces
 {
     /// <summary>
     /// 聊天相关服务的接口

@@ -3,6 +3,7 @@ using BiuBiuServer.Interfaces;
 using BiuBiuServer.Tests;
 using BiuBiuShare;
 using BiuBiuShare.ImInfos;
+using BiuBiuShare.ServiceInterfaces;
 using MagicOnion;
 using MagicOnion.Server;
 using MagicOnion.Server.Authentication;

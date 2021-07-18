@@ -1,9 +1,8 @@
 ﻿using BiuBiuShare.ImInfos;
 using BiuBiuShare.UserManagement;
 using MagicOnion;
-using Microsoft.AspNetCore.Hosting.Server;
 
-namespace BiuBiuShare
+namespace BiuBiuShare.ServiceInterfaces
 {
     public interface IAdminService : IService<IAdminService>
     {

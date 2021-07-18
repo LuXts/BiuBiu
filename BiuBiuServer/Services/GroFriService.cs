@@ -11,6 +11,7 @@ using BiuBiuServer.Database;
 using MagicOnion.Server.Authentication;
 using System.Collections.Generic;
 using BiuBiuShare.GrouFri;
+using BiuBiuShare.ServiceInterfaces;
 
 namespace BiuBiuServer.Services
 {
@@ -19,18 +20,19 @@ namespace BiuBiuServer.Services
     {
         private readonly IGroFriDatabaseDriven _igroFriDatabaseDriven
             = new GroFriDatabaseDriven();
-        public async  UnaryResult<int> AddFriend(ulong senderId, ulong receiverId, string invitationMessage)
+
+        public async UnaryResult<int> AddFriend(ulong senderId, ulong receiverId, string invitationMessage)
         {
             //TODO:接受者接收消息消息、生成唯一Id
             ulong friendRequestId = 0;
-            return await _igroFriDatabaseDriven.WriteFriendRequest(friendRequestId,senderId,receiverId,invitationMessage);
+            return await _igroFriDatabaseDriven.WriteFriendRequest(friendRequestId, senderId, receiverId, invitationMessage);
         }
 
         public async UnaryResult<int> AddGroup(ulong senderId, ulong groupId, string invitationMessage)
         {
             //TODO:群主接收申请消息、生成唯一ID
             ulong groupRequestId = 0;
-            return await _igroFriDatabaseDriven.WriteGroupRequest(groupRequestId,senderId, groupId, invitationMessage);
+            return await _igroFriDatabaseDriven.WriteGroupRequest(groupRequestId, senderId, groupId, invitationMessage);
         }
 
         public async UnaryResult<bool> DeleteFriend(ulong sponsorId, ulong targetId)
@@ -40,7 +42,7 @@ namespace BiuBiuServer.Services
 
         public async UnaryResult<bool> DeleteMemberFromGroup(ulong sponsorId, ulong memberId, ulong groupId)
         {
-            return await _igroFriDatabaseDriven.DeleteMemberFromGroup(sponsorId, memberId,groupId);
+            return await _igroFriDatabaseDriven.DeleteMemberFromGroup(sponsorId, memberId, groupId);
         }
 
         public async UnaryResult<bool> DissolveGroup(ulong userId, ulong groupId)
@@ -50,7 +52,7 @@ namespace BiuBiuServer.Services
 
         public async UnaryResult<bool> ExitGroup(ulong userId, ulong groupId)
         {
-            return await _igroFriDatabaseDriven.DeleteFriend(userId ,groupId);
+            return await _igroFriDatabaseDriven.DeleteFriend(userId, groupId);
         }
 
         public async UnaryResult<List<GroupInvitation>> GetFriendInvitation(ulong userId)
@@ -66,8 +68,8 @@ namespace BiuBiuServer.Services
         public async UnaryResult<int> InviteUserToGroup(ulong senderId, ulong receiverId, ulong groupId, string invitationMessage)
         {
             //TODO：被邀请者接收申请消息、生成唯一ID
-            ulong groupInvitationId=0;
-            return await _igroFriDatabaseDriven.WriteGroupInvitation(groupInvitationId,senderId,receiverId,groupId,invitationMessage);
+            ulong groupInvitationId = 0;
+            return await _igroFriDatabaseDriven.WriteGroupInvitation(groupInvitationId, senderId, receiverId, groupId, invitationMessage);
         }
 
         public async UnaryResult<bool> ReplyFriendRequest(ulong requestId, string replyResult)

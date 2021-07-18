@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BiuBiuShare;
 using BiuBiuShare.Response;
+using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.Tests;
 using Grpc.Net.Client;
 using LitJWT;
