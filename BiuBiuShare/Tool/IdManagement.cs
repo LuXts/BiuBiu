@@ -15,13 +15,13 @@ namespace BiuBiuShare.Tool
         private const uint _expandIdBits = 2;
         private const uint _idBits = 64;
 
-        private static ulong TimeGen()
+        public static ulong TimeGen()
         {
             return (ulong)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
                 .TotalMilliseconds;
         }
 
-        private static ulong GenerateId(uint dataType)
+        public static ulong GenerateId(uint dataType)
         {
             _timeStampId = TimeGen() << (int)(_idBits - _timeStapIdBits);
             _typeId = dataType << (int)(_idBits - _timeStapIdBits - _typeIdBits);

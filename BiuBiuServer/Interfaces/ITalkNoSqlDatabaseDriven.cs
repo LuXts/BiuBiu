@@ -17,11 +17,11 @@ namespace BiuBiuServer.Interfaces
 
         // 发送文件
         public UnaryResult<bool> SendDataMessage(MessageResponse message
-            , int port);
+            , uint port);
 
         // 接收文件
         public UnaryResult<bool> GetDataMessage(MessageResponse message
-            , int port);
+            , uint port);
 
         // 获取一段时间内未接收的聊天记录
         // targetId 可以为 UserId 也可以为 TeamId

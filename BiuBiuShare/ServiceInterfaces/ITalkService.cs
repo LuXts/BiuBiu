@@ -18,7 +18,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// 返回生成的消息Id，消息内容等。
         /// 请根据返回的 <c>messageResponse.Success</c> 判断是否失败。
         /// </returns>
-        public UnaryResult<MessageResponse> SendMessageAsync(Message message);
+        public UnaryResult<(MessageResponse, uint)> SendMessageAsync(Message message);
 
         /// <summary>
         /// 发送非文本类消息后根据 Response 继续发送数据
@@ -27,7 +27,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="port">上传端口</param>
         /// <param name="respond">是否继续上传</param>
         /// <returns>上传是否成功</returns>
-        public UnaryResult<bool> SendDataAsync(MessageResponse message, int port, bool respond);
+        public UnaryResult<bool> SendDataAsync(MessageResponse message, uint port, bool respond);
 
         /// <summary>
         /// 查询某条消息
@@ -37,7 +37,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// 返回查到的消息内容等。
         /// 请根据返回的 <c>messageResponse.Success</c> 判断是否失败。
         /// </returns>
-        public UnaryResult<MessageResponse> GetMessageAsync(ulong messageId);
+        public UnaryResult<(MessageResponse, uint)> GetMessageAsync(ulong messageId);
 
         /// <summary>
         /// 发送 GetMessageAsync 消息后根据 Response 的结果接收数据
@@ -46,7 +46,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="port">下载端口</param>
         /// <param name="respond">是否继续下载</param>
         /// <returns>返回是否成功</returns>
-        public UnaryResult<bool> GetDataAsync(MessageResponse message, int port, bool respond);
+        public UnaryResult<bool> GetDataAsync(MessageResponse message, uint port, bool respond);
 
         /// <summary>
         /// 获取某Id的未读消息（其实就是某时间点之后的所有消息）

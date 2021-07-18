@@ -112,12 +112,12 @@ namespace BiuBiuServer.Database
         }
 
         public async UnaryResult<bool> SendDataMessage(MessageResponse message
-            , int port)
+            , uint port)
         {
             // HACK: 这里的处理非常生硬
             try
             {
-                TcpListener listener = new TcpListener(IPAddress.Any, port);
+                TcpListener listener = new TcpListener(IPAddress.Any, (int)port);
                 listener.Start();
 
                 var client = listener.AcceptTcpClient();
@@ -148,11 +148,11 @@ namespace BiuBiuServer.Database
         }
 
         public async UnaryResult<bool> GetDataMessage(MessageResponse message
-            , int port)
+            , uint port)
         {
             try
             {
-                TcpListener listener = new TcpListener(IPAddress.Any, port);
+                TcpListener listener = new TcpListener(IPAddress.Any, (int)port);
                 listener.Start();
 
                 var client = listener.AcceptTcpClient();

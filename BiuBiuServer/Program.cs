@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -13,6 +13,7 @@ namespace BiuBiuServer
     {
         public static void Main(string[] args)
         {
+            Initialization initialization = new Initialization();
             CreateHostBuilder(args).Build().Run();
         }
 

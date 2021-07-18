@@ -37,11 +37,6 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
-        public UnaryResult<int> RegisteredUsers(ulong userId, RegistrationInformation registrationInformations)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async UnaryResult<bool> ReviewMessage(ulong userId, bool reviewResults)
         {
             throw new System.NotImplementedException();
@@ -58,11 +53,6 @@ namespace BiuBiuServer.Tests
         }
 
         public async UnaryResult<UserInfo> SelectByUserId(ulong userId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public UnaryResult<bool> ChangePassword(ulong userId, string newPassword)
         {
             throw new System.NotImplementedException();
         }
