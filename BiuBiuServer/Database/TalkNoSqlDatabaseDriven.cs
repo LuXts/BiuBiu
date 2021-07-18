@@ -38,7 +38,7 @@ namespace BiuBiuServer.Database
 
         // MessageResponse 和 BsonDocument 转换接口
 
-        private static BsonDocument _messageToBsonDocument(
+        private static BsonDocument MessageToBsonDocument(
             MessageResponse message)
         {
             var item = new BsonDocument()
@@ -52,7 +52,7 @@ namespace BiuBiuServer.Database
             return item;
         }
 
-        private static MessageResponse _bsonDocumentToMessage(
+        private static MessageResponse BsonDocumentToMessage(
             BsonDocument document)
         {
             var temp = new MessageResponse()
@@ -75,7 +75,7 @@ namespace BiuBiuServer.Database
         public async UnaryResult<bool> AddMessageAsync(MessageResponse message)
         {
             // HACK: 这里用了比较硬的编码
-            var item = _messageToBsonDocument(message);
+            var item = MessageToBsonDocument(message);
             // HACK: 这里的处理非常生硬
             try
             {
@@ -84,8 +84,7 @@ namespace BiuBiuServer.Database
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                // TODO: 打日志
+                Initialization.Logger.Error(e.Message);
                 return false;
             }
         }
@@ -100,13 +99,12 @@ namespace BiuBiuServer.Database
             // HACK: 这里的处理非常生硬
             try
             {
-                var temp = _bsonDocumentToMessage(document);
+                var temp = BsonDocumentToMessage(document);
                 return temp;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                // TODO: 打日志
+                Initialization.Logger.Error(e.Message);
                 return MessageResponse.Failed;
             }
         }
@@ -188,7 +186,7 @@ namespace BiuBiuServer.Database
             List<MessageResponse> list = new List<MessageResponse>();
             foreach (var document in cursor.ToEnumerable())
             {
-                list.Add(_bsonDocumentToMessage(document));
+                list.Add(BsonDocumentToMessage(document));
             }
 
             return list;
@@ -212,7 +210,7 @@ namespace BiuBiuServer.Database
             List<MessageResponse> list = new List<MessageResponse>();
             foreach (var document in cursor.ToEnumerable())
             {
-                list.Add(_bsonDocumentToMessage(document));
+                list.Add(BsonDocumentToMessage(document));
             }
 
             return list;

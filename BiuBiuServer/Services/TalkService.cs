@@ -77,8 +77,7 @@ namespace BiuBiuServer.Services
 
         private static async Task ForwardMessage(MessageResponse response)
         {
-            // HACK: 硬编码Ip地址
-            var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
             if (IdManagement.GenerateIdTypeById(response.TargetId) == IdType.UserId)
             {
                 UserHubClient client = new UserHubClient();
@@ -104,7 +103,7 @@ namespace BiuBiuServer.Services
             bool re0 = await _noSQLDriven.SendDataMessage(message, port);
             lock (PortList)
             {
-                PortList.AddFirst(port);
+                PortList.AddFirst(port - 55000);
             }
             bool re1 = await _noSQLDriven.AddMessageAsync(message);
             if (re0 && re1)

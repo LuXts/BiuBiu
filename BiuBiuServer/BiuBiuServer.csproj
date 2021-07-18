@@ -5,6 +5,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Content Remove="NLog.config" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="FreeSql.All" Version="2.5.200" />
 		<PackageReference Include="Grpc" Version="2.39.0-pre1" />
 		<PackageReference Include="Grpc.Core" Version="2.39.0-pre1" />
@@ -26,6 +30,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Userhub\" />
+		<Folder Include="Userhub\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="NLog.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 </Project>
