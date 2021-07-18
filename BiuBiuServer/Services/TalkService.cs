@@ -21,6 +21,7 @@ namespace BiuBiuServer.Services
     {
         private readonly ITalkNoSqlDatabaseDriven _noSQLDriven = new TalkNoSqlDatabaseDriven();
 
+
         // TODO: 发送信息
         /// <inheritdoc />
         public async UnaryResult<MessageResponse> SendMessageAsync(Message message)

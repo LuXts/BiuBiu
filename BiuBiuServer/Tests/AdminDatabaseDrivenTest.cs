@@ -37,7 +37,7 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
-        public UnaryResult<int> RegisteredUsers(ulong userId, RegistrationInformation registrationInformations)
+        public UnaryResult<int> RegisteredUsers(ulong userId, RegisterInfo registerInfo)
         {
             throw new System.NotImplementedException();
         }
@@ -47,10 +47,6 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
-        public UnaryResult<int> RegisteredUsers(ulong userId, RegisterInfo registerInfos)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public async UnaryResult<UserInfo> SelectByJobNumber(string jobNumber)
         {
@@ -62,9 +58,5 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
-        public UnaryResult<bool> ChangePassword(ulong userId, string newPassword)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BiuBiuShare.Tool;
 
 namespace BiuBiuServer
 {
@@ -13,7 +14,12 @@ namespace BiuBiuServer
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            ulong id1=IdManagement.GenId(1);
+            ulong id2=IdManagement.GenId(2);
+            ulong id3=IdManagement.GenId(3);
+            ulong id4=IdManagement.GenId(4);
+            Console.WriteLine(Convert.ToString((long)id1,2));
+            //CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

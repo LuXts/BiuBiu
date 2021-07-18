@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -61,6 +62,21 @@ namespace BiuBiuServer.Tests
         public async UnaryResult<bool> GetDataMessage(MessageResponse messageId, int port)
         {
             throw new System.NotImplementedException();
+        }
+
+        public UnaryResult<List<MessageResponse>> GetMessagesRecordAsync(ulong userOrTeamId, ulong startTime, ulong endTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UnaryResult<List<MessageResponse>> GetChatMessagesRecordAsync(ulong sourceId, ulong targetId, ulong startTime, ulong endTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UnaryResult<List<MessageResponse>> GetTeamMessagesRecordAsync(ulong teamId, ulong startTime, ulong endTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }
