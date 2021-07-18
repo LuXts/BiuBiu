@@ -5,33 +5,118 @@ using MagicOnion;
 
 namespace BiuBiuServer.Interfaces
 {
+    /// <summary>
+    /// 好友以及群组相关操作数据库驱动接口
+    /// </summary>
     public interface IGroFriDatabaseDriven
     {
-        //根据发送者与接收者Id以及备注信息写好友请求
+        /// <summary>
+        ///写好友申请 
+        /// </summary>
+        /// <param name="friendRequestId">好友申请Id</param>
+        /// <param name="senderId">发送者</param>
+        /// <param name="receiverId">接收者</param>
+        /// <param name="invitationMessage">申请备注信息</param>
+        /// <returns>是否成功</returns>
         UnaryResult<bool> WriteFriendRequest(ulong friendRequestId,ulong senderId, ulong receiverId, string invitationMessage);
-        //根据发送者与群组Id以及备注写加群请求
+
+        /// <summary>
+        /// 写入群请求
+        /// </summary>
+        /// <param name="groupRequestId">入群请求Id</param>
+        /// <param name="senderId">发送者Id</param>
+        /// <param name="groupId">群Id</param>
+        /// <param name="invitationMessage">备注信息</param>
+        /// <returns>是否成功</returns>
         UnaryResult<bool> WriteGroupRequest(ulong groupRequestId,ulong senderId, ulong groupId, string invitationMessage);
-        //根据发送者与接者Id以及备注信息写邀请入群请求
+        
+        /// <summary>
+        /// 写入群邀请
+        /// </summary>
+        /// <param name="groupInvitationId">入群邀请Id</param>
+        /// <param name="senderId">发送者Id</param>
+        /// <param name="receiver">接受者Id</param>
+        /// <param name="groupId">群Id</param>
+        /// <param name="invitationMe">备注</param>
+        /// <returns>是否成功</returns>
         UnaryResult<bool> WriteGroupInvitation(ulong groupInvitationId,ulong senderId, ulong receiver, ulong groupId, string invitationMe);
-        //根据用户Id获取用户的好友申请数组
+        
+        /// <summary>
+        /// 获取用户收到的好友申请
+        /// </summary>
+        /// <param name="userId">用户Id</param>
+        /// <returns>好友申请列表</returns>
         UnaryResult<List<FriendRequest>> GetFriendRequest(ulong userId);
-        //根据用户Id获取用户的群组邀请数组
+        
+        /// <summary>
+        /// 获取用户收到的群组邀请
+        /// </summary>
+        /// <param name="userId">用户Id</param>
+        /// <returns>群组邀请列表</returns>
         UnaryResult<List<GroupInvitation>> GetGroupInvitation(ulong userId);
-        //根据用户Id获取用户的群组申请数组
+        
+        /// <summary>
+        /// 获取用户收到的入群申请
+        /// </summary>
+        /// <param name="userId">用户</param>
+        /// <returns>入群申请列表</returns>
         UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId);
-        //根据邀请Id和回复结果修改好友申请
+        
+        /// <summary>
+        /// 回复好友申请
+        /// </summary>
+        /// <param name="requestId">好友申请Id</param>
+        /// <param name="replyResult">是否同意</param>
+        /// <returns>是否成功</returns>
         UnaryResult<bool> ReplyFriendRequest(ulong requestId,bool replyResult);
-        //根据邀请ID和回复结果修改群组邀请
+        
+        /// <summary>
+        /// 回复群组邀请
+        /// </summary>
+        /// <param name="invitationId">入群邀请Id</param>
+        /// <param name="replyResult">是否同意</param>
+        /// <returns>是否成功/returns>
         UnaryResult<bool> ReplyGroupInvitation(ulong invitationId,bool replyResult);
-        //根据邀请ID和审核结果修改入群申请
+        
+        /// <summary>
+        /// 回复入群申请
+        /// </summary>
+        /// <param name="requestId">入群申请Id</param>
+        /// <param name="replyResult">是否同意</param>
+        /// <returns>是否成功</returns>
         UnaryResult<bool> ReplyGroupRequest(ulong requestId,bool replyResult);
-        //根据发起人Id和群组Id进行退群
+        
+        /// <summary>
+        /// 退出群聊
+        /// </summary>
+        /// <param name="sponsorId">发起者</param>
+        /// <param name="groupId">群组Id</param>
+        /// <returns>是否成功</returns>
         UnaryResult<bool> ExitGroup(ulong sponsorId,ulong groupId);
-        //根据发起人Id和群组Id进行解散群聊
+        
+        /// <summary>
+        /// 解散群聊
+        /// </summary>
+        /// <param name="sponsorId">发起者</param>
+        /// <param name="groupId">群组Id</param>
+        /// <returns>是否成功</returns>
         UnaryResult<bool> DissolveGroup(ulong sponsorId,ulong groupId);
-        //根据发起人Id和目标Id进行删除好友
+        
+        /// <summary>
+        /// 删除好友
+        /// </summary>
+        /// <param name="sponsorId">发起者</param>
+        /// <param name="targetId">被删除者</param>
+        /// <returns>是否成功</returns>
         UnaryResult<bool> DeleteFriend(ulong sponsorId,ulong targetId);
-        //根据发起人Id和群组id以及目标Id进行踢人操作
+        
+        /// <summary>
+        /// 群组踢人
+        /// </summary>
+        /// <param name="sponsorId">发起者</param>
+        /// <param name="targetId">被踢者</param>
+        /// <param name="groupId">群组Id</param>
+        /// <returns>是否成功</returns>
         UnaryResult<bool> DeleteMemberFromGroup(ulong sponsorId,ulong targetId,ulong groupId);
     }
 }
