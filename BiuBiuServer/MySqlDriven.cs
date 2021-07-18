@@ -21,7 +21,7 @@ namespace BiuBiuServer
             return _freeSql;
         }
 
-        private readonly static string _noSqlConnectStr = $"mongodb://{_ip}:27017";
+        private readonly static string _noSqlConnectStr = "mongodb://127.0.0.1:27017";
 
         private static MongoClient _noSqlClient = new MongoClient(_noSqlConnectStr);
 

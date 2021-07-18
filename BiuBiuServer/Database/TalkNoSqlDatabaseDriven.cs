@@ -160,13 +160,19 @@ namespace BiuBiuServer.Database
             }
         }
 
-        public UnaryResult<List<ulong>> GetMessagesRecordAsync(ulong sourceId, ulong targetId
+        public UnaryResult<List<MessageResponse>> GetMessagesRecordAsync(ulong userOrTeamId, ulong startTime
+            , ulong endTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UnaryResult<List<MessageResponse>> GetChatMessagesRecordAsync(ulong sourceId, ulong targetId
             , ulong startTime, ulong endTime)
         {
             throw new NotImplementedException();
         }
 
-        public UnaryResult<List<ulong>> GetTeamMessagesRecordAsync(ulong teamId, ulong startTime
+        public UnaryResult<List<MessageResponse>> GetTeamMessagesRecordAsync(ulong teamId, ulong startTime
             , ulong endTime)
         {
             throw new NotImplementedException();
