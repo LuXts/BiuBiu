@@ -69,10 +69,10 @@ namespace BiuBiuServer.Interfaces
         UnaryResult<List<UserInfo>> GetUserFriendsId(ulong userId);
 
         /// <summary>
-        /// 获取群组的群成员信息列表
+        /// 获取某Id的的群组信息列表
         /// </summary>
         /// <param name="teamId">群组Id</param>
-        /// <returns>群成员信息列表</returns>
+        /// <returns>群组信息列表</returns>
         UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong teamId);
     }
 }

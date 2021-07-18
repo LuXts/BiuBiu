@@ -71,8 +71,8 @@ namespace BiuBiuServer.Database
             throw new NotImplementedException();
         }
 
-        // TODO: 获取群成员信息
-        public UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong teamId)
+        // TODO: 获取某人全部群聊信息
+        public UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong userId)
         {
             throw new NotImplementedException();
         }
