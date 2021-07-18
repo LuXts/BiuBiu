@@ -38,6 +38,11 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
+        public UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async UnaryResult<bool> ReplyFriendRequest(ulong requestId, string replyResult)
         {
             throw new System.NotImplementedException();

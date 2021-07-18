@@ -55,5 +55,11 @@ namespace BiuBiuShare.Tool
         {
             return timestamp << (int)(_idBits - _timestampIdBits);
         }
+        public static IdType GenerateIdTypeById(ulong id)
+        {
+            id = id >> (int)(_expandIdBits + _indexIdBits);
+            id = id % (ulong)Math.Pow(2, _typeIdBits);
+            return (IdType)id;
+        }
     }
 }

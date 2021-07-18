@@ -94,7 +94,42 @@ namespace BiuBiuTerminalClient
         }
 
         private static async Task Main(string[] args)
-        {
+        { 
+            //Id管理类测试
+            /*
+             IdType data = IdType.UserId;
+             ulong id1 = IdManagement.GenerateId(data);
+             data = IdType.ModifyId;
+             ulong id2=IdManagement.GenerateId(data);
+             data = IdType.ChatRecordId;
+             ulong id3 = IdManagement.GenerateId(data);
+             data = IdType.GroupId;
+             ulong id4 = IdManagement.GenerateId(data);
+             long timeId = 0;
+             int typeId = 0;
+             int indexId = 0;
+             Console.WriteLine(Convert.ToString(id1));
+             Console.WriteLine(Convert.ToString(id2));
+             Console.WriteLine(Convert.ToString(id3));
+             Console.WriteLine(Convert.ToString(id4));
+             Console.WriteLine(id1.ToString("x"));
+             Console.WriteLine(id2.ToString("x"));
+             Console.WriteLine(id3.ToString("x"));
+             Console.WriteLine(id4.ToString("x"));
+             Console.WriteLine(IdManagement.GenerateIdByTs((ulong)DateTime.UtcNow.Millisecond).ToString("x"));
+
+             Console.WriteLine(IdManagement.GenerateIdTypeById(id1));
+             Console.WriteLine(IdManagement.GenerateIdTypeById(id2));
+             Console.WriteLine(IdManagement.GenerateIdTypeById(id3));
+             Console.WriteLine(IdManagement.GenerateIdTypeById(id4));
+             Console.WriteLine(IdManagement.GenerateTsById(id1).ToString("x"));
+             Console.WriteLine(IdManagement.GenerateTsById(id2).ToString("x"));
+             Console.WriteLine(IdManagement.GenerateTsById(id3).ToString("x"));
+             Console.WriteLine(IdManagement.GenerateTsById(id4).ToString("x"));
+            */
+
+           
+
             var options = new[]
             {
                 // send keepalive ping every 10 second, default is 2 hours

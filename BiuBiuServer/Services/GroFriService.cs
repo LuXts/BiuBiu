@@ -55,7 +55,7 @@ namespace BiuBiuServer.Services
             return await _igroFriDatabaseDriven.DeleteFriend(userId, groupId);
         }
 
-        public async UnaryResult<List<GroupInvitation>> GetFriendInvitation(ulong userId)
+        public async UnaryResult<List<GroupInvitation>> GetGroupInvitation(ulong userId)
         {
             return await _igroFriDatabaseDriven.GetGroupInvitation(userId);
         }
@@ -63,6 +63,11 @@ namespace BiuBiuServer.Services
         public async UnaryResult<List<FriendRequest>> GetFriendRequest(ulong userId)
         {
             return await _igroFriDatabaseDriven.GetFriendRequest(userId);
+        }
+
+        public async UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId)
+        {
+            return await _igroFriDatabaseDriven.GetGroupRequest(userId);
         }
 
         public async UnaryResult<int> InviteUserToGroup(ulong senderId, ulong receiverId, ulong groupId, string invitationMessage)
