@@ -42,11 +42,6 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
-        public UnaryResult<int> RegisteredUsers(ulong userId, RegisterInfo registerInfos)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async UnaryResult<UserInfo> SelectByJobNumber(string jobNumber)
         {
             throw new System.NotImplementedException();
