@@ -36,8 +36,8 @@ namespace BiuBiuServer.Services
         public async UnaryResult<int> RegisteredUsers(RegisterInfo registerInfos)
         {
             //TODO：采用算法生成一个新的ID，将注册信息与用户ID写入数据库内
-            ulong userId = 1;
-            return await _adminDatabaseDatabaseDriven.RegisteredUsers(userId, registerInfos);
+            ulong userId=0;
+            return await _adminDatabaseDatabaseDriven.RegisteredUsers(userId,registrationInformations);
         }
 
         public async UnaryResult<bool> ReviewMessage(ulong userId, bool reviewResults)
