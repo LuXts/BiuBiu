@@ -7,17 +7,20 @@ namespace BiuBiuServer.Tests
 {
     public class AdminDatabaseDrivenTest : IAdminDatabaseDriven
     {
-        public async UnaryResult<bool> ChangePassword(ulong userId, string oldPassword, string newPassword)
+        public async UnaryResult<bool> ChangePassword(ulong userId
+            , string oldPassword, string newPassword)
         {
             throw new System.NotImplementedException();
         }
 
-        public UnaryResult<bool> ChangePassword(ulong userId, string newPassword)
+        public UnaryResult<bool> ChangePassword(ulong userId
+            , string newPassword)
         {
             throw new System.NotImplementedException();
         }
 
-        public async UnaryResult<bool> ChangeUserInfo(ulong userId, UserInfo newUserInfo)
+        public async UnaryResult<bool> ChangeUserInfo(ulong userId
+            , UserInfo newUserInfo)
         {
             throw new System.NotImplementedException();
         }
@@ -32,12 +35,13 @@ namespace BiuBiuServer.Tests
             throw new System.NotImplementedException();
         }
 
-        public async UnaryResult<string> RegisteredUsers(RegisterInfo registerInfos)
+        public async UnaryResult<bool> ReviewMessage(ulong userId
+            , bool reviewResults)
         {
             throw new System.NotImplementedException();
         }
 
-        public async UnaryResult<bool> ReviewMessage(ulong userId, bool reviewResults)
+        public UnaryResult<int> RegisteredUsers(ulong userId, RegisterInfo registerInfos)
         {
             throw new System.NotImplementedException();
         }

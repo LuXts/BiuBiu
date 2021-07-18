@@ -35,7 +35,7 @@ namespace BiuBiuShare.Tool
             return (ulong)DateTime.UtcNow.Millisecond;
         }
 
-        public static ulong GenId(IdType dataType)
+        public static ulong GenerateId(IdType dataType)
         {
             _timestampId = TimeGen() << (int)(_idBits - _timestampIdBits);
             _typeId = (uint)dataType <<

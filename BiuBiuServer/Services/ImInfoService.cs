@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BiuBiuServer.Database;
 using BiuBiuServer.Interfaces;
 using BiuBiuServer.Tests;
 using BiuBiuShare;
@@ -17,7 +18,7 @@ namespace BiuBiuServer.Services
     {
         // TODO: 测试接口(等数据库驱动实现完成后替换)
         private static readonly IImInfoDatabaseDriven _imInfoDatabaseDriven
-            = new ImInfoDatabaseDrivenTest();
+            = new ImInfoDatabaseDriven();
 
         /// <inheritdoc />
         [Authorize]
