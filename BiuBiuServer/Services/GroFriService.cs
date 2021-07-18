@@ -42,12 +42,11 @@ namespace BiuBiuServer.Services
             if (re == 1)
             {
                 // TODO:
-
             }
             else
             {
             }
-                return re;
+            return re;
         }
 
         public async UnaryResult<bool> DeleteFriend(ulong sponsorId, ulong targetId)

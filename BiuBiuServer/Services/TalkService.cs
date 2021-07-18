@@ -100,17 +100,24 @@ namespace BiuBiuServer.Services
         public async UnaryResult<bool> SendDataAsync(MessageResponse message
             , uint port, bool respond)
         {
-            bool re0 = await _noSQLDriven.SendDataMessage(message, port);
-            lock (PortList)
+            if (respond)
             {
-                PortList.AddFirst(port - 55000);
+                bool re0 = await _noSQLDriven.SendDataMessage(message, port);
+                lock (PortList)
+                {
+                    PortList.AddFirst(port - 55000);
+                }
+                bool re1 = await _noSQLDriven.AddMessageAsync(message);
+                if (re0 && re1)
+                {
+                    ForwardMessage(message);
+                }
+                return re0 && re1;
             }
-            bool re1 = await _noSQLDriven.AddMessageAsync(message);
-            if (re0 && re1)
+            else
             {
-                ForwardMessage(message);
+                return false;
             }
-            return re0 && re1;
         }
 
         /// <inheritdoc />
