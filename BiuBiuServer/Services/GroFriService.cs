@@ -12,7 +12,9 @@ using MagicOnion.Server.Authentication;
 using System.Collections.Generic;
 using BiuBiuShare.GrouFri;
 using BiuBiuShare.ImInfos;
+using BiuBiuShare.Response;
 using BiuBiuShare.ServiceInterfaces;
+using BiuBiuShare.TeamHub;
 using BiuBiuShare.Tool;
 using BiuBiuShare.UserHub;
 using Grpc.Net.Client;
@@ -49,10 +51,8 @@ namespace BiuBiuServer.Services
                 client.DisposeAsync();
                 client.WaitForDisconnect();//关闭
             }
-
             return temp;
         }
-
         public async UnaryResult<bool> AddGroup(ulong senderId, ulong groupId, string invitationMessage)
         {
             IdType idType = IdType.TeamRequestId;
@@ -74,28 +74,26 @@ namespace BiuBiuServer.Services
                 client.DisposeAsync();
                 client.WaitForDisconnect();
             }
-
             return temp;
         }
-
         public async UnaryResult<bool> DeleteFriend(ulong sponsorId, ulong targetId)
         {
             return await _igroFriDatabaseDriven.DeleteFriend(sponsorId, targetId);
         }
-
         public async UnaryResult<bool> DeleteMemberFromGroup(ulong sponsorId, ulong memberId, ulong groupId)
         {
-            //TODO:被踢出群聊的人收到消息通知（响应事件）
             bool temp= await _igroFriDatabaseDriven.DeleteMemberFromGroup(sponsorId, memberId, groupId);
             if (temp == true)
             {
                 var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
-                UserHubClient client = new UserHubClient();
-                await client.ConnectAsync(channel,memberId);
+                TeamHubClient client = new TeamHubClient();
+                await client.ConnectAsync(channel,groupId);
+                client.DelUser(new UserInfo(){UserId = memberId});
+                client.DisposeAsync();
+                client.WaitForDisconnect();
             }
             return temp;
         }
-
         public async UnaryResult<bool> DissolveGroup(ulong userId, ulong groupId)
         {
             return await _igroFriDatabaseDriven.DissolveGroup(userId, groupId);
@@ -105,22 +103,18 @@ namespace BiuBiuServer.Services
         {
             return await _igroFriDatabaseDriven.ExitGroup(userId,groupId);
         }
-
         public async UnaryResult<List<GroupInvitation>> GetGroupInvitation(ulong userId)
         {
             return await _igroFriDatabaseDriven.GetGroupInvitation(userId);
         }
-
         public async UnaryResult<List<FriendRequest>> GetFriendRequest(ulong userId)
         {
             return await _igroFriDatabaseDriven.GetFriendRequest(userId);
         }
-
         public async UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId)
         {
             return await _igroFriDatabaseDriven.GetGroupRequest(userId);
         }
-
         public async UnaryResult<bool>InviteUserToGroup(ulong senderId, ulong receiverId, ulong groupId,
             string invitationMessage)
         {
@@ -146,24 +140,57 @@ namespace BiuBiuServer.Services
 
             return temp;
         }
-
-        public async UnaryResult<bool> ReplyFriendRequest(ulong requestId, bool replyResult)
+        public async UnaryResult<bool> ReplyFriendRequest(ulong userId,ulong requestId, bool replyResult)
         {
             //TODO:申请者接收好友申请结果（响应事件）
             bool temp= await _igroFriDatabaseDriven.ReplyFriendRequest(requestId, replyResult);
+
+            if (temp)
+            {
+                string result;
+                if (replyResult)
+                {
+                    result = "添加好友成功！";
+                }
+                else
+                {
+                    result = "添加好友失败！";
+                }
+                var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
+                UserHubClient client = new UserHubClient();
+                await client.ConnectAsync(channel,userId);
+                //给申请者发好友申请结果
+                client.SendMessage(new MessageResponse()
+                {
+                });
+            }
             return temp;
         }
-
-        public async UnaryResult<bool> ReplyGroupInvitation(ulong invitationId, bool replyResult)
+        public async UnaryResult<bool> ReplyGroupInvitation(ulong userId,ulong invitationId, bool replyResult)
         {
             //TODO:群主收到某人是否同意入群的结果(响应事件)
-            return await _igroFriDatabaseDriven.ReplyGroupInvitation(invitationId, replyResult);
+            bool temp = await _igroFriDatabaseDriven.ReplyGroupInvitation(invitationId,replyResult);
+            if (temp)
+            {
+                var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
+                UserHubClient client = new UserHubClient();
+                await client.ConnectAsync(channel, userId);
+                //给群主发邀请某人入群的结果
+            }
+            return temp;
         }
-
-        public async UnaryResult<bool> ReplyGroupIRequest(ulong requestId, bool replyResult)
+        public async UnaryResult<bool> ReplyGroupRequest(ulong userId,ulong requestId, bool replyResult)
         {
             //TODO：申请者收到入群审核的结果（响应事件）
-            return await _igroFriDatabaseDriven.ReplyGroupRequest(requestId, replyResult);
+            bool temp= await _igroFriDatabaseDriven.ReplyGroupRequest(requestId, replyResult);
+            if (temp)
+            {
+                var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
+                UserHubClient client = new UserHubClient();
+                await client.ConnectAsync(channel, userId);
+                //给申请者发入群申请结果
+            }
+            return temp;
         }
     }
 }
