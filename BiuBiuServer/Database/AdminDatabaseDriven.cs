@@ -60,7 +60,7 @@ namespace BiuBiuServer.Database
                     ui = newUserInfo.UserId
                 });
 
-            if (Target is null)
+            if (Target.Count==0)
             {
                 return false;
             }
@@ -77,7 +77,7 @@ namespace BiuBiuServer.Database
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select UserId from user" +
                                                                   "where UserId = ?ui", new { ui = userId });
-            if (Target is null)
+            if (Target.Count == 0)
             {
                 return true;
             }
@@ -93,17 +93,17 @@ namespace BiuBiuServer.Database
             int mark;
 
             List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select UserId from user" +
-                                                                   "where JJobNumber = ?jn",
+                                                                   "where JobNumber = ?jn",
                 new { jn = registerInfos.JobNumber });
 
             List<ulong> Target2 = await Fsql.Ado.QueryAsync<ulong>("select UserId from user" +
                                                                    "where PhoneNumber = ?pn",
                 new { pn = registerInfos.PhoneNumber });
-            if (!(Target1 is null))
+            if (Target1.Count!=0)
             {
                 mark = -1;
             }
-            else if (!(Target2 is null))
+            else if (Target2.Count!=0)
             {
                 mark = -2;
             }
@@ -128,7 +128,7 @@ namespace BiuBiuServer.Database
 
             List<ulong> Target3 = await Fsql.Ado.QueryAsync<ulong>("select UserId from user" +
                                                                    "where UserId = ?ui", new { ui = userId });
-            if (Target3 is null)
+            if (Target3.Count==0)
             {
                 mark = 0;
             }
@@ -163,7 +163,7 @@ namespace BiuBiuServer.Database
                         em = Target[0].Item5,
                         ic = Target[0].Item6
                     });
-                if (Target2 is null)
+                if (Target2.Count==0)
                 {
                     return false;
                 }
@@ -179,7 +179,7 @@ namespace BiuBiuServer.Database
                 List<ulong> Target =
                     await Fsql.Ado.QueryAsync<ulong>("select UserId from userchange where UserId = ?ui",
                         new {ui = userId});
-                if(Target is null)
+                if(Target.Count==0)
                 {
                     return true;
                 }
@@ -197,7 +197,7 @@ namespace BiuBiuServer.Database
                 await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string)>(
                     "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email from user" +
                     "where JobNumber=?jn", new { jn = jobNumber });
-            if (!(Target is null))
+            if (Target.Count!=0)
             {
                 var user = new UserInfo();
                 var temp = Target[0];
@@ -224,7 +224,7 @@ namespace BiuBiuServer.Database
                 await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string)>(
                     "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email from user" +
                     "where UserId = ?ui", new { ui = userId });
-            if (!(Target is null))
+            if (Target.Count!=0)
             {
                 var user = new UserInfo();
                 var temp = Target[0];
