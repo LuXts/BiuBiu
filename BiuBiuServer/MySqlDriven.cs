@@ -4,7 +4,7 @@ namespace BiuBiuServer
 {
     public class MySqlDriven
     {
-        private readonly static string _ip = "192.168.100.7";
+        private readonly static string _ip = "192.168.100.4";
         private readonly static string _user = "luxts";
         private readonly static string _password = "JL4i7nVuymwBnGr";
 
@@ -13,7 +13,7 @@ namespace BiuBiuServer
 
         private static IFreeSql _freeSql = new FreeSql.FreeSqlBuilder()
             .UseConnectionString(FreeSql.DataType.MySql, _connectString)
-            .UseAutoSyncStructure(true) //自动同步实体结构到数据库，FreeSql不会扫描程序集，只有CRUD时才会生成表。
+            .UseAutoSyncStructure(false)
             .Build();
 
         public static IFreeSql GetFreeSql()

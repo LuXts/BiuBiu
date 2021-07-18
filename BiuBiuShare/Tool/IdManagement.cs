@@ -11,10 +11,8 @@ namespace BiuBiuShare.Tool
         , FriendRequestId = 4
         , GroupRequestId = 5
         , GroupInvitationId = 6
-        , ChatRecordId = 7
+        , MessageId = 7
         , IconId = 8
-        , ImageId = 9
-        , FileId = 10
     }
 
     public class IdManagement

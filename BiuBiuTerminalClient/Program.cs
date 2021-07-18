@@ -13,6 +13,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using LitJWT;
 using LitJWT.Algorithms;
+using MagicOnion.Client;
 using Microsoft.VisualBasic;
 
 namespace BiuBiuTerminalClient
@@ -61,9 +62,8 @@ namespace BiuBiuTerminalClient
 
             var n2 = clientTalkService.GetDataAsync(
                 new MessageResponse() { MessageId = 20191122 }, 34567, true);
-            FileStream fs
-                = File.Open("F://MyPicture/Test.png"
-                    , FileMode.Create);
+            FileStream fs = File.Open("F://MyPicture/Test.png"
+                , FileMode.Create);
 
             IPAddress address = IPAddress.Parse("127.0.0.1");
             TcpClient client = new TcpClient();
@@ -84,6 +84,7 @@ namespace BiuBiuTerminalClient
                         fs.Write(buffer, 0, readLength);
                     } while (readLength > 0);
                 }
+
                 fs.Close();
                 ns.Close();
                 client.Close();
@@ -100,15 +101,21 @@ namespace BiuBiuTerminalClient
                 // send keepalive ping every 10 second, default is 2 hours
                 new ChannelOption("grpc.keepalive_time_ms", 10000),
                 // keepalive ping time out after 5 seconds, default is 20 seconds
-                new ChannelOption("grpc.keepalive_timeout_ms", 5000),
+                new ChannelOption("grpc.keepalive_timeout_ms", 5000)
+                ,
                 // allow grpc pings from client every 10 seconds
-                new ChannelOption("grpc.http2.min_time_between_pings_ms", 10000),
+                new ChannelOption("grpc.http2.min_time_between_pings_ms", 10000)
+                ,
                 // allow unlimited amount of keepalive pings without data
-                new ChannelOption("grpc.http2.max_pings_without_data", 0),
+                new ChannelOption("grpc.http2.max_pings_without_data", 0)
+                ,
                 // allow keepalive pings when there's no gRPC calls
-                new ChannelOption("grpc.keepalive_permit_without_calls", 1),
+                new ChannelOption("grpc.keepalive_permit_without_calls", 1)
+                ,
                 // allow grpc pings from client without data every 5 seconds
-                new ChannelOption("grpc.http2.min_ping_interval_without_data_ms", 5000),
+                new ChannelOption("grpc.http2.min_ping_interval_without_data_ms"
+                    , 5000)
+                ,
             };
 
             var channel2 = GrpcChannel.ForAddress("https://localhost:5001");
@@ -131,6 +138,11 @@ namespace BiuBiuTerminalClient
             OnlineHubClient client1 = new OnlineHubClient();
             client1.ConnectAsync(channel2
                 , new UserInfo() { UserId = 2021, DisplayName = "Hu" });
+            Console.ReadKey();
+
+            var c = MagicOnionClient.Create<IMyTestService>(channel2);
+            int d = await c.SumAsync2(2, 3);
+
             Console.ReadKey();
             client.DisposeAsync();
             client.WaitForDisconnect();

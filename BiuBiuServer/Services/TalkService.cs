@@ -8,13 +8,14 @@ using BiuBiuShare.Response;
 using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.Tool;
+using BiuBiuShare.UserHub;
+using Grpc.Net.Client;
 using MagicOnion;
 using MagicOnion.Server;
 using MagicOnion.Server.Authentication;
 
 namespace BiuBiuServer.Services
 {
-    // TODO: 数据库驱动逻辑未完成
     /// <summary>
     /// 聊天相关服务实现
     /// </summary>
@@ -35,7 +36,7 @@ namespace BiuBiuServer.Services
             {
                 Data = message.Data
                 ,
-                MessageId = IdManagement.GenerateId(0)
+                MessageId = IdManagement.GenerateId(IdType.MessageId)
                 ,
                 Success = true
                 ,
@@ -67,7 +68,15 @@ namespace BiuBiuServer.Services
                 }
                 response = temp;
             }
-            // TODO: 转发信息
+            // TODO: 判断群聊问题
+
+            var channel = GrpcChannel.ForAddress("https://localhost:5001");
+
+            UserHubClient client = new UserHubClient();
+            await client.ConnectAsync(channel, response.TargetId);
+            client.SendMessage(response);
+            client.DisposeAsync();
+            client.WaitForDisconnect();
             return (response, port);
         }
 

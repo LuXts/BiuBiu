@@ -23,5 +23,7 @@
 	<ItemGroup>
 		<Folder Include="ImInfos\" />
 		<Folder Include="OnlineHub\" />
+		<Folder Include="UserHub\" />
+		<Folder Include="TeamHub\" />
 	</ItemGroup>
 </Project>

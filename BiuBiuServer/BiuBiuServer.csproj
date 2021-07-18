@@ -24,4 +24,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\BiuBiuShare\BiuBiuShare.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Userhub\" />
+	</ItemGroup>
 </Project>
