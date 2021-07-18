@@ -3,19 +3,20 @@ using Org.BouncyCastle.Bcpg;
 
 namespace BiuBiuShare.Tool
 {
-    public  enum IdType:uint
+    public enum IdType : uint
     {
-        UserId = 1,
-        GroupId = 2,
-        ModifyId = 3,
-        FriendRequestId = 4,
-        GroupRequestId = 5,
-        GroupInvitationId = 6,
-        ChatRecordId = 7,
-        IconId = 8,
-        ImageId = 9,
-        FileId = 10
+        UserId = 1
+        , GroupId = 2
+        , ModifyId = 3
+        , FriendRequestId = 4
+        , GroupRequestId = 5
+        , GroupInvitationId = 6
+        , ChatRecordId = 7
+        , IconId = 8
+        , ImageId = 9
+        , FileId = 10
     }
+
     public class IdManagement
     {
         private static uint _index = 0;
@@ -31,26 +32,28 @@ namespace BiuBiuShare.Tool
 
         public static ulong TimeGen()
         {
-            return (ulong)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
-                .TotalMilliseconds;
+            return (ulong)DateTime.UtcNow.Millisecond;
         }
 
-        public static ulong GenId(IdType dataType )
+        public static ulong GenId(IdType dataType)
         {
             _timestampId = TimeGen() << (int)(_idBits - _timestampIdBits);
-            _typeId = (uint)dataType << (int)(_idBits - _timestampIdBits - _typeIdBits);
-            _indexId = _index << (int)(_idBits - _timestampIdBits - _typeIdBits - _indexIdBits);
+            _typeId = (uint)dataType <<
+                      (int)(_idBits - _timestampIdBits - _typeIdBits);
+            _indexId = _index << (int)(_idBits - _timestampIdBits -
+                                        _typeIdBits - _indexIdBits);
             _index = (_index + 1) % (uint)(Math.Pow(2, _indexIdBits));
             return _timestampId + _typeId + _indexId + _expandId;
         }
 
         public static ulong GenTsById(ulong Id)
         {
-            return Id >>(int) (_idBits - _timestampIdBits);
+            return Id >> (int)(_idBits - _timestampIdBits);
         }
+
         public static ulong GenIdByTs(ulong timestamp)
         {
-            return timestamp <<(int)(_idBits - _timestampIdBits);
+            return timestamp << (int)(_idBits - _timestampIdBits);
         }
     }
 }
