@@ -6,11 +6,11 @@ namespace BiuBiuShare.Tool
     public enum IdType : uint
     {
         UserId = 1
-        , GroupId = 2
+        , TeamId = 2
         , ModifyId = 3
         , FriendRequestId = 4
-        , GroupRequestId = 5
-        , GroupInvitationId = 6
+        , TeamRequestId = 5
+        , TeamInvitationId = 6
         , MessageId = 7
         , IconId = 8
     }
@@ -53,6 +53,7 @@ namespace BiuBiuShare.Tool
         {
             return timestamp << (int)(_idBits - _timestampIdBits);
         }
+
         public static IdType GenerateIdTypeById(ulong id)
         {
             id = id >> (int)(_expandIdBits + _indexIdBits);

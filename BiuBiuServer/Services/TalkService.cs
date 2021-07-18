@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using BiuBiuServer.Database;
 using BiuBiuServer.Interfaces;
 using BiuBiuServer.Tests;
@@ -7,6 +8,7 @@ using BiuBiuShare;
 using BiuBiuShare.Response;
 using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.TalkInfo;
+using BiuBiuShare.TeamHub;
 using BiuBiuShare.Tool;
 using BiuBiuShare.UserHub;
 using Grpc.Net.Client;
@@ -53,6 +55,7 @@ namespace BiuBiuServer.Services
                 if (await _noSQLDriven.AddMessageAsync(temp))
                 {
                     response = temp;
+                    await ForwardMessage(response);
                 }
                 else
                 {
@@ -68,16 +71,30 @@ namespace BiuBiuServer.Services
                 }
                 response = temp;
             }
-            // TODO: 判断群聊问题
 
-            var channel = GrpcChannel.ForAddress("https://localhost:5001");
-
-            UserHubClient client = new UserHubClient();
-            await client.ConnectAsync(channel, response.TargetId);
-            client.SendMessage(response);
-            client.DisposeAsync();
-            client.WaitForDisconnect();
             return (response, port);
+        }
+
+        private static async Task ForwardMessage(MessageResponse response)
+        {
+            // HACK: 硬编码Ip地址
+            var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            if (IdManagement.GenerateIdTypeById(response.TargetId) == IdType.UserId)
+            {
+                UserHubClient client = new UserHubClient();
+                await client.ConnectAsync(channel, response.TargetId);
+                client.SendMessage(response);
+                client.DisposeAsync();
+                client.WaitForDisconnect();
+            }
+            else
+            {
+                TeamHubClient client = new TeamHubClient();
+                await client.ConnectAsync(channel, response.TargetId);
+                client.SendMessage(response);
+                client.DisposeAsync();
+                client.WaitForDisconnect();
+            }
         }
 
         /// <inheritdoc />
@@ -90,6 +107,10 @@ namespace BiuBiuServer.Services
                 PortList.AddFirst(port);
             }
             bool re1 = await _noSQLDriven.AddMessageAsync(message);
+            if (re0 && re1)
+            {
+                ForwardMessage(message);
+            }
             return re0 && re1;
         }
 

@@ -7,6 +7,7 @@ using MagicOnion.Server.Hubs;
 
 namespace BiuBiuServer.OnlineHub
 {
+    [GroupConfiguration(typeof(ConcurrentDictionaryGroupRepositoryFactory))]
     public class OnlineHub : StreamingHubBase<IOnlineHub, IOnlineHubReceiver>, IOnlineHub
     {
         private IGroup room;
