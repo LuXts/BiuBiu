@@ -15,8 +15,10 @@ namespace BiuBiuServer.Interfaces
         UnaryResult<int> WriteGroupInvitation(ulong groupInvitationId,ulong senderId, ulong receiver, ulong groupId, string invitationMe);
         //根据用户Id获取用户的好友申请数组
         UnaryResult<List<FriendRequest>> GetFriendRequest(ulong userId);
-        //根据用户Id获取用户的群组申请数组
+        //根据用户Id获取用户的群组邀请数组
         UnaryResult<List<GroupInvitation>> GetGroupInvitation(ulong userId);
+        //根据用户Id获取用户的群组申请数组
+        UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId);
         //根据邀请Id和回复结果修改好友申请
         UnaryResult<bool> ReplyFriendRequest(ulong requestId,string replyResult);
         //根据邀请ID和回复结果修改群组邀请
