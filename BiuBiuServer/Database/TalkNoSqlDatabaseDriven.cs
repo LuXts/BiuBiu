@@ -14,6 +14,7 @@ namespace BiuBiuServer.Database
 {
     public class TalkNoSqlDatabaseDriven : ITalkNoSqlDatabaseDriven
     {
+        // TODO: 正式上线的时候把 test 数据库换掉
         private readonly IMongoDatabase _database
             = MySqlDriven.GetNoSqlClient().GetDatabase("test");
 
@@ -23,6 +24,7 @@ namespace BiuBiuServer.Database
         public TalkNoSqlDatabaseDriven()
         {
             _collection = _database.GetCollection<BsonDocument>("Message");
+            // TODO: 正式上线的时候把 FileTest.dat 换掉
             _bucket = new GridFSBucket(_database
                 , new GridFSBucketOptions
                 {
@@ -34,9 +36,11 @@ namespace BiuBiuServer.Database
                 });
         }
 
-        public async UnaryResult<bool> AddMessageAsync(MessageResponse message)
+        // MessageResponse 和 BsonDocument 转换接口
+
+        private static BsonDocument _messageToBsonDocument(
+            MessageResponse message)
         {
-            // HACK: 这里用了比较硬的编码
             var item = new BsonDocument()
             {
                 {"MessageId", message.MessageId.ToString()}
@@ -45,6 +49,33 @@ namespace BiuBiuServer.Database
                 , {"Type", message.Type}
                 , {"Data", message.Data}
             };
+            return item;
+        }
+
+        private static MessageResponse _bsonDocumentToMessage(
+            BsonDocument document)
+        {
+            var temp = new MessageResponse()
+            {
+                MessageId = Convert.ToUInt64(document["MessageId"].AsString)
+                ,
+                Data = document["Data"].AsString
+                ,
+                SourceId = Convert.ToUInt64(document["SourceId"].AsString)
+                ,
+                Success = true
+                ,
+                TargetId = Convert.ToUInt64(document["TargetId"].AsString)
+                ,
+                Type = document["Type"].AsString
+            };
+            return temp;
+        }
+
+        public async UnaryResult<bool> AddMessageAsync(MessageResponse message)
+        {
+            // HACK: 这里用了比较硬的编码
+            var item = _messageToBsonDocument(message);
             // HACK: 这里的处理非常生硬
             try
             {
@@ -69,23 +100,7 @@ namespace BiuBiuServer.Database
             // HACK: 这里的处理非常生硬
             try
             {
-                var temp = new MessageResponse()
-                {
-                    MessageId
-                        = Convert.ToUInt64(document["MessageId"].AsString)
-                    ,
-                    Data = document["Data"].AsString
-                    ,
-                    SourceId
-                        = Convert.ToUInt64(document["SourceId"].AsString)
-                    ,
-                    Success = true
-                    ,
-                    TargetId
-                        = Convert.ToUInt64(document["TargetId"].AsString)
-                    ,
-                    Type = document["Type"].AsString
-                };
+                var temp = _bsonDocumentToMessage(document);
                 return temp;
             }
             catch (Exception e)
@@ -97,12 +112,12 @@ namespace BiuBiuServer.Database
         }
 
         public async UnaryResult<bool> SendDataMessage(MessageResponse message
-            , int port)
+            , uint port)
         {
             // HACK: 这里的处理非常生硬
             try
             {
-                TcpListener listener = new TcpListener(IPAddress.Any, port);
+                TcpListener listener = new TcpListener(IPAddress.Any, (int)port);
                 listener.Start();
 
                 var client = listener.AcceptTcpClient();
@@ -133,11 +148,11 @@ namespace BiuBiuServer.Database
         }
 
         public async UnaryResult<bool> GetDataMessage(MessageResponse message
-            , int port)
+            , uint port)
         {
             try
             {
-                TcpListener listener = new TcpListener(IPAddress.Any, port);
+                TcpListener listener = new TcpListener(IPAddress.Any, (int)port);
                 listener.Start();
 
                 var client = listener.AcceptTcpClient();
@@ -160,22 +175,47 @@ namespace BiuBiuServer.Database
             }
         }
 
-        public UnaryResult<List<MessageResponse>> GetMessagesRecordAsync(ulong userOrTeamId, ulong startTime
-            , ulong endTime)
+        public async UnaryResult<List<MessageResponse>> GetMessagesRecordAsync(
+            ulong targetId, ulong startTime, ulong endTime)
         {
-            throw new NotImplementedException();
+            var filterBuilder = Builders<BsonDocument>.Filter;
+            var filter = filterBuilder.Eq("TargetId", targetId.ToString()) &
+                         filterBuilder.Gt("MessageId", startTime.ToString()) &
+                         filterBuilder.Lt("MessageId", endTime.ToString());
+
+            var cursor = await _collection.Find(filter).ToCursorAsync();
+
+            List<MessageResponse> list = new List<MessageResponse>();
+            foreach (var document in cursor.ToEnumerable())
+            {
+                list.Add(_bsonDocumentToMessage(document));
+            }
+
+            return list;
         }
 
-        public UnaryResult<List<MessageResponse>> GetChatMessagesRecordAsync(ulong sourceId, ulong targetId
-            , ulong startTime, ulong endTime)
+        public async UnaryResult<List<MessageResponse>>
+            GetChatMessagesRecordAsync(ulong sourceId, ulong targetId
+                , ulong startTime, ulong endTime)
         {
-            throw new NotImplementedException();
-        }
+            var filterBuilder = Builders<BsonDocument>.Filter;
+            var filter
+                = ((filterBuilder.Eq("TargetId", targetId.ToString()) &
+                    filterBuilder.Eq("SourceId", sourceId.ToString())) |
+                   (filterBuilder.Eq("SourceId", targetId.ToString()) &
+                    filterBuilder.Eq("TargetId", sourceId.ToString()))) &
+                  filterBuilder.Gt("MessageId", startTime.ToString()) &
+                  filterBuilder.Lt("MessageId", endTime.ToString());
 
-        public UnaryResult<List<MessageResponse>> GetTeamMessagesRecordAsync(ulong teamId, ulong startTime
-            , ulong endTime)
-        {
-            throw new NotImplementedException();
+            var cursor = await _collection.Find(filter).ToCursorAsync();
+
+            List<MessageResponse> list = new List<MessageResponse>();
+            foreach (var document in cursor.ToEnumerable())
+            {
+                list.Add(_bsonDocumentToMessage(document));
+            }
+
+            return list;
         }
     }
 }

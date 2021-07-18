@@ -14,7 +14,8 @@ namespace BiuBiuShare.ServiceInterfaces
 
         UnaryResult<List<FriendRequest>> GetFriendRequest(ulong userId);
 
-        UnaryResult<List<GroupInvitation>> GetFriendInvitation(ulong userId);
+        UnaryResult<List<GroupInvitation>> GetGroupInvitation(ulong userId);
+        UnaryResult<List<GroupRequest>> GetGroupRequest(ulong useId);
 
         UnaryResult<bool> ReplyFriendRequest(ulong requestId, string replyResult);
 

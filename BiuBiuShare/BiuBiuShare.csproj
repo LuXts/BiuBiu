@@ -9,6 +9,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="FreeSql.All" Version="2.5.200" />
+		<PackageReference Include="Grpc" Version="2.39.0-pre1" />
+		<PackageReference Include="Grpc.Core" Version="2.39.0-pre1" />
 		<PackageReference Include="MagicOnion" Version="4.3.1" />
 		<PackageReference Include="MagicOnion.Abstractions" Version="4.3.1" />
 		<PackageReference Include="MagicOnion.Client" Version="4.3.1" />
@@ -20,5 +22,8 @@
 
 	<ItemGroup>
 		<Folder Include="ImInfos\" />
+		<Folder Include="OnlineHub\" />
+		<Folder Include="UserHub\" />
+		<Folder Include="TeamHub\" />
 	</ItemGroup>
 </Project>

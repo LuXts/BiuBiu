@@ -39,6 +39,12 @@ namespace BiuBiuServer.Database
         {
             throw new System.NotImplementedException();
         }
+        //TODO:实现请求某用户的入群申请列表 用户Id 该用户的全部群组申请数组 tip：该用户为群主 即群主获取到加群申请
+        public async UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         //TODO:实现回复好友申请 申请ID、回复结果（“接受”“拒绝””忽略“） 是否成功修改好友申请信息
         public async UnaryResult<bool> ReplyFriendRequest(ulong requestId, string replyResult)
         {
