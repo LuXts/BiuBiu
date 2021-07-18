@@ -11,7 +11,7 @@ namespace BiuBiuServer.Database
     {
         private readonly IFreeSql Fsql = MySqlDriven.GetFreeSql();
 
-        //TODO:函数功能：管理员修改用户密码 输入：用户Id、新密码 输出：修改密码是否成功
+        //函数功能：管理员修改用户密码 输入：用户Id、新密码 输出：修改密码是否成功
         public async UnaryResult<bool> ChangePassword(ulong userId, string newPassword)
         {
             await Fsql.Ado.QueryAsync<object>("update user set Password = ?np where UserId = ?ui",
@@ -30,7 +30,7 @@ namespace BiuBiuServer.Database
             }
         }
 
-        //TODO:函数功能：管理员修改用户信息 输入：用户ID、新的用户信息 输出：是否修改成功
+        //函数功能：管理员修改用户信息 输入：用户ID、新的用户信息 输出：是否修改成功
         public async UnaryResult<bool> ChangeUserInfo(UserInfo newUserInfo)
         {
             await Fsql.Ado.QueryAsync<object>(
@@ -70,7 +70,7 @@ namespace BiuBiuServer.Database
             }
         }
 
-        //TODO:函数功能：删除用户 输入：用户Id 输出：是否成功
+        //函数功能：删除用户 输入：用户Id 输出：是否成功
         public async UnaryResult<bool> DeleteUser(ulong userId)
         {
             await Fsql.Ado.QueryAsync<object>("delete from user where UserId = ?ui", new { ui = userId });
@@ -87,7 +87,7 @@ namespace BiuBiuServer.Database
             }
         }
 
-        //TODO://函数功能：根据ID和注册信息注册新用户 输入：注册用户信息 输出：注册信息提示信息(-1表示该工号被注册，-2表示该手机号码被注册，0表示数据库因故障未插入成功,1表示成功)
+        //函数功能：根据ID和注册信息注册新用户 输入：注册用户信息 输出：注册信息提示信息(-1表示该工号被注册，-2表示该手机号码被注册，0表示数据库因故障未插入成功,1表示成功)
         public async UnaryResult<int> RegisteredUsers(ulong userId, RegisterInfo registerInfos)
         {
             int mark;
@@ -136,13 +136,61 @@ namespace BiuBiuServer.Database
             return mark;
         }
 
-        //TODO:函数功能：审核消息 输入：用户Id与审核结果（0表示不通过，1表示通过）,根据审核结果修改用户数据 输出：是否成功
+        //函数功能：审核消息 输入：用户Id与审核结果（0表示不通过，1表示通过）,根据审核结果修改用户数据 输出：是否成功
         public async UnaryResult<bool> ReviewMessage(ulong userId, bool reviewResults)
         {
-            throw new System.NotImplementedException();
+            if (reviewResults)
+            {
+                List<(string, string, string, string, string, ulong)> Target =
+                    await Fsql.Ado.QueryAsync<(string, string, string, string, string, ulong)>(
+                        "Select DisplayName,JobNumber,Description,PhoneNumber,Email,Icon from userchange where UserId=?ui",
+                        new {ui = userId});
+                await Fsql.Ado.QueryAsync<object>(
+                    "update user set DisplayName = ?un,JobNumber = ?jn,Description = ?up,PhoneNumber = ?pn,Email = ?em,Icon = ?ic where UserId = ?ui ",
+                    new
+                    {
+                        un = Target[0].Item1, jn = Target[0].Item2, up = Target[0].Item3, pn = Target[0].Item4,
+                        em = Target[0].Item5, ic = Target[0].Item6, ui = userId
+                    });
+                List<ulong> Target2 = await Fsql.Ado.QueryAsync<ulong>("select UserId from User" +
+                                                                       "where DisplayName = ?un and JobNumber = ?jn and Description = ?up and PhoneNumber = ?pn and Email = ?em and Icon = ?ic",
+                    new
+                    {
+                        un = Target[0].Item1,
+                        jn = Target[0].Item2,
+                        up = Target[0].Item3,
+                        pn = Target[0].Item4,
+                        em = Target[0].Item5,
+                        ic = Target[0].Item6
+                    });
+                if (Target2 is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    await Fsql.Ado.QueryAsync<object>("delete from userchange where UserId = ?ui", new { ui = userId });
+                    return true;
+                }
+            }
+            else
+            {
+                await Fsql.Ado.QueryAsync<object>("delete from userchange where UserId = ?ui", new {ui = userId});
+                List<ulong> Target =
+                    await Fsql.Ado.QueryAsync<ulong>("select UserId from userchange where UserId = ?ui",
+                        new {ui = userId});
+                if(Target is null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
-        //TODO:函数功能：按照工号查找用户 输入：用户工号 输出：用户信息
+        //函数功能：按照工号查找用户 输入：用户工号 输出：用户信息
         public async UnaryResult<UserInfo> SelectByJobNumber(string jobNumber)
         {
             List<(ulong, string, string, string, string, string)> Target =
@@ -169,7 +217,7 @@ namespace BiuBiuServer.Database
             }
         }
 
-        //TODO:函数功能：按照用户Id查找用户 输入：用户Id 输出：用户信息
+        //函数功能：按照用户Id查找用户 输入：用户Id 输出：用户信息
         public async UnaryResult<UserInfo> SelectByUserId(ulong userId)
         {
             List<(ulong, string, string, string, string, string)> Target =

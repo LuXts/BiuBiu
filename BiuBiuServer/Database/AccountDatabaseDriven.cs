@@ -13,7 +13,7 @@ namespace BiuBiuServer.Database
     {
         private IFreeSql Fsql = MySqlDriven.GetFreeSql();
 
-        // TODO: 输入 电话号码/工号 和 密码 输出登录结果，登录结果构造方式参考 AccountDatabaseDrivenTest 类
+        //输入 电话号码/工号 和 密码 输出登录结果，登录结果构造方式参考 AccountDatabaseDrivenTest 类
         public async UnaryResult<SignInResponse> CommonSign(string signInId, string password)
         {
             List<(string, ulong)> Target = await Fsql.Ado.QueryAsync<(string, ulong)>(
@@ -36,7 +36,7 @@ namespace BiuBiuServer.Database
             }
         }
 
-        // TODO：同上但是是管理员登录接口
+        //同上但是是管理员登录接口
         public async UnaryResult<SignInResponse> AdministrantSign(string signInId, string password)
         {
             List<(string, ulong)> Target = await Fsql.Ado.QueryAsync<(string, ulong)>(
