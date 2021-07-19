@@ -412,7 +412,7 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, ulong, ulong)> Target =
                 await Fsql.Ado.QueryAsync<(ulong, string, string, ulong, ulong)>(
                     "select g.GroupId,g.GroupName,g.Description,g.Icon,g.OwnerId from group g,groupconstitute c where" +
-                    "g.GroupId=c.GroupId,c.UserId=?ui", new {ui = userId});
+                    "g.GroupId=c.GroupId and c.UserId=?ui", new {ui = userId});
             List<TeamInfo> group = new List<TeamInfo>();
             foreach (var VARIABLE in Target)
             {
