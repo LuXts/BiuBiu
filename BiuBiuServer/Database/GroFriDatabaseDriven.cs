@@ -5,6 +5,7 @@ using MagicOnion;
 using System.Collections.Generic;
 using BiuBiuShare.Tool;
 using NLog.LayoutRenderers;
+using BiuBiuShare.ImInfos;
 
 namespace BiuBiuServer.Database
 {
@@ -442,5 +443,12 @@ namespace BiuBiuServer.Database
                 return new TeamRequestResponse() {Success = true};
             }
         }
+
+        //TODO ：实现建立群聊 群组信息 返回是否成功
+        public async UnaryResult<bool> EstablishTeam(TeamInfo teamInfo)
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 }
