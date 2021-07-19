@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using BiuBiuShare.GrouFri;
+using BiuBiuShare.ImInfos;
 using MagicOnion;
 
 namespace BiuBiuServer.Interfaces
@@ -104,5 +105,12 @@ namespace BiuBiuServer.Interfaces
         /// <param name="groupId">群组Id</param>
         /// <returns>是否成功</returns>
         UnaryResult<bool> DeleteMemberFromGroup(ulong sponsorId, ulong targetId, ulong groupId);
+
+        /// <summary>
+        /// 建立群聊
+        /// </summary>
+        /// <param name="teamInfo">群信息</param>
+        /// <returns>是否成功</returns>
+        UnaryResult<bool> EstablishTeam(TeamInfo teamInfo);
     }
 }

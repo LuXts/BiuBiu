@@ -210,5 +210,13 @@ namespace BiuBiuServer.Services
             return await _igroFriDatabaseDriven.DeleteMemberFromGroup(
                 sponsoriInfo.UserId, memberInfo.UserId, teamInfo.TeamId);
         }
+
+        public async UnaryResult<bool> EstablishTeam(UserInfo builderInfo, TeamInfo teamInfo)
+        {
+            IdType idType = IdType.TeamId;
+            teamInfo.TeamId = IdManagement.GenerateId(idType);//生成群组Id，完善群组信息
+            teamInfo.OwnerId = builderInfo.UserId;//根据创建者信息填写群组拥有者Id，完善群组信息
+            return await _igroFriDatabaseDriven.EstablishTeam(teamInfo);
+        }
     }
 }

@@ -119,5 +119,13 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="groupId">群Id</param>
         /// <returns>是否成功</returns>
         UnaryResult<bool> DeleteMemberFromGroup(UserInfo sponsoriInfo, UserInfo memberInfo, TeamInfo teamInfo);
+
+        /// <summary>
+        /// 建立群聊
+        /// </summary>
+        /// <param name="builderInfo">建群者信息</param>
+        /// <param name="teamInfo">群聊信息</param>
+        /// <returns></returns>
+        UnaryResult<bool> EstablishTeam(UserInfo builderInfo,TeamInfo teamInfo);
     }
 }

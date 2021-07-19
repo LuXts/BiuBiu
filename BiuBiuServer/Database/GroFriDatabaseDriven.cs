@@ -4,6 +4,7 @@ using BiuBiuShare.GrouFri;
 using MagicOnion;
 using System.Collections.Generic;
 using NLog.LayoutRenderers;
+using BiuBiuShare.ImInfos;
 
 namespace BiuBiuServer.Database
 {
@@ -247,5 +248,12 @@ namespace BiuBiuServer.Database
         {
             throw new System.NotImplementedException();
         }
+
+        //TODO ：实现建立群聊 群组信息 返回是否成功
+        public async UnaryResult<bool> EstablishTeam(TeamInfo teamInfo)
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 }
