@@ -33,7 +33,7 @@ namespace BiuBiuServer.OnlineHub
         protected override async ValueTask OnConnecting()
         {
             Console.WriteLine("Connecting!");
-            base.OnConnecting();
+            await base.OnConnecting();
         }
 
         protected override async ValueTask OnDisconnected()

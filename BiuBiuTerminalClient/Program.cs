@@ -105,7 +105,7 @@ namespace BiuBiuTerminalClient
              ulong id2=IdManagement.GenerateId(data);
              data = IdType.ChatRecordId;
              ulong id3 = IdManagement.GenerateId(data);
-             data = IdType.GroupId;
+             data = IdType.TeamId;
              ulong id4 = IdManagement.GenerateId(data);
              long timeId = 0;
              int typeId = 0;

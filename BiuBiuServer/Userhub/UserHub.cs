@@ -23,22 +23,22 @@ namespace BiuBiuServer.Userhub
 
         public async Task SendMessage(Message message)
         {
-            Broadcast(room).SendMessage(message);
+            await Task.Run(() => { Broadcast(room).SendMessage(message); });
         }
 
         public async Task SendFriendRequest(FriendRequest request)
         {
-            Broadcast(room).SendFriendRequest(request);
+            await Task.Run(() => { Broadcast(room).SendFriendRequest(request); });
         }
 
-        public async Task SendGroupInvitation(GroupInvitation invitation)
+        public async Task SendGroupInvitation(TeamInvitation invitation)
         {
-            Broadcast(room).SendGroupInvitation(invitation);
+            await Task.Run(() => { Broadcast(room).SendGroupInvitation(invitation); });
         }
 
-        public async Task SendGroupRequest(GroupRequest request)
+        public async Task SendGroupRequest(TeamRequest request)
         {
-            Broadcast(room).SendGroupRequest(request);
+            await Task.Run(() => { Broadcast(room).SendGroupRequest(request); });
         }
     }
 }

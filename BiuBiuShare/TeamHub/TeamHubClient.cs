@@ -13,7 +13,7 @@ namespace BiuBiuShare.TeamHub
 
         public async Task ConnectAsync(GrpcChannel grpcChannel, ulong teamId)
         {
-            var client = StreamingHubClient.Connect<ITeamHub, ITeamHubReceiver>(grpcChannel, this);
+            client = await StreamingHubClient.ConnectAsync<ITeamHub, ITeamHubReceiver>(grpcChannel, this);
             await client.JoinAsync(new TeamInfo() { TeamId = teamId });
         }
 

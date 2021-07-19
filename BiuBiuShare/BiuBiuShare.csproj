@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="TeamHub\rwrwxei1.c2g~" />
+		<None Remove="TeamHub\rwrwxei1.c2g~" />
 	</ItemGroup>
 
 	<ItemGroup>

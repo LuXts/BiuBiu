@@ -15,7 +15,7 @@ namespace BiuBiuShare.UserHub
 
         public async Task ConnectAsync(GrpcChannel grpcChannel, ulong userId)
         {
-            var client = StreamingHubClient.Connect<IUserHub, IUserHubReceiver>(grpcChannel, this);
+            client = await StreamingHubClient.ConnectAsync<IUserHub, IUserHubReceiver>(grpcChannel, this);
             await client.JoinAsync(new UserInfo() { UserId = userId });
         }
 
@@ -29,12 +29,12 @@ namespace BiuBiuShare.UserHub
             client.SendFriendRequest(request);
         }
 
-        public void SendGroupInvitation(GroupInvitation invitation)
+        public void SendGroupInvitation(TeamInvitation invitation)
         {
             client.SendGroupInvitation(invitation);
         }
 
-        public void SendGroupRequest(GroupRequest request)
+        public void SendGroupRequest(TeamRequest request)
         {
             client.SendGroupRequest(request);
         }

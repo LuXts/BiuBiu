@@ -47,16 +47,16 @@ namespace BiuBiuServer.Services
             return temp;
         }
 
-        public async UnaryResult<GroupRequestResponse> AddGroup(GroupRequest request)
+        public async UnaryResult<TeamRequestResponse> AddGroup(TeamRequest request)
         {
             IdType idType = IdType.TeamRequestId;
             request.RequestId = IdManagement.GenerateId(idType);
-            GroupRequestResponse temp = await _igroFriDatabaseDriven.WriteGroupRequest(request);
+            TeamRequestResponse temp = await _igroFriDatabaseDriven.WriteGroupRequest(request);
             if (temp.Success == true)
             {
                 var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
                 UserHubClient client = new UserHubClient();
-                TeamInfo teamInfo = await _imInfoDatabaseDriven.GetTeamInfo(request.GroupId);
+                TeamInfo teamInfo = await _imInfoDatabaseDriven.GetTeamInfo(request.TeamId);
                 await client.ConnectAsync(channel, teamInfo.OwnerId);
                 client.SendGroupRequest(request);
                 await client.DisposeAsync();
@@ -65,7 +65,7 @@ namespace BiuBiuServer.Services
             return temp;
         }
 
-        public async UnaryResult<GroupInvitationResponse> InviteUserToGroup(GroupInvitation invitation)
+        public async UnaryResult<TeamInvitationResponse> InviteUserToGroup(TeamInvitation invitation)
         {
             IdType idType = IdType.TeamInvitationId;
             invitation.InvitationId = IdManagement.GenerateId(idType);
@@ -89,12 +89,12 @@ namespace BiuBiuServer.Services
             return await _igroFriDatabaseDriven.GetFriendRequest(userId);
         }
 
-        public async UnaryResult<List<GroupInvitation>> GetGroupInvitation(ulong userId)
+        public async UnaryResult<List<TeamInvitation>> GetGroupInvitation(ulong userId)
         {
             return await _igroFriDatabaseDriven.GetGroupInvitation(userId);
         }
 
-        public async UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId)
+        public async UnaryResult<List<TeamRequest>> GetGroupRequest(ulong userId)
         {
             return await _igroFriDatabaseDriven.GetGroupRequest(userId);
         }
@@ -115,12 +115,12 @@ namespace BiuBiuServer.Services
             return temp;
         }
 
-        public async UnaryResult<GroupInvitationResponse> ReplyGroupInvitation(GroupInvitation invitation, bool replyResult)
+        public async UnaryResult<TeamInvitationResponse> ReplyGroupInvitation(TeamInvitation invitation, bool replyResult)
         {
             var temp = await _igroFriDatabaseDriven.ReplyGroupInvitation(invitation, replyResult);
             if (temp.Success)
             {
-                var teamInfo = await _imInfoDatabaseDriven.GetTeamInfo(invitation.GroupId);
+                var teamInfo = await _imInfoDatabaseDriven.GetTeamInfo(invitation.TeamId);
                 var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
                 UserHubClient client = new UserHubClient();
                 await client.ConnectAsync(channel, teamInfo.OwnerId);
@@ -130,7 +130,7 @@ namespace BiuBiuServer.Services
                 {
                     // 群发新用户入群消息
                     TeamHubClient client2 = new TeamHubClient();
-                    await client2.ConnectAsync(channel, invitation.GroupId);
+                    await client2.ConnectAsync(channel, invitation.TeamId);
                     UserInfoResponse userInfo
                         = await _imInfoDatabaseDriven.GetUserInfo(
                             invitation.ReceiverId);
@@ -151,7 +151,7 @@ namespace BiuBiuServer.Services
             return temp;
         }
 
-        public async UnaryResult<GroupRequestResponse> ReplyGroupRequest(GroupRequest request, bool replyResult)
+        public async UnaryResult<TeamRequestResponse> ReplyGroupRequest(TeamRequest request, bool replyResult)
         {
             var temp = await _igroFriDatabaseDriven.ReplyGroupRequest(request, replyResult);
             if (temp.Success)
@@ -167,7 +167,7 @@ namespace BiuBiuServer.Services
                 {
                     // 群发新用户入群消息
                     TeamHubClient client2 = new TeamHubClient();
-                    await client2.ConnectAsync(channel, request.GroupId);
+                    await client2.ConnectAsync(channel, request.TeamId);
                     UserInfoResponse userInfo
                         = await _imInfoDatabaseDriven.GetUserInfo(
                             request.SenderId);

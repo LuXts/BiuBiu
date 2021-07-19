@@ -27,7 +27,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="groupId">群组Id</param>
         /// <param name="invitationMessage">申请加入群组时的备注信息</param>
         /// <returns>是否成功</returns>
-        UnaryResult<GroupRequestResponse> AddGroup(GroupRequest request);
+        UnaryResult<TeamRequestResponse> AddGroup(TeamRequest request);
 
         /// <summary>
         /// 邀请某人加入某群组
@@ -37,7 +37,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="groupId">群组Id</param>
         /// <param name="invitationMessage">邀请加入群聊的备注信息</param>
         /// <returns>是否成功</returns>
-        UnaryResult<GroupInvitationResponse> InviteUserToGroup(GroupInvitation invitation);
+        UnaryResult<TeamInvitationResponse> InviteUserToGroup(TeamInvitation invitation);
 
         /// <summary>
         /// 获取某个用户所收到的好友申请
@@ -51,14 +51,14 @@ namespace BiuBiuShare.ServiceInterfaces
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <returns>群组邀请数组</returns>
-        UnaryResult<List<GroupInvitation>> GetGroupInvitation(ulong userId);
+        UnaryResult<List<TeamInvitation>> GetGroupInvitation(ulong userId);
 
         /// <summary>
         /// 获取用户需要审核的加群申请
         /// </summary>
         /// <param name="userId">发起邀请者Id</param>
         /// <returns>加群申请数组</returns>
-        UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId);
+        UnaryResult<List<TeamRequest>> GetGroupRequest(ulong userId);
 
         /// <summary>
         /// 回复添加好友请求
@@ -76,7 +76,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="invitationId">加群邀请Id</param>
         /// <param name="replyResult">是否同意该用户的入群邀请</param>
         /// <returns>是否成功</returns>
-        UnaryResult<GroupInvitationResponse> ReplyGroupInvitation(GroupInvitation invitation, bool replyResult);//此Id表示群主的Id信息，用于给群主发邀请入群结果
+        UnaryResult<TeamInvitationResponse> ReplyGroupInvitation(TeamInvitation invitation, bool replyResult);//此Id表示群主的Id信息，用于给群主发邀请入群结果
 
         /// <summary>
         /// 回复加群请求
@@ -85,7 +85,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="requestId">加群请求Id</param>
         /// <param name="replyResult">是否同意该用户加群</param>
         /// <returns>是否成功</returns>
-        UnaryResult<GroupRequestResponse> ReplyGroupRequest(GroupRequest request, bool replyResult);//此Id表示申请者Id，用于给申请者发入群申请结果
+        UnaryResult<TeamRequestResponse> ReplyGroupRequest(TeamRequest request, bool replyResult);//此Id表示申请者Id，用于给申请者发入群申请结果
 
         /// <summary>
         /// 退出群聊

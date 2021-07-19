@@ -3,22 +3,22 @@
 namespace BiuBiuShare.GrouFri
 {
     [MessagePackObject(true)]
-    public class GroupRequestResponse : GroupRequest
+    public class TeamRequestResponse : TeamRequest
     {
         public bool Success { get; set; }
 
-        public static GroupRequestResponse Failed { get; }
-            = new GroupRequestResponse() { Success = false };
+        public static TeamRequestResponse Failed { get; }
+            = new TeamRequestResponse() { Success = false };
 
-        public GroupRequestResponse()
+        public TeamRequestResponse()
         {
         }
 
-        public GroupRequestResponse(GroupRequest request)
+        public TeamRequestResponse(TeamRequest request)
         {
             this.RequestId = request.RequestId;
             this.SenderId = request.SenderId;
-            this.GroupId = request.GroupId;
+            this.TeamId = request.TeamId;
             this.RequestMessage = request.RequestMessage;
             this.RequestResult = request.RequestResult;
         }

@@ -9,5 +9,18 @@ namespace BiuBiuShare.ImInfos
 
         public static TeamInfoResponse Failed { get; }
             = new TeamInfoResponse() { Success = false };
+
+        public TeamInfoResponse()
+        {
+        }
+
+        public TeamInfoResponse(TeamInfo teamInfo)
+        {
+            this.TeamId = teamInfo.TeamId;
+            this.TeamName = teamInfo.TeamName;
+            this.Description = teamInfo.Description;
+            this.OwnerId = teamInfo.OwnerId;
+            this.IconId = teamInfo.IconId;
+        }
     }
 }

@@ -137,7 +137,7 @@ namespace BiuBiuServer.Database
             UserInfo userInfo)
         {
             // 如果没成功就返回 return UserInfoResponse.Failed;
-            // 如果成功就返回 return new UserInfoResponse(){ Success = true };
+            // 如果成功就返回 return new UserInfoResponse(userInfo){ Success = true };
             // 类名里面带个 Response 的都会有 Success 字段
             throw new System.NotImplementedException();
         }
@@ -182,8 +182,8 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, ulong, ulong)> Target
                 = await Fsql.Ado
                     .QueryAsync<(ulong, string, string, ulong, ulong)>(
-                        "select GroupId,GroupName,Description,Icon,OwnerId from Group where" +
-                        "GroupId=?gd", new { gd = teamId });
+                        "select TeamId,GroupName,Description,Icon,OwnerId from Group where" +
+                        "TeamId=?gd", new { gd = teamId });
             if (Target.Count == 0)
             {
                 return TeamInfoResponse.Failed;

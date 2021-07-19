@@ -15,8 +15,8 @@ namespace BiuBiuShare.UserHub
 
         public Task SendFriendRequest(FriendRequest request);
 
-        public Task SendGroupInvitation(GroupInvitation invitation);
+        public Task SendGroupInvitation(TeamInvitation invitation);
 
-        public Task SendGroupRequest(GroupRequest request);
+        public Task SendGroupRequest(TeamRequest request);
     }
 }

@@ -3,21 +3,21 @@
 namespace BiuBiuShare.GrouFri
 {
     [MessagePackObject(true)]
-    public class GroupInvitationResponse : GroupInvitation
+    public class TeamInvitationResponse : TeamInvitation
     {
         public bool Success { get; set; }
 
-        public static GroupInvitationResponse Failed { get; }
-            = new GroupInvitationResponse() { Success = false };
+        public static TeamInvitationResponse Failed { get; }
+            = new TeamInvitationResponse() { Success = false };
 
-        public GroupInvitationResponse()
+        public TeamInvitationResponse()
         {
         }
 
-        public GroupInvitationResponse(GroupInvitation invitation)
+        public TeamInvitationResponse(TeamInvitation invitation)
         {
             this.InvitationId = invitation.InvitationId;
-            this.GroupId = invitation.GroupId;
+            this.TeamId = invitation.TeamId;
             this.ReceiverId = invitation.ReceiverId;
             this.InvitationMessage = invitation.InvitationMessage;
             this.InvitationResult = invitation.InvitationResult;

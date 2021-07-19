@@ -19,13 +19,13 @@ namespace BiuBiuServer.Interfaces
         /// 写入群请求
         /// </summary>
         /// <returns>是否成功</returns>
-        UnaryResult<GroupRequestResponse> WriteGroupRequest(GroupRequest request);
+        UnaryResult<TeamRequestResponse> WriteGroupRequest(TeamRequest request);
 
         /// <summary>
         /// 写入群邀请
         /// </summary>
         /// <returns>是否成功</returns>
-        UnaryResult<GroupInvitationResponse> WriteGroupInvitation(GroupInvitation invitation);
+        UnaryResult<TeamInvitationResponse> WriteGroupInvitation(TeamInvitation invitation);
 
         /// <summary>
         /// 获取用户收到的好友申请
@@ -39,14 +39,14 @@ namespace BiuBiuServer.Interfaces
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <returns>群组邀请列表</returns>
-        UnaryResult<List<GroupInvitation>> GetGroupInvitation(ulong userId);
+        UnaryResult<List<TeamInvitation>> GetGroupInvitation(ulong userId);
 
         /// <summary>
         /// 获取用户收到的入群申请
         /// </summary>
         /// <param name="userId">用户</param>
         /// <returns>入群申请列表</returns>
-        UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId);
+        UnaryResult<List<TeamRequest>> GetGroupRequest(ulong userId);
 
         /// <summary>
         /// 回复好友申请
@@ -62,7 +62,7 @@ namespace BiuBiuServer.Interfaces
         /// <param name="invitation">入群邀请Id</param>
         /// <param name="replyResult">是否同意</param>
         /// <returns>是否成功/returns>
-        UnaryResult<GroupInvitationResponse> ReplyGroupInvitation(GroupInvitation invitation, bool replyResult);
+        UnaryResult<TeamInvitationResponse> ReplyGroupInvitation(TeamInvitation invitation, bool replyResult);
 
         /// <summary>
         /// 回复入群申请
@@ -70,7 +70,7 @@ namespace BiuBiuServer.Interfaces
         /// <param name="request">入群申请Id</param>
         /// <param name="replyResult">是否同意</param>
         /// <returns>是否成功</returns>
-        UnaryResult<GroupRequestResponse> ReplyGroupRequest(GroupRequest request, bool replyResult);
+        UnaryResult<TeamRequestResponse> ReplyGroupRequest(TeamRequest request, bool replyResult);
 
         /// <summary>
         /// 退出群聊

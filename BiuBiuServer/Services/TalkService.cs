@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using BiuBiuServer.Database;
@@ -53,7 +54,7 @@ namespace BiuBiuServer.Services
                 if ((await _noSQLDriven.AddMessageAsync(temp)).Success)
                 {
                     response = new MessageResponse(temp);
-                    await ForwardMessage(temp);
+                    await ForwardMessage(message);
                 }
                 else
                 {
@@ -81,16 +82,16 @@ namespace BiuBiuServer.Services
                 UserHubClient client = new UserHubClient();
                 await client.ConnectAsync(channel, response.TargetId);
                 client.SendMessage(response);
-                client.DisposeAsync();
-                client.WaitForDisconnect();
+                await client.DisposeAsync();
+                await client.WaitForDisconnect();
             }
             else
             {
                 TeamHubClient client = new TeamHubClient();
                 await client.ConnectAsync(channel, response.TargetId);
                 client.SendMessage(response);
-                client.DisposeAsync();
-                client.WaitForDisconnect();
+                await client.DisposeAsync();
+                await client.WaitForDisconnect();
             }
         }
 
@@ -109,7 +110,7 @@ namespace BiuBiuServer.Services
                 var re1 = await _noSQLDriven.AddMessageAsync(message);
                 if (re0.Success && re1.Success)
                 {
-                    ForwardMessage(message);
+                    await ForwardMessage(message);
                     return re1;
                 }
                 else

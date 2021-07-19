@@ -10,8 +10,8 @@ namespace BiuBiuShare.UserHub
 
         public void SendFriendRequest(FriendRequest request);
 
-        public void SendGroupInvitation(GroupInvitation invitation);
+        public void SendGroupInvitation(TeamInvitation invitation);
 
-        public void SendGroupRequest(GroupRequest request);
+        public void SendGroupRequest(TeamRequest request);
     }
 }
