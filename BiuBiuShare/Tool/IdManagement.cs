@@ -13,6 +13,8 @@ namespace BiuBiuShare.Tool
         , TeamInvitationId = 6
         , MessageId = 7
         , IconId = 8
+        ,FriendRelationId = 9 
+        ,TeamRelationId = 10
     }
 
     public class IdManagement
