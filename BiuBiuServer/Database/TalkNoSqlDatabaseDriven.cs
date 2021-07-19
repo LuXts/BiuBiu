@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using BiuBiuServer.Interfaces;
 using BiuBiuShare.SignIn;
 using BiuBiuShare.TalkInfo;
@@ -112,16 +113,18 @@ namespace BiuBiuServer.Database
             , uint port)
         {
             // HACK: 这里的处理非常生硬
+
             try
             {
-                TcpListener listener = new TcpListener(IPAddress.Any, (int)port);
+                TcpListener listener
+                    = new TcpListener(IPAddress.Any, (int)port);
                 listener.Start();
 
-                var client = listener.AcceptTcpClient();
+                var client = await listener.AcceptTcpClientAsync();
                 NetworkStream ns = client.GetStream();
                 if (ns.DataAvailable)
                 {
-                    _bucket.UploadFromStream(
+                    await _bucket.UploadFromStreamAsync(
                         message.MessageId.ToString() + ".tar", ns);
 
                     ns.Close();
@@ -152,14 +155,14 @@ namespace BiuBiuServer.Database
                 TcpListener listener = new TcpListener(IPAddress.Any, (int)port);
                 listener.Start();
 
-                var client = listener.AcceptTcpClient();
+                var client = await listener.AcceptTcpClientAsync();
                 NetworkStream ns = client.GetStream();
 
                 var filter = Builders<GridFSFileInfo>.Filter.And(
                     Builders<GridFSFileInfo>.Filter.Eq(x => x.Filename
                         , message.MessageId.ToString() + ".tar"));
                 var cursor = await _bucket.Find(filter).FirstOrDefaultAsync();
-                _bucket.DownloadToStream(cursor.Id, ns);
+                await _bucket.DownloadToStreamAsync(cursor.Id, ns);
                 ns.Close();
                 client.Close();
                 listener.Stop();

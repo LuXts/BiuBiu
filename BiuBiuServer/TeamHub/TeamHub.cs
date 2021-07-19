@@ -22,17 +22,17 @@ namespace BiuBiuServer.TeamHub
 
         public async Task SendMessage(Message message)
         {
-            Broadcast(room).SendMessage(message);
+            await Task.Run(() => { Broadcast(room).SendMessage(message); });
         }
 
         public async Task AddUser(UserInfo userInfo)
         {
-            Broadcast(room).AddUser(userInfo);
+            await Task.Run(() => { Broadcast(room).AddUser(userInfo); });
         }
 
         public async Task DelUser(UserInfo userInfo)
         {
-            Broadcast(room).DelUser(userInfo);
+            await Task.Run(() => { Broadcast(room).DelUser(userInfo); });
         }
     }
 }
