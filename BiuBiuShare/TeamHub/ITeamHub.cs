@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BiuBiuShare.ImInfos;
-using BiuBiuShare.Response;
+using BiuBiuShare.TalkInfo;
 using MagicOnion;
 
 namespace BiuBiuShare.TeamHub
@@ -9,7 +9,7 @@ namespace BiuBiuShare.TeamHub
     {
         public Task JoinAsync(TeamInfo teamInfo);
 
-        public Task SendMessage(MessageResponse message);
+        public Task SendMessage(Message message);
 
         public Task AddUser(UserInfo userInfo);
 

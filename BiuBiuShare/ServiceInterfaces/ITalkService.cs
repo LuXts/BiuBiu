@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
 using BiuBiuShare.TalkInfo;
 using MagicOnion;
 
@@ -27,17 +27,17 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="port">上传端口</param>
         /// <param name="respond">是否继续上传</param>
         /// <returns>上传是否成功</returns>
-        public UnaryResult<bool> SendDataAsync(MessageResponse message, uint port, bool respond);
+        public UnaryResult<MessageResponse> SendDataAsync(Message message, uint port, bool respond);
 
         /// <summary>
         /// 查询某条消息
         /// </summary>
-        /// <param name="messageId">消息Id</param>
+        /// <param name="message">消息</param>
         /// <returns>
         /// 返回查到的消息内容等。
         /// 请根据返回的 <c>messageResponse.Success</c> 判断是否失败。
         /// </returns>
-        public UnaryResult<(MessageResponse, uint)> GetMessageAsync(ulong messageId);
+        public UnaryResult<(MessageResponse, uint)> GetMessageAsync(Message message);
 
         /// <summary>
         /// 发送 GetMessageAsync 消息后根据 Response 的结果接收数据
@@ -46,7 +46,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="port">下载端口</param>
         /// <param name="respond">是否继续下载</param>
         /// <returns>返回是否成功</returns>
-        public UnaryResult<bool> GetDataAsync(MessageResponse message, uint port, bool respond);
+        public UnaryResult<MessageResponse> GetDataAsync(Message message, uint port, bool respond);
 
         /// <summary>
         /// 获取某Id的未读消息（其实就是某时间点之后的所有消息）
@@ -57,7 +57,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <returns>
         /// 返回消息列表，消息列表为空时代表没查到
         /// </returns>
-        public UnaryResult<List<MessageResponse>> GetNoReadMessageRecordAsync(
+        public UnaryResult<List<Message>> GetNoReadMessageRecordAsync(
             ulong targetId, ulong startTime, ulong endTime);
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <returns>
         /// 返回消息列表，消息列表为空时代表没查到
         /// </returns>
-        public UnaryResult<List<MessageResponse>> GetChatMessagesRecordAsync(
+        public UnaryResult<List<Message>> GetChatMessagesRecordAsync(
             ulong sourceId, ulong targetId, ulong startTime, ulong endTime);
 
         // 获取一段时间内 TeamId 里面的聊天记录
@@ -83,7 +83,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <returns>
         /// 返回消息列表，消息列表为空时代表没查到
         /// </returns>
-        public UnaryResult<List<MessageResponse>> GetTeamMessagesRecordAsync(
+        public UnaryResult<List<Message>> GetTeamMessagesRecordAsync(
             ulong teamId, ulong startTime, ulong endTime);
     }
 }

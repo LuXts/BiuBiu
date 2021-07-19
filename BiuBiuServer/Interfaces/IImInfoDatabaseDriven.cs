@@ -14,21 +14,21 @@ namespace BiuBiuServer.Interfaces
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <returns>用户信息</returns>
-        public UnaryResult<UserInfo> GetUserInfo(ulong userId);
+        public UnaryResult<UserInfoResponse> GetUserInfo(ulong userId);
 
         /// <summary>
         /// 获取修改队列的用户信息
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <returns>用户信息</returns>
-        public UnaryResult<UserInfo> GetModifyQueueInfo(ulong userId);
+        public UnaryResult<UserInfoResponse> GetModifyQueueInfo(ulong userId);
 
         /// <summary>
         /// 设置用户信息
         /// </summary>
         /// <param name="userInfo">里面已经存储了Id 所以不需要额外再传一个</param>
         /// <returns>是否成功</returns>
-        public UnaryResult<bool> SetUserInfo(UserInfo userInfo);
+        public UnaryResult<UserInfoResponse> SetUserInfo(UserInfo userInfo);
 
         /// <summary>
         /// 修改用户密码
@@ -37,7 +37,7 @@ namespace BiuBiuServer.Interfaces
         /// <param name="oldPassword">旧密码</param>
         /// <param name="newPassword">新密码</param>
         /// <returns>是否成功</returns>
-        public UnaryResult<bool> SetUserPassword(ulong userId
+        public UnaryResult<UserInfoResponse> SetUserPassword(ulong userId
             , string oldPassword, string newPassword);
 
         /// <summary>
@@ -45,14 +45,14 @@ namespace BiuBiuServer.Interfaces
         /// </summary>
         /// <param name="teamId">群组Id</param>
         /// <returns>群组信息</returns>
-        public UnaryResult<TeamInfo> GetTeamInfo(ulong teamId);
+        public UnaryResult<TeamInfoResponse> GetTeamInfo(ulong teamId);
 
         /// <summary>
         /// 修改群组信息
         /// </summary>
         /// <param name="teamInfo">里面已经存储了Id 所以不需要额外再传一个</param>
         /// <returns></returns>
-        public UnaryResult<bool> SetTeamInfo(TeamInfo teamInfo);
+        public UnaryResult<TeamInfoResponse> SetTeamInfo(TeamInfo teamInfo);
 
         /// <summary>
         /// 获取群成员信息
@@ -69,10 +69,10 @@ namespace BiuBiuServer.Interfaces
         UnaryResult<List<UserInfo>> GetUserFriendsId(ulong userId);
 
         /// <summary>
-        /// 获取某Id的的群组信息列表
+        /// 获取某用户的的群组信息列表
         /// </summary>
-        /// <param name="teamId">群组Id</param>
+        /// <param name="userId">用户Id</param>
         /// <returns>群组信息列表</returns>
-        UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong teamId);
+        UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong userId);
     }
 }

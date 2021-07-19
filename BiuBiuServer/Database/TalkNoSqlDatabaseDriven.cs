@@ -4,7 +4,8 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using BiuBiuServer.Interfaces;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
+using BiuBiuShare.TalkInfo;
 using MagicOnion;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -39,7 +40,7 @@ namespace BiuBiuServer.Database
         // MessageResponse 和 BsonDocument 转换接口
 
         private static BsonDocument MessageToBsonDocument(
-            MessageResponse message)
+            Message message)
         {
             var item = new BsonDocument()
             {
@@ -52,18 +53,16 @@ namespace BiuBiuServer.Database
             return item;
         }
 
-        private static MessageResponse BsonDocumentToMessage(
+        private static Message BsonDocumentToMessage(
             BsonDocument document)
         {
-            var temp = new MessageResponse()
+            var temp = new Message()
             {
                 MessageId = Convert.ToUInt64(document["MessageId"].AsString)
                 ,
                 Data = document["Data"].AsString
                 ,
                 SourceId = Convert.ToUInt64(document["SourceId"].AsString)
-                ,
-                Success = true
                 ,
                 TargetId = Convert.ToUInt64(document["TargetId"].AsString)
                 ,
@@ -72,7 +71,7 @@ namespace BiuBiuServer.Database
             return temp;
         }
 
-        public async UnaryResult<bool> AddMessageAsync(MessageResponse message)
+        public async UnaryResult<MessageResponse> AddMessageAsync(Message message)
         {
             // HACK: 这里用了比较硬的编码
             var item = MessageToBsonDocument(message);
@@ -80,27 +79,7 @@ namespace BiuBiuServer.Database
             try
             {
                 await _collection.InsertOneAsync(item);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Initialization.Logger.Error(e.Message);
-                return false;
-            }
-        }
-
-        public async UnaryResult<MessageResponse> GetMessagesAsync(
-            ulong messageId)
-        {
-            var filter
-                = Builders<BsonDocument>.Filter.Eq("MessageId"
-                    , messageId.ToString());
-            var document = await _collection.Find(filter).FirstAsync();
-            // HACK: 这里的处理非常生硬
-            try
-            {
-                var temp = BsonDocumentToMessage(document);
-                return temp;
+                return new MessageResponse(message) { Success = true };
             }
             catch (Exception e)
             {
@@ -109,7 +88,27 @@ namespace BiuBiuServer.Database
             }
         }
 
-        public async UnaryResult<bool> SendDataMessage(MessageResponse message
+        public async UnaryResult<MessageResponse> GetMessagesAsync(
+            Message message)
+        {
+            var filter
+                = Builders<BsonDocument>.Filter.Eq("MessageId"
+                    , message.MessageId.ToString());
+            var document = await _collection.Find(filter).FirstAsync();
+            // HACK: 这里的处理非常生硬
+            try
+            {
+                var temp = BsonDocumentToMessage(document);
+                return new MessageResponse(temp);
+            }
+            catch (Exception e)
+            {
+                Initialization.Logger.Error(e.Message);
+                return MessageResponse.Failed;
+            }
+        }
+
+        public async UnaryResult<MessageResponse> SendDataMessage(Message message
             , uint port)
         {
             // HACK: 这里的处理非常生硬
@@ -128,24 +127,24 @@ namespace BiuBiuServer.Database
                     ns.Close();
                     client.Close();
                     listener.Stop();
-                    return true;
+                    return new MessageResponse(message) { Success = true };
                 }
                 else
                 {
                     ns.Close();
                     client.Close();
                     listener.Stop();
-                    return false;
+                    return MessageResponse.Failed;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return false;
+                Initialization.Logger.Error(e.Message);
+                return MessageResponse.Failed;
             }
         }
 
-        public async UnaryResult<bool> GetDataMessage(MessageResponse message
+        public async UnaryResult<MessageResponse> GetDataMessage(Message message
             , uint port)
         {
             try
@@ -164,16 +163,16 @@ namespace BiuBiuServer.Database
                 ns.Close();
                 client.Close();
                 listener.Stop();
-                return true;
+                return new MessageResponse(message) { Success = true };
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return false;
+                return MessageResponse.Failed;
             }
         }
 
-        public async UnaryResult<List<MessageResponse>> GetMessagesRecordAsync(
+        public async UnaryResult<List<Message>> GetMessagesRecordAsync(
             ulong targetId, ulong startTime, ulong endTime)
         {
             var filterBuilder = Builders<BsonDocument>.Filter;
@@ -183,7 +182,7 @@ namespace BiuBiuServer.Database
 
             var cursor = await _collection.Find(filter).ToCursorAsync();
 
-            List<MessageResponse> list = new List<MessageResponse>();
+            List<Message> list = new List<Message>();
             foreach (var document in cursor.ToEnumerable())
             {
                 list.Add(BsonDocumentToMessage(document));
@@ -192,7 +191,7 @@ namespace BiuBiuServer.Database
             return list;
         }
 
-        public async UnaryResult<List<MessageResponse>>
+        public async UnaryResult<List<Message>>
             GetChatMessagesRecordAsync(ulong sourceId, ulong targetId
                 , ulong startTime, ulong endTime)
         {
@@ -207,7 +206,7 @@ namespace BiuBiuServer.Database
 
             var cursor = await _collection.Find(filter).ToCursorAsync();
 
-            List<MessageResponse> list = new List<MessageResponse>();
+            List<Message> list = new List<Message>();
             foreach (var document in cursor.ToEnumerable())
             {
                 list.Add(BsonDocumentToMessage(document));

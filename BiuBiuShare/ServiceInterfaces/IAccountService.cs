@@ -1,4 +1,4 @@
-﻿using BiuBiuShare.Response;
+﻿using BiuBiuShare.SignIn;
 using MagicOnion;
 
 namespace BiuBiuShare.ServiceInterfaces

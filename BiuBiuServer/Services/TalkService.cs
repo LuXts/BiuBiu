@@ -5,7 +5,7 @@ using BiuBiuServer.Database;
 using BiuBiuServer.Interfaces;
 using BiuBiuServer.Tests;
 using BiuBiuShare;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
 using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.TeamHub;
@@ -34,13 +34,11 @@ namespace BiuBiuServer.Services
             Message message)
         {
             MessageResponse response;
-            var temp = new MessageResponse()
+            var temp = new Message()
             {
                 Data = message.Data
                 ,
                 MessageId = IdManagement.GenerateId(IdType.MessageId)
-                ,
-                Success = true
                 ,
                 SourceId = message.SourceId
                 ,
@@ -52,10 +50,10 @@ namespace BiuBiuServer.Services
             if (message.Type.Equals("Text"))
             {
                 port = 0;
-                if (await _noSQLDriven.AddMessageAsync(temp))
+                if ((await _noSQLDriven.AddMessageAsync(temp)).Success)
                 {
-                    response = temp;
-                    await ForwardMessage(response);
+                    response = new MessageResponse(temp);
+                    await ForwardMessage(temp);
                 }
                 else
                 {
@@ -69,16 +67,16 @@ namespace BiuBiuServer.Services
                     port = PortList.First.Value + 55000;
                     PortList.RemoveFirst();
                 }
-                response = temp;
+                response = new MessageResponse(temp);
             }
-
             return (response, port);
         }
 
-        private static async Task ForwardMessage(MessageResponse response)
+        private static async Task ForwardMessage(Message response)
         {
             var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
-            if (IdManagement.GenerateIdTypeById(response.TargetId) == IdType.UserId)
+            if (IdManagement.GenerateIdTypeById(response.TargetId) ==
+                IdType.UserId)
             {
                 UserHubClient client = new UserHubClient();
                 await client.ConnectAsync(channel, response.TargetId);
@@ -97,34 +95,39 @@ namespace BiuBiuServer.Services
         }
 
         /// <inheritdoc />
-        public async UnaryResult<bool> SendDataAsync(MessageResponse message
+        public async UnaryResult<MessageResponse> SendDataAsync(Message message
             , uint port, bool respond)
         {
             if (respond)
             {
-                bool re0 = await _noSQLDriven.SendDataMessage(message, port);
+                var re0 = await _noSQLDriven.SendDataMessage(message, port);
                 lock (PortList)
                 {
                     PortList.AddFirst(port - 55000);
                 }
-                bool re1 = await _noSQLDriven.AddMessageAsync(message);
-                if (re0 && re1)
+
+                var re1 = await _noSQLDriven.AddMessageAsync(message);
+                if (re0.Success && re1.Success)
                 {
                     ForwardMessage(message);
+                    return re1;
                 }
-                return re0 && re1;
+                else
+                {
+                    return MessageResponse.Failed;
+                }
             }
             else
             {
-                return false;
+                return MessageResponse.Failed;
             }
         }
 
         /// <inheritdoc />
         public async UnaryResult<(MessageResponse, uint)> GetMessageAsync(
-            ulong messageId)
+            Message message)
         {
-            var response = await _noSQLDriven.GetMessagesAsync(messageId);
+            var response = await _noSQLDriven.GetMessagesAsync(message);
             lock (PortList)
             {
                 uint port = PortList.First.Value + 55000;
@@ -134,18 +137,19 @@ namespace BiuBiuServer.Services
         }
 
         /// <inheritdoc />
-        public async UnaryResult<bool> GetDataAsync(MessageResponse message
+        public async UnaryResult<MessageResponse> GetDataAsync(Message message
             , uint port, bool respond)
         {
-            bool re = await _noSQLDriven.GetDataMessage(message, port);
+            var re = await _noSQLDriven.GetDataMessage(message, port);
             lock (PortList)
             {
                 PortList.AddFirst(port);
             }
+
             return re;
         }
 
-        public async UnaryResult<List<MessageResponse>>
+        public async UnaryResult<List<Message>>
             GetNoReadMessageRecordAsync(ulong targetId, ulong startTime
                 , ulong endTime)
         {
@@ -154,7 +158,7 @@ namespace BiuBiuServer.Services
         }
 
         /// <inheritdoc />
-        public async UnaryResult<List<MessageResponse>>
+        public async UnaryResult<List<Message>>
             GetChatMessagesRecordAsync(ulong sourceId, ulong targetId
                 , ulong startTime, ulong endTime)
         {
@@ -163,7 +167,7 @@ namespace BiuBiuServer.Services
         }
 
         /// <inheritdoc />
-        public async UnaryResult<List<MessageResponse>>
+        public async UnaryResult<List<Message>>
             GetTeamMessagesRecordAsync(ulong teamId, ulong startTime
                 , ulong endTime)
         {

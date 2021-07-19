@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using BiuBiuShare.GrouFri;
 using BiuBiuShare.ImInfos;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
+using BiuBiuShare.TalkInfo;
 using BiuBiuShare.UserHub;
 using MagicOnion.Server.Hubs;
 
@@ -20,7 +21,7 @@ namespace BiuBiuServer.Userhub
             (room, storage) = await Group.AddAsync(userInfo.UserId.ToString(), self);
         }
 
-        public async Task SendMessage(MessageResponse message)
+        public async Task SendMessage(Message message)
         {
             Broadcast(room).SendMessage(message);
         }

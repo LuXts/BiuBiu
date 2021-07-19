@@ -6,8 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using BiuBiuShare;
 using BiuBiuShare.ImInfos;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
 using BiuBiuShare.ServiceInterfaces;
+using BiuBiuShare.TalkInfo;
 using BiuBiuShare.Tests;
 using Grpc.Core;
 using Grpc.Net.Client;
@@ -95,7 +96,7 @@ namespace BiuBiuTerminalClient
         }
 
         private static async Task Main(string[] args)
-        { 
+        {
             //Id管理类测试
             /*
              IdType data = IdType.UserId;
@@ -128,8 +129,6 @@ namespace BiuBiuTerminalClient
              Console.WriteLine(IdManagement.GenerateTsById(id3).ToString("x"));
              Console.WriteLine(IdManagement.GenerateTsById(id4).ToString("x"));
             */
-
-           
 
             var options = new[]
             {

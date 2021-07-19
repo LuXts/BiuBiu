@@ -1,11 +1,12 @@
 ﻿using BiuBiuShare.ImInfos;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
+using BiuBiuShare.TalkInfo;
 
 namespace BiuBiuShare.TeamHub
 {
     public interface ITeamHubReceiver
     {
-        public void SendMessage(MessageResponse message);
+        public void SendMessage(Message message);
 
         public void AddUser(UserInfo userInfo);
 

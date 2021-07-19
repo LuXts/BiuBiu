@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using BiuBiuShare.GrouFri;
 using BiuBiuShare.ImInfos;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
+using BiuBiuShare.TalkInfo;
 using MagicOnion;
 
 namespace BiuBiuShare.UserHub
@@ -10,7 +11,7 @@ namespace BiuBiuShare.UserHub
     {
         public Task JoinAsync(UserInfo userInfo);
 
-        public Task SendMessage(MessageResponse message);
+        public Task SendMessage(Message message);
 
         public Task SendFriendRequest(FriendRequest request);
 

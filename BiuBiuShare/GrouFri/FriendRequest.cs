@@ -8,8 +8,7 @@ namespace BiuBiuShare.GrouFri
         public ulong RequestId { get; set; }
         public ulong SenderId { get; set; }//邀请者ID
         public ulong ReceiverId { get; set; }//被邀请者ID
-        public string InvitationMessage { get; set; }
-        public string InvitationResult { get; set; }
+        public string RequestMessage { get; set; }
+        public string RequestResult { get; set; }
     }
-
 }

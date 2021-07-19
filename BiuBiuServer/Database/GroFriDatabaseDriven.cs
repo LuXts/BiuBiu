@@ -7,19 +7,20 @@ using NLog.LayoutRenderers;
 
 namespace BiuBiuServer.Database
 {
-    public class GroFriDatabaseDriven:IGroFriDatabaseDriven
+    public class GroFriDatabaseDriven : IGroFriDatabaseDriven
     {
         private readonly IFreeSql Fsql = MySqlDriven.GetFreeSql();
+
         //实现删除好友操作 发起者Id、目标Id 是否成功
         public async UnaryResult<bool> DeleteFriend(ulong sponsorId, ulong targetId)
         {
             List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
                                                                    "SendId = ?sd,ReceiveId = ?rd",
-                new {sd = sponsorId, rd = targetId});
+                new { sd = sponsorId, rd = targetId });
             if (Target1.Count != 0)
             {
                 await Fsql.Ado.QueryAsync<object>("delete from friendrelation where SendId = ?sd,ReceiveId = ?rd",
-                    new {sd = sponsorId, rd = targetId});
+                    new { sd = sponsorId, rd = targetId });
             }
 
             List<ulong> Target2 = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
@@ -47,21 +48,22 @@ namespace BiuBiuServer.Database
                 return false;
             }
         }
+
         //实现踢人操作 发起者Id，目标Id，群组Id 是否成功 tip：必须是该群的群主才能踢人
         public async UnaryResult<bool> DeleteMemberFromGroup(ulong sponsorId, ulong targetId, ulong groupId)
         {
             List<(ulong, ulong)> Target = await Fsql.Ado.QueryAsync<(ulong, ulong)>(
                 "select GroupId,OwnerId from group where" +
-                "GroupId=?gd", new {gd = groupId});
+                "GroupId=?gd", new { gd = groupId });
             if (Target[0].Item2 == sponsorId)
             {
                 await Fsql.Ado.QueryAsync<object>("delete from groupconstitute where UserId=?ui,GroupId=?gd",
-                    new {ui = targetId, gd = groupId});
+                    new { ui = targetId, gd = groupId });
             }
 
             List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select UserId from groupconstitute where" +
                                                                    "UserId=?ui,GroupId=?gd",
-                new {ui = targetId, gd = groupId});
+                new { ui = targetId, gd = groupId });
             if (Target1.Count == 0)
             {
                 return true;
@@ -71,6 +73,7 @@ namespace BiuBiuServer.Database
                 return false;
             }
         }
+
         //实现解散群聊 发起者Id，群组Id 是否成功 tip：必须是该群的群主才能解散群聊
         public async UnaryResult<bool> DissolveGroup(ulong sponsorId, ulong groupId)
         {
@@ -81,13 +84,13 @@ namespace BiuBiuServer.Database
             if (Target[0].Item2 == sponsorId)
             {
                 await Fsql.Ado.QueryAsync<object>("delete from groupconstitute where" +
-                                                  "GroupId=?gd", new {gd = groupId});
+                                                  "GroupId=?gd", new { gd = groupId });
                 await Fsql.Ado.QueryAsync<object>("delete from group where" +
-                                                  "GroupId=?gd", new {gd = groupId});
+                                                  "GroupId=?gd", new { gd = groupId });
             }
 
             List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select GroupId from groupconstitute where" +
-                                                                   "GroupId=?gd", new {gd = groupId});
+                                                                   "GroupId=?gd", new { gd = groupId });
             List<ulong> Target2 = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where" +
                                                                    "GroupId=?gd", new { gd = groupId });
             if (Target2.Count == 0 && Target1.Count == 0)
@@ -99,6 +102,7 @@ namespace BiuBiuServer.Database
                 return false;
             }
         }
+
         //实现退出群聊 发起者Id、群组Id 是否成功 tip：群主不能退出群聊
         public async UnaryResult<bool> ExitGroup(ulong sponsorId, ulong groupId)
         {
@@ -108,12 +112,12 @@ namespace BiuBiuServer.Database
             if (Target[0].Item2 != sponsorId)
             {
                 await Fsql.Ado.QueryAsync<object>("delete from groupconstitute where" +
-                                                  "UserId=?ui,GroupId=?gd", new {ui = sponsorId, gd = groupId});
+                                                  "UserId=?ui,GroupId=?gd", new { ui = sponsorId, gd = groupId });
             }
 
             List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select UserId from groupconstitute where" +
                                                                    "UserId=?ui,GroupId=?gd",
-                new {ui = sponsorId, gd = groupId});
+                new { ui = sponsorId, gd = groupId });
             if (Target1.Count == 0)
             {
                 return true;
@@ -130,7 +134,7 @@ namespace BiuBiuServer.Database
             List<(ulong, ulong, ulong, string, string)> Target =
                 await Fsql.Ado.QueryAsync<(ulong, ulong, ulong, string, string)>(
                     "Select AddId,SendId,ReceiveId,Identity,Result from friendadd where" +
-                    "ReceiveId=?rd", new {userId});
+                    "ReceiveId=?rd", new { userId });
             List<FriendRequest> friend = new List<FriendRequest>();
             foreach (var VARIABLE in Target)
             {
@@ -138,28 +142,32 @@ namespace BiuBiuServer.Database
                 temp.RequestId = VARIABLE.Item1;
                 temp.SenderId = VARIABLE.Item2;
                 temp.ReceiverId = VARIABLE.Item3;
-                temp.InvitationMessage = VARIABLE.Item4;
-                temp.InvitationResult = VARIABLE.Item5;
+                temp.RequestMessage = VARIABLE.Item4;
+                temp.RequestResult = VARIABLE.Item5;
                 friend.Add(temp);
             }
 
             return friend;
         }
+
         //实现请求某用户的群组邀请列表 用户ID 该用户的全部群组邀请数组
         public async UnaryResult<List<GroupInvitation>> GetGroupInvitation(ulong userId)
         {
             List<(ulong, ulong, ulong, string, string)> Target =
                 await Fsql.Ado.QueryAsync<(ulong, ulong, ulong, string, string)>(
                     "select InviteId,GroupId,UserId,Identity,Result from groupinvite where" +
-                    "Userid=?ui", new {ui = userId});
+                    "Userid=?ui", new { ui = userId });
 
             List<GroupInvitation> group = new List<GroupInvitation>();
             foreach (var VARIABLE in Target)
             {
                 GroupInvitation temp = new GroupInvitation()
                 {
-                    InvitationId = VARIABLE.Item1, ReceiverId = VARIABLE.Item3, GroupId = VARIABLE.Item2,
-                    InvitationMessage = VARIABLE.Item4, InvitationResult = VARIABLE.Item5
+                    InvitationId = VARIABLE.Item1,
+                    ReceiverId = VARIABLE.Item3,
+                    GroupId = VARIABLE.Item2,
+                    InvitationMessage = VARIABLE.Item4,
+                    InvitationResult = VARIABLE.Item5
                 };
 
                 group.Add(temp);
@@ -167,19 +175,20 @@ namespace BiuBiuServer.Database
 
             return group;
         }
+
         //TODO:实现请求某用户需要审核的入群申请列表 用户Id 该用户的需要审核的群组申请数组 tip：该用户为群主 即群主获取到加群申请
         public async UnaryResult<List<GroupRequest>> GetGroupRequest(ulong userId)
         {
             List<ulong> GroupOwnerId = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where" +
-                                                                        "OwnerId=?ui", new {ui = userId});
+                                                                        "OwnerId=?ui", new { ui = userId });
             List<(ulong, ulong, ulong, string, string)> group = new List<(ulong, ulong, ulong, string, string)>();
             foreach (var VARIABLE in GroupOwnerId)
             {
                 List<(ulong, ulong, ulong, string, string)> Target =
                     await Fsql.Ado.QueryAsync<(ulong, ulong, ulong, string, string)>(
                         "select ApplyId,GroupId,UserId,Identity,Result from groupapply where" +
-                        "GroupId = ?gd", new {gd = VARIABLE});
-                foreach (var VARIABLE2 in Target )
+                        "GroupId = ?gd", new { gd = VARIABLE });
+                foreach (var VARIABLE2 in Target)
                 {
                     group.Add(VARIABLE2);
                 }
@@ -190,8 +199,11 @@ namespace BiuBiuServer.Database
             {
                 GroupRequest temp = new GroupRequest()
                 {
-                    InvitationId = VARIABLE.Item1, SenderId = VARIABLE.Item3, GroupId = VARIABLE.Item2,
-                    InvitationMessage = VARIABLE.Item4, InvitationResult = VARIABLE.Item5
+                    RequestId = VARIABLE.Item1,
+                    SenderId = VARIABLE.Item3,
+                    GroupId = VARIABLE.Item2,
+                    RequestMessage = VARIABLE.Item4,
+                    RequestResult = VARIABLE.Item5
                 };
 
                 groupApply.Add(temp);
@@ -201,32 +213,37 @@ namespace BiuBiuServer.Database
         }
 
         //TODO:实现回复好友申请 申请ID、回复结果 是否成功修改好友申请信息
-        public async UnaryResult<bool> ReplyFriendRequest(ulong requestId, bool replyResult)
+        public async UnaryResult<FriendRequestResponse> ReplyFriendRequest(FriendRequest request, bool replyResult)
         {
             throw new System.NotImplementedException();
         }
+
         //TODO:实现回复群组邀请 邀请ID 回复结果 是否成功修改群组邀请信息
-        public async UnaryResult<bool> ReplyGroupInvitation(ulong invitationId, bool replyResult)
+        public async UnaryResult<GroupInvitationResponse> ReplyGroupInvitation(GroupInvitation invitation, bool replyResult)
         {
             throw new System.NotImplementedException();
         }
+
         //TODO：实现回复入群申请 申请ID 回复结果 是否成功修改入群申请
-        public async UnaryResult<bool> ReplyGroupRequest(ulong requestId, bool replyResult)
+        public async UnaryResult<GroupRequestResponse> ReplyGroupRequest(GroupRequest request, bool replyResult)
         {
             throw new System.NotImplementedException();
         }
+
         //TODO:函数功能：输入申请Id，申请者ID，被添加者ID，申请信息，写入数据库中；输出：是否成功 tip:当同一个人邀请信息重复发送时，不重复写入,不可向已是好友关系的人发邀请
-        public async UnaryResult<bool>WriteFriendRequest(ulong friendRequestId, ulong senderId, ulong receiverId, string invitationMessage)
+        public async UnaryResult<FriendRequestResponse> WriteFriendRequest(FriendRequest request)
         {
             throw new System.NotImplementedException();
         }
+
         //TODO:实现某人邀请某人加入某群组数据写入，输入邀请Id，邀请者ID，被邀请者ID，群组id,邀请备注信息，写入数据库中；输出：是否成功 tip:不可重复发送、不可邀请在群内的用户
-        public async UnaryResult<bool>WriteGroupInvitation(ulong groupInvitationId, ulong senderId, ulong receiver, ulong groupId, string invitationMe)
+        public async UnaryResult<GroupInvitationResponse> WriteGroupInvitation(GroupInvitation invitation)
         {
             throw new System.NotImplementedException();
         }
+
         //TODO：实现某人申请加入某群聊数据写入 输入申请Id，申请者ID，群组ID，申请信息 返回是否成功 tip:不可重复写、在群内的人员不可申请
-        public async UnaryResult<bool>WriteGroupRequest(ulong groupRequestId, ulong senderId, ulong groupId, string invitationMessage)
+        public async UnaryResult<GroupRequestResponse> WriteGroupRequest(GroupRequest request)
         {
             throw new System.NotImplementedException();
         }

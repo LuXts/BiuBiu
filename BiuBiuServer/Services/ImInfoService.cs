@@ -16,71 +16,70 @@ namespace BiuBiuServer.Services
     /// </summary>
     public class ImInfoService : ServiceBase<IImInfoService>, IImInfoService
     {
-        // TODO: 测试接口(等数据库驱动实现完成后替换)
         private static readonly IImInfoDatabaseDriven _imInfoDatabaseDriven
             = new ImInfoDatabaseDriven();
 
         /// <inheritdoc />
         [Authorize]
-        public UnaryResult<UserInfo> GetUserInfo(ulong userId)
+        public UnaryResult<UserInfoResponse> GetUserInfo(UserInfo userInfo)
         {
-            return _imInfoDatabaseDriven.GetUserInfo(userId);
+            return _imInfoDatabaseDriven.GetUserInfo(userInfo.UserId);
         }
 
         /// <inheritdoc />
         [Authorize]
-        public UnaryResult<UserInfo> GetModifyQueueInfo(ulong userId)
+        public UnaryResult<UserInfoResponse> GetModifyQueueInfo(UserInfo userInfo)
         {
-            return _imInfoDatabaseDriven.GetModifyQueueInfo(userId);
+            return _imInfoDatabaseDriven.GetModifyQueueInfo(userInfo.UserId);
         }
 
         /// <inheritdoc />
         [Authorize]
-        public UnaryResult<bool> SetUserInfo(UserInfo userInfo)
+        public UnaryResult<UserInfoResponse> SetUserInfo(UserInfo userInfo)
         {
             return _imInfoDatabaseDriven.SetUserInfo(userInfo);
         }
 
         /// <inheritdoc />
         [Authorize]
-        public UnaryResult<bool> SetUserPassword(ulong userId
+        public UnaryResult<UserInfoResponse> SetUserPassword(UserInfo userInfo
             , string oldPassword, string newPassword)
         {
-            return _imInfoDatabaseDriven.SetUserPassword(userId, oldPassword
+            return _imInfoDatabaseDriven.SetUserPassword(userInfo.UserId, oldPassword
                 , newPassword);
         }
 
         /// <inheritdoc />
         [Authorize]
-        public UnaryResult<TeamInfo> GetTeamInfo(ulong teamId)
+        public UnaryResult<TeamInfoResponse> GetTeamInfo(TeamInfo teamInfo)
         {
-            return _imInfoDatabaseDriven.GetTeamInfo(teamId);
+            return _imInfoDatabaseDriven.GetTeamInfo(teamInfo.TeamId);
         }
 
         /// <inheritdoc />
         [Authorize]
-        public UnaryResult<bool> SetTeamInfo(TeamInfo teamInfo)
+        public UnaryResult<TeamInfoResponse> SetTeamInfo(TeamInfo teamInfo)
         {
             return _imInfoDatabaseDriven.SetTeamInfo(teamInfo);
         }
 
         /// <inheritdoc />
         [Authorize]
-        public UnaryResult<List<UserInfo>> GetTeamUserInfo(ulong teamId)
+        public UnaryResult<List<UserInfo>> GetTeamUserInfo(TeamInfo teamInfo)
         {
-            return _imInfoDatabaseDriven.GetTeamUserInfo(teamId);
+            return _imInfoDatabaseDriven.GetTeamUserInfo(teamInfo.TeamId);
         }
 
         [Authorize]
-        public UnaryResult<List<UserInfo>> GetUserFriendsId(ulong userId)
+        public UnaryResult<List<UserInfo>> GetUserFriendsId(UserInfo userInfo)
         {
-            return _imInfoDatabaseDriven.GetUserFriendsId(userId);
+            return _imInfoDatabaseDriven.GetUserFriendsId(userInfo.UserId);
         }
 
         [Authorize]
-        public UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong teamId)
+        public UnaryResult<List<TeamInfo>> GetUserTeamsId(UserInfo userInfo)
         {
-            return _imInfoDatabaseDriven.GetUserTeamsId(teamId);
+            return _imInfoDatabaseDriven.GetUserTeamsId(userInfo.UserId);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BiuBiuServer.Interfaces;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
 using MagicOnion;
 
 namespace BiuBiuServer.Database

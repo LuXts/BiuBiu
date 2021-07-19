@@ -17,7 +17,7 @@ namespace BiuBiuTerminalClient
 
         public async Task<UserInfo> ConnectAsync(GrpcChannel grpcChannel, UserInfo userInfo)
         {
-            client = StreamingHubClient.Connect<IOnlineHub, IOnlineHubReceiver>(grpcChannel, this);
+            client = await StreamingHubClient.ConnectAsync<IOnlineHub, IOnlineHubReceiver>(grpcChannel, this);
 
             var userInfos = await client.JoinAsync(userInfo);
             foreach (var info in userInfos)

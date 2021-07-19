@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BiuBiuShare.GrouFri;
+using BiuBiuShare.ImInfos;
 using MagicOnion;
 using Org.BouncyCastle.Bcpg;
 
@@ -17,7 +18,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="receiverId">被申请者Id</param>
         /// <param name="invitationMessage">申请好友时的备注信息</param>
         /// <returns>是否成功</returns>
-        UnaryResult<bool> AddFriend(ulong senderId, ulong receiverId, string invitationMessage);
+        UnaryResult<FriendRequestResponse> AddFriend(FriendRequest request);
 
         /// <summary>
         /// 申请加入群组
@@ -26,7 +27,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="groupId">群组Id</param>
         /// <param name="invitationMessage">申请加入群组时的备注信息</param>
         /// <returns>是否成功</returns>
-        UnaryResult<bool> AddGroup(ulong senderId, ulong groupId, string invitationMessage);
+        UnaryResult<GroupRequestResponse> AddGroup(GroupRequest request);
 
         /// <summary>
         /// 邀请某人加入某群组
@@ -36,7 +37,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="groupId">群组Id</param>
         /// <param name="invitationMessage">邀请加入群聊的备注信息</param>
         /// <returns>是否成功</returns>
-        UnaryResult<bool> InviteUserToGroup(ulong senderId, ulong receiverId, ulong groupId, string invitationMessage);
+        UnaryResult<GroupInvitationResponse> InviteUserToGroup(GroupInvitation invitation);
 
         /// <summary>
         /// 获取某个用户所收到的好友申请
@@ -66,7 +67,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="requestId">好友请求Id</param>
         /// <param name="replyResult">是否同意该用户的好友申请</param>
         /// <returns>是否成功</returns>
-        UnaryResult<bool> ReplyFriendRequest(ulong userId,ulong requestId, bool replyResult);//此Id表示申请者的Id信息，用于给申请者发好友申请结果
+        UnaryResult<FriendRequestResponse> ReplyFriendRequest(FriendRequest request, bool replyResult);//此Id表示申请者的Id信息，用于给申请者发好友申请结果
 
         /// <summary>
         /// 回复邀请加群请求
@@ -75,7 +76,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="invitationId">加群邀请Id</param>
         /// <param name="replyResult">是否同意该用户的入群邀请</param>
         /// <returns>是否成功</returns>
-        UnaryResult<bool> ReplyGroupInvitation( ulong userId,ulong invitationId, bool replyResult);//此Id表示群主的Id信息，用于给群主发邀请入群结果
+        UnaryResult<GroupInvitationResponse> ReplyGroupInvitation(GroupInvitation invitation, bool replyResult);//此Id表示群主的Id信息，用于给群主发邀请入群结果
 
         /// <summary>
         /// 回复加群请求
@@ -84,7 +85,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="requestId">加群请求Id</param>
         /// <param name="replyResult">是否同意该用户加群</param>
         /// <returns>是否成功</returns>
-        UnaryResult<bool> ReplyGroupRequest(ulong userId,ulong requestId, bool replyResult);//此Id表示申请者Id，用于给申请者发入群申请结果
+        UnaryResult<GroupRequestResponse> ReplyGroupRequest(GroupRequest request, bool replyResult);//此Id表示申请者Id，用于给申请者发入群申请结果
 
         /// <summary>
         /// 退出群聊
@@ -92,7 +93,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="userId">用户Id</param>
         /// <param name="groupId">群Id</param>
         /// <returns>是否成功</returns>
-        UnaryResult<bool> ExitGroup(ulong userId, ulong groupId);
+        UnaryResult<bool> ExitGroup(UserInfo userInfo, TeamInfo teamInfo);
 
         /// <summary>
         /// 解散群聊
@@ -100,7 +101,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="userId">用户Id</param>
         /// <param name="groupId">群Id</param>
         /// <returns>是否成功</returns>
-        UnaryResult<bool> DissolveGroup(ulong userId, ulong groupId);
+        UnaryResult<bool> DissolveGroup(UserInfo ownerInfo, TeamInfo teamInfo);
 
         /// <summary>
         /// 删除好友
@@ -108,7 +109,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="sponsorId">发起者删除请求者</param>
         /// <param name="targetId">被删除者</param>
         /// <returns>是否成功</returns>
-        UnaryResult<bool> DeleteFriend(ulong sponsorId, ulong targetId);
+        UnaryResult<bool> DeleteFriend(UserInfo sponsorInfo, UserInfo targetInfo);
 
         /// <summary>
         /// 群组踢人
@@ -117,7 +118,6 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="memberId">被踢者</param>
         /// <param name="groupId">群Id</param>
         /// <returns>是否成功</returns>
-        UnaryResult<bool> DeleteMemberFromGroup(ulong sponsorId, ulong memberId, ulong groupId);
-
+        UnaryResult<bool> DeleteMemberFromGroup(UserInfo sponsoriInfo, UserInfo memberInfo, TeamInfo teamInfo);
     }
 }

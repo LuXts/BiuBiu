@@ -1,11 +1,12 @@
 ﻿using BiuBiuShare.GrouFri;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
+using BiuBiuShare.TalkInfo;
 
 namespace BiuBiuShare.UserHub
 {
     public interface IUserHubReceiver
     {
-        public void SendMessage(MessageResponse message);
+        public void SendMessage(Message message);
 
         public void SendFriendRequest(FriendRequest request);
 

@@ -1,12 +1,11 @@
 ﻿using System;
 using MessagePack;
 
-namespace BiuBiuShare.Response
+namespace BiuBiuShare.SignIn
 {
     [MessagePackObject(true)]
-    public class SignInResponse
+    public class SignInResponse : SignIn
     {
-        public ulong UserId { get; set; }
         public string DisplayName { get; set; }
         public byte[] Token { get; set; }
         public DateTimeOffset Expiration { get; set; }

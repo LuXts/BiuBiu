@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using BiuBiuShare.GrouFri;
 using BiuBiuShare.ImInfos;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
+using BiuBiuShare.TalkInfo;
 using Grpc.Core;
 using Grpc.Net.Client;
 using MagicOnion.Client;
@@ -18,7 +19,7 @@ namespace BiuBiuShare.UserHub
             await client.JoinAsync(new UserInfo() { UserId = userId });
         }
 
-        public void SendMessage(MessageResponse message)
+        public void SendMessage(Message message)
         {
             client.SendMessage(message);
         }

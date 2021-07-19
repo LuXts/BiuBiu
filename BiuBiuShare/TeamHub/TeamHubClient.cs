@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using BiuBiuShare.ImInfos;
-using BiuBiuShare.Response;
+using BiuBiuShare.SignIn;
+using BiuBiuShare.TalkInfo;
 using Grpc.Net.Client;
 using MagicOnion.Client;
 
@@ -16,7 +17,7 @@ namespace BiuBiuShare.TeamHub
             await client.JoinAsync(new TeamInfo() { TeamId = teamId });
         }
 
-        public void SendMessage(MessageResponse message)
+        public void SendMessage(Message message)
         {
             client.SendMessage(message);
         }

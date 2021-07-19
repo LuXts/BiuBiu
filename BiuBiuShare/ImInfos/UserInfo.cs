@@ -17,21 +17,10 @@ namespace BiuBiuShare.ImInfos
         public string Email { get; set; }
         public ulong IconId { get; set; }
         public bool Permissions { get; set; }
-        public string CurrentPassword { get; set; }
 
         /// <summary>
         /// 约定 UserId = 0 代表没有这个用户
         /// </summary>
         public static UserInfo NullUser = new UserInfo() { UserId = 0 };
-
-        public static bool operator ==(UserInfo lhs, UserInfo rhs)
-        {
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(UserInfo lhs, UserInfo rhs)
-        {
-            return !lhs.Equals(rhs);
-        }
     }
 }
