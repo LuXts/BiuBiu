@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\LoginViewModel.cs" />
+    <Compile Include="Model\MainChatViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -113,9 +114,26 @@
   <ItemGroup>
     <Resource Include="Snipaste_2020-11-30_09-18-36.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Resources\Image\close.png" />
+    <Resource Include="Resources\Image\ic_Maximize_ffffff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Image\ic_close_ffffff.png" />
+    <Resource Include="Resources\Image\ic_crop_square_ffffff.png" />
+    <Resource Include="Resources\Image\ic_message_0076F6.png" />
+    <Resource Include="Resources\Image\ic_message_2c2c2c.png" />
+    <Resource Include="Resources\Image\ic_minimize_ffffff.png" />
+    <Resource Include="Resources\Image\ic_people_0076f6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Image\ic_settings_0076f6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Image\ic_image_848484.png" />
+    <Resource Include="Resources\Image\ic_insert_drive_file_848484.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Image\ic_videocam_848484.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

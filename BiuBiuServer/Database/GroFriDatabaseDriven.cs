@@ -61,10 +61,10 @@ namespace BiuBiuServer.Database
                     new { ui = targetId, gd = groupId });
             }
 
-            List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select UserId from groupconstitute where" +
+            List<ulong> list = await Fsql.Ado.QueryAsync<ulong>("select UserId from groupconstitute where" +
                                                                    "UserId=?ui,TeamId=?gd",
                 new { ui = targetId, gd = groupId });
-            if (Target1.Count == 0)
+            if (list.Count == 0)
             {
                 return true;
             }
@@ -89,11 +89,11 @@ namespace BiuBiuServer.Database
                                                   "TeamId=?gd", new { gd = groupId });
             }
 
-            List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select TeamId from groupconstitute where" +
+            List<ulong> list1 = await Fsql.Ado.QueryAsync<ulong>("select TeamId from groupconstitute where" +
                                                                    "TeamId=?gd", new { gd = groupId });
-            List<ulong> Target2 = await Fsql.Ado.QueryAsync<ulong>("select TeamId from group where" +
+            List<ulong> list2 = await Fsql.Ado.QueryAsync<ulong>("select TeamId from group where" +
                                                                    "TeamId=?gd", new { gd = groupId });
-            if (Target2.Count == 0 && Target1.Count == 0)
+            if (list2.Count == 0 && list1.Count == 0)
             {
                 return true;
             }
@@ -115,10 +115,10 @@ namespace BiuBiuServer.Database
                                                   "UserId=?ui,TeamId=?gd", new { ui = sponsorId, gd = groupId });
             }
 
-            List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select UserId from groupconstitute where" +
+            List<ulong> list = await Fsql.Ado.QueryAsync<ulong>("select UserId from groupconstitute where" +
                                                                    "UserId=?ui,TeamId=?gd",
                 new { ui = sponsorId, gd = groupId });
-            if (Target1.Count == 0)
+            if (list.Count == 0)
             {
                 return true;
             }
@@ -136,14 +136,14 @@ namespace BiuBiuServer.Database
                     "Select AddId,SendId,ReceiveId,Identity,Result from friendadd where" +
                     "ReceiveId=?rd", new { userId });
             List<FriendRequest> friend = new List<FriendRequest>();
-            foreach (var VARIABLE in Target)
+            foreach (var tuple in Target)
             {
                 FriendRequest temp = new FriendRequest();
-                temp.RequestId = VARIABLE.Item1;
-                temp.SenderId = VARIABLE.Item2;
-                temp.ReceiverId = VARIABLE.Item3;
-                temp.RequestMessage = VARIABLE.Item4;
-                temp.RequestResult = VARIABLE.Item5;
+                temp.RequestId = tuple.Item1;
+                temp.SenderId = tuple.Item2;
+                temp.ReceiverId = tuple.Item3;
+                temp.RequestMessage = tuple.Item4;
+                temp.RequestResult = tuple.Item5;
                 friend.Add(temp);
             }
 
@@ -159,15 +159,15 @@ namespace BiuBiuServer.Database
                     "Userid=?ui", new { ui = userId });
 
             List<TeamInvitation> group = new List<TeamInvitation>();
-            foreach (var VARIABLE in Target)
+            foreach (var tuple in Target)
             {
                 TeamInvitation temp = new TeamInvitation()
                 {
-                    InvitationId = VARIABLE.Item1,
-                    ReceiverId = VARIABLE.Item3,
-                    TeamId = VARIABLE.Item2,
-                    InvitationMessage = VARIABLE.Item4,
-                    InvitationResult = VARIABLE.Item5
+                    InvitationId = tuple.Item1,
+                    ReceiverId = tuple.Item3,
+                    TeamId = tuple.Item2,
+                    InvitationMessage = tuple.Item4,
+                    InvitationResult = tuple.Item5
                 };
 
                 group.Add(temp);
@@ -179,31 +179,31 @@ namespace BiuBiuServer.Database
         //TODO:实现请求某用户需要审核的入群申请列表 用户Id 该用户的需要审核的群组申请数组 tip：该用户为群主 即群主获取到加群申请
         public async UnaryResult<List<TeamRequest>> GetGroupRequest(ulong userId)
         {
-            List<ulong> GroupOwnerId = await Fsql.Ado.QueryAsync<ulong>("select TeamId from group where" +
+            List<ulong> groupOwnerId = await Fsql.Ado.QueryAsync<ulong>("select TeamId from group where" +
                                                                         "OwnerId=?ui", new { ui = userId });
             List<(ulong, ulong, ulong, string, string)> group = new List<(ulong, ulong, ulong, string, string)>();
-            foreach (var VARIABLE in GroupOwnerId)
+            foreach (var ownerId in groupOwnerId)
             {
                 List<(ulong, ulong, ulong, string, string)> Target =
                     await Fsql.Ado.QueryAsync<(ulong, ulong, ulong, string, string)>(
                         "select ApplyId,TeamId,UserId,Identity,Result from groupapply where" +
-                        "TeamId = ?gd", new { gd = VARIABLE });
-                foreach (var VARIABLE2 in Target)
+                        "TeamId = ?gd", new { gd = ownerId });
+                foreach (var item in Target)
                 {
-                    group.Add(VARIABLE2);
+                    group.Add(item);
                 }
             }
 
             List<TeamRequest> groupApply = new List<TeamRequest>();
-            foreach (var VARIABLE in group)
+            foreach (var tuple in group)
             {
                 TeamRequest temp = new TeamRequest()
                 {
-                    RequestId = VARIABLE.Item1,
-                    SenderId = VARIABLE.Item3,
-                    TeamId = VARIABLE.Item2,
-                    RequestMessage = VARIABLE.Item4,
-                    RequestResult = VARIABLE.Item5
+                    RequestId = tuple.Item1,
+                    SenderId = tuple.Item3,
+                    TeamId = tuple.Item2,
+                    RequestMessage = tuple.Item4,
+                    RequestResult = tuple.Item5
                 };
 
                 groupApply.Add(temp);

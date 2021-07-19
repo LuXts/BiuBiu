@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using BiuBiuWpfClient.Model;
+using Window = HandyControl.Controls.Window;
 
 namespace BiuBiuWpfClient
 {
