@@ -24,7 +24,7 @@ namespace BiuBiuServer.Database
                     .QueryAsync<(ulong, string, string, string, string, string,
                         ulong, string, string)>(
                         "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,Icon,IsAdmin,Password from user where" +
-                        "UserId=?ui", new { ui = userId });
+                        " UserId=?ui", new { ui = userId });
 
             if (Target.Count == 0)
             {
@@ -70,7 +70,7 @@ namespace BiuBiuServer.Database
             ulong userId)
         {
             List<ulong> change = await Fsql.Ado.QueryAsync<ulong>(
-                "select ChangeId from userchange where" + "UserId=?ui"
+                "select ChangeId from userchange where" + " UserId=?ui"
                 , new { ui = userId });
             List<(ulong, string, string, string, string, string, ulong, string,
                 string)> Target
@@ -83,7 +83,7 @@ namespace BiuBiuServer.Database
                         .QueryAsync<(ulong, string, string, string, string,
                             string, ulong, string, string)>(
                             "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,Icon,IsAdmin,Password from user where" +
-                            "UserId=?ui", new { ui = userId });
+                            " UserId=?ui", new { ui = userId });
             }
             else
             {
@@ -92,7 +92,7 @@ namespace BiuBiuServer.Database
                         .QueryAsync<(ulong, string, string, string, string,
                             string, ulong, string, string)>(
                             "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,Icon,IsAdmin,Password from userchange where" +
-                            "UserId=?ui", new { ui = userId });
+                            " UserId=?ui", new { ui = userId });
             }
 
             if (Target.Count == 0)
@@ -138,9 +138,9 @@ namespace BiuBiuServer.Database
             UserInfo userInfo)
         {
             List<(ulong,string)> user = await Fsql.Ado.QueryAsync<(ulong, string)>("select UserId from user where" +
-                                                                "UserId=?ui", new {ui = userInfo.UserId});
+                                                                " UserId=?ui", new {ui = userInfo.UserId});
             List<ulong> change = await Fsql.Ado.QueryAsync<ulong>("select UserId from userchange where" +
-                                                                  "UserId=?ui", new {ui = userInfo.UserId});
+                                                                  " UserId=?ui", new {ui = userInfo.UserId});
 
             if (user.Count != 0 && change.Count == 0)
             {
@@ -166,7 +166,7 @@ namespace BiuBiuServer.Database
                 await Fsql.Ado.QueryAsync<object>(
                     "update userchange set DisplayName=?dn,JobNumber=?jn,Description=?dp," +
                     "PhoneNumber=?pn,Email=?em,Icon=?ic where" +
-                    "UserId = ?ui",
+                    " UserId = ?ui",
                     new
                     {
                         dn = userInfo.DisplayName,
@@ -180,7 +180,7 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select ChangeId from userchange where" +
-                                                                  "UserId=?ui", new {ui = userInfo.UserId});
+                                                                  " UserId=?ui", new {ui = userInfo.UserId});
 
             if (Target.Count == 0)
             {
@@ -232,8 +232,8 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, ulong, ulong)> Target
                 = await Fsql.Ado
                     .QueryAsync<(ulong, string, string, ulong, ulong)>(
-                        "select TeamId,GroupName,Description,Icon,OwnerId from Group where" +
-                        "TeamId=?gd", new { gd = teamId });
+                        "select GroupId,GroupName,Description,Icon,OwnerId from Group where" +
+                        " GroupId=?gd", new { gd = teamId });
             if (Target.Count == 0)
             {
                 return TeamInfoResponse.Failed;
@@ -267,21 +267,22 @@ namespace BiuBiuServer.Database
             List<ulong> group = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where GroupId=?gd",
                 new {gd = teamInfo.TeamId});
 
-            if (group.Count == 0)
+            if (group.Count != 0)
             {
-                await Fsql.Ado.QueryAsync<object>("Insert into group values (?gd,?gn,?dp,?ic,?od)",
-                    new
-                    {
-                        gd = teamInfo.TeamId,
-                        gn = teamInfo.TeamName,
-                        dp = teamInfo.Description,
-                        ic = teamInfo.IconId,
-                        od = teamInfo.OwnerId
-                    });
+                await Fsql.Ado.QueryAsync<object>("update group set GroupName=?gn,Description=?dp,Icon=?ic,OwnerId=?od where" +
+                                                  " GroupId=?gd",
+                                                  new
+                                                  {
+                                                      gn=teamInfo.TeamName,
+                                                      dp=teamInfo.Description,
+                                                      ic=teamInfo.IconId,
+                                                      od=teamInfo.OwnerId,
+                                                      gd=teamInfo.TeamId
+                                                  });
             }
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where" +
-                                                                  "GroupId=?gd,GroupName=?gn,Description=?dp,Icon=?ic,OwnerId=?od",
+                                                                  " GroupId=?gd,GroupName=?gn,Description=?dp,Icon=?ic,OwnerId=?od",
                 new
                 {
                     gd = teamInfo.TeamId,
@@ -308,7 +309,7 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, string, string, string, ulong, string)> Target =
                 await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, ulong, string)>(
                     "select u.UserId,u.DisplayName,u.JobNumber,u.Description,u.PhoneNumber,u.Email,u.Icon,u.IsAdmin from user u,groupconstitute g where" +
-                    "g.GroupId=?gd and u.UserId = g.UserId", new {gd = teamId});
+                    " g.GroupId=?gd and u.UserId = g.UserId", new {gd = teamId});
 
             List<UserInfo> user = new List<UserInfo>();
 
@@ -346,11 +347,11 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, string, string, string, ulong, string)> Target1 =
                 await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, ulong, string)>(
                     "select u.UserId,u.DisplayName,u.JobNumber,u.Description,u.PhoneNumber,u.Email,u.Icon,u.IsAdmin from user u,friendrelation f where" +
-                    "f.SendId = ?ui and f.SendId = u.UserId", new {ui = userId});
+                    " f.SendId = ?ui and f.SendId = u.UserId", new {ui = userId});
             List<(ulong, string, string, string, string, string, ulong, string)> Target2 =
                 await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, ulong, string)>(
                     "select u.UserId,u.DisplayName,u.JobNumber,u.Description,u.PhoneNumber,u.Email,u.Icon,u.IsAdmin from user u,friendrelation f where" +
-                    "f.ReceiveId = ?ui and f.ReceiveId = u.UserId", new {ui = userId});
+                    " f.ReceiveId = ?ui and f.ReceiveId = u.UserId", new {ui = userId});
             List<UserInfo> user = new List<UserInfo>();
 
             foreach (var VARIABLE in Target1)
@@ -412,7 +413,7 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, ulong, ulong)> Target =
                 await Fsql.Ado.QueryAsync<(ulong, string, string, ulong, ulong)>(
                     "select g.GroupId,g.GroupName,g.Description,g.Icon,g.OwnerId from group g,groupconstitute c where" +
-                    "g.GroupId=c.GroupId and c.UserId=?ui", new {ui = userId});
+                    " g.GroupId=c.GroupId and c.UserId=?ui", new {ui = userId});
             List<TeamInfo> group = new List<TeamInfo>();
             foreach (var VARIABLE in Target)
             {
