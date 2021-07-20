@@ -232,8 +232,8 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, ulong, ulong)> Target
                 = await Fsql.Ado
                     .QueryAsync<(ulong, string, string, ulong, ulong)>(
-                        "select GroupId,GroupName,Description,Icon,OwnerId from Group where" +
-                        " GroupId=?gd", new { gd = teamId });
+                        "select TeamId,GroupName,Description,Icon,OwnerId from Group where" +
+                        "TeamId=?gd", new { gd = teamId });
             if (Target.Count == 0)
             {
                 return TeamInfoResponse.Failed;
