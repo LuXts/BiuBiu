@@ -348,11 +348,11 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, string, string, string, ulong, string)> Target1 =
                 await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, ulong, string)>(
                     "select u.UserId,u.DisplayName,u.JobNumber,u.Description,u.PhoneNumber,u.Email,u.Icon,u.IsAdmin from user u,friendrelation f where" +
-                    " f.SendId = ?ui and f.SendId = u.UserId", new { ui = userId.ToString() });
+                    " f.SendId = ?ui and f.ReceiveId = u.UserId", new { ui = userId.ToString() });
             List<(ulong, string, string, string, string, string, ulong, string)> Target2 =
                 await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, ulong, string)>(
                     "select u.UserId,u.DisplayName,u.JobNumber,u.Description,u.PhoneNumber,u.Email,u.Icon,u.IsAdmin from user u,friendrelation f where" +
-                    " f.ReceiveId = ?ui and f.ReceiveId = u.UserId", new { ui = userId.ToString() });
+                    " f.ReceiveId = ?ui and f.SendId = u.UserId", new { ui = userId.ToString() });
             List<UserInfo> user = new List<UserInfo>();
 
             foreach (var VARIABLE in Target1)
