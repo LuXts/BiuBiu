@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,74 +10,66 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Windows.Threading;
-using BiuBiuWpfClient.Model;
-using Window = HandyControl.Controls.Window;
+using BiuBiuWpfClient.Login;
+using Grpc.Net.Client;
+using NLog.Fluent;
+using Panuon.UI.Silver;
 
 namespace BiuBiuWpfClient
 {
     /// <summary>
     /// LoginWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class LoginWindow : WindowX
     {
-        private LoginViewModel login = new LoginViewModel();
-
-        private int max = 0;
-
-        private readonly DispatcherTimer _timer;
-
         public LoginWindow()
         {
+            new Initialization();
             InitializeComponent();
-            this.DataContext = login;
-            login.Progress = 0;
-
-            _timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(1000)
-            };
-            _timer.Tick += Timer_Tick;
+            PasswdBox.Password = "123456789";
         }
 
-        private void Window_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
+        private void Window_MouseLeftButtonDown(object sender
+            , MouseButtonEventArgs e)
         {
             this.DragMove();
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private void CloseButton_OnClick(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private async void LoginButton_OnClick(object sender, RoutedEventArgs e)
         {
-            login.Progress += 10;
-            if (login.Progress == 100)
-            {
-                login.Progress = 0;
-                _timer.Stop();
-                login.IsUploading = false;
-            }
-        }
+            ButtonHelper.SetIsPending(LoginButton, true);
 
-        private void LoginButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (_timer.IsEnabled)
+            string signIn = AccountTextBox.Text;
+            string password = PasswdBox.Password;
+            var response = await AuthenticationTokenStorage.Login(signIn
+                , password, Initialization.GChannel);
+
+            if (response.Success)
             {
-                login.IsUploading = false;
-                _timer.Stop();
+                Initialization.ClientFilter = new WithAuthenticationFilter(signIn, password
+                    , Initialization.GChannel);
+
+                AuthenticationTokenStorage.UserId = response.UserId;
+                AuthenticationTokenStorage.DisplayName = response.DisplayName;
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Owner = mainWindow;
+                this.Close();
             }
             else
             {
-                login.IsUploading = true;
-                _timer.Start();
+                MessageBoxX.Show("登陆失败！");
             }
         }
 
         private void HelpButton_OnClick(object sender, RoutedEventArgs e)
         {
-            max += 10;
+            MessageBoxX.Show("请联系管理员电话：139xxxxxxxx", "遇到错误请联系管理员");
         }
     }
 }

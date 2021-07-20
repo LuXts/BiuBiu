@@ -100,7 +100,7 @@ namespace BiuBiuServer.Database
             try
             {
                 var temp = BsonDocumentToMessage(document);
-                return new MessageResponse(temp);
+                return new MessageResponse(temp) { Success = true };
             }
             catch (Exception e)
             {
@@ -122,7 +122,7 @@ namespace BiuBiuServer.Database
 
                 var client = await listener.AcceptTcpClientAsync();
                 NetworkStream ns = client.GetStream();
-                if (ns.DataAvailable)
+                if (ns.CanRead)
                 {
                     await _bucket.UploadFromStreamAsync(
                         message.MessageId.ToString() + ".tar", ns);

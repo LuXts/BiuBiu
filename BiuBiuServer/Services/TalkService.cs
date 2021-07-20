@@ -1,28 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using BiuBiuServer.Database;
 using BiuBiuServer.Interfaces;
-using BiuBiuServer.Tests;
-using BiuBiuShare;
-using BiuBiuShare.SignIn;
+using BiuBiuServer.TeamHub;
+using BiuBiuServer.Userhub;
 using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.TalkInfo;
-using BiuBiuShare.TeamHub;
 using BiuBiuShare.Tool;
-using BiuBiuShare.UserHub;
 using Grpc.Net.Client;
 using MagicOnion;
 using MagicOnion.Server;
-using MagicOnion.Server.Authentication;
 
 namespace BiuBiuServer.Services
 {
     /// <summary>
     /// 聊天相关服务实现
     /// </summary>
-    [Authorize]
     public class TalkService : ServiceBase<ITalkService>, ITalkService
     {
         private readonly ITalkNoSqlDatabaseDriven _noSQLDriven
@@ -75,21 +69,20 @@ namespace BiuBiuServer.Services
 
         private static async Task ForwardMessage(Message response)
         {
-            var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
             if (IdManagement.GenerateIdTypeById(response.TargetId) ==
                 IdType.UserId)
             {
                 UserHubClient client = new UserHubClient();
-                await client.ConnectAsync(channel, response.TargetId);
-                client.SendMessage(response);
+                await client.ConnectAsync(Initialization.GChannel, response.TargetId);
+                client.ServerSendMessage(response);
                 await client.DisposeAsync();
                 await client.WaitForDisconnect();
             }
             else
             {
                 TeamHubClient client = new TeamHubClient();
-                await client.ConnectAsync(channel, response.TargetId);
-                client.SendMessage(response);
+                await client.ConnectAsync(Initialization.GChannel, response.TargetId);
+                client.ServerSendMessage(response);
                 await client.DisposeAsync();
                 await client.WaitForDisconnect();
             }
@@ -110,7 +103,7 @@ namespace BiuBiuServer.Services
                 var re1 = await _noSQLDriven.AddMessageAsync(message);
                 if (re0.Success && re1.Success)
                 {
-                    await ForwardMessage(message);
+                    //await ForwardMessage(message);
                     return re1;
                 }
                 else
@@ -129,11 +122,18 @@ namespace BiuBiuServer.Services
             Message message)
         {
             var response = await _noSQLDriven.GetMessagesAsync(message);
-            lock (PortList)
+            if (response.Success)
             {
-                uint port = PortList.First.Value + 55000;
-                PortList.RemoveFirst();
-                return (response, port);
+                lock (PortList)
+                {
+                    uint port = PortList.First.Value + 55000;
+                    PortList.RemoveFirst();
+                    return (response, port);
+                }
+            }
+            else
+            {
+                return (response, 0);
             }
         }
 
@@ -144,7 +144,7 @@ namespace BiuBiuServer.Services
             var re = await _noSQLDriven.GetDataMessage(message, port);
             lock (PortList)
             {
-                PortList.AddFirst(port);
+                PortList.AddFirst(port - 55000);
             }
 
             return re;

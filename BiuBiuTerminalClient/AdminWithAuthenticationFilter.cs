@@ -48,12 +48,25 @@ namespace BiuBiuTerminalClient
                     , authResult
                         .Expiration); // NOTE: You can also read the token expiration date from JWT.
 
-                context.CallOptions.Headers.Remove(
-                    new Metadata.Entry("auth-token-bin", Array.Empty<byte>()));
+                foreach (var VARIABLE in context.CallOptions.Headers)
+                {
+                    if (VARIABLE.Key.Equals("auth-token-bin"))
+                    {
+                        context.CallOptions.Headers.Remove(VARIABLE);
+                    }
+                }
             }
 
-            if (!context.CallOptions.Headers.Contains(
-                new Metadata.Entry("auth-token-bin", Array.Empty<byte>())))
+            bool temp = true;
+            foreach (var VARIABLE in context.CallOptions.Headers)
+            {
+                if (VARIABLE.Key.Equals("auth-token-bin"))
+                {
+                    temp = false;
+                }
+            }
+
+            if (temp)
             {
                 context.CallOptions.Headers.Add("auth-token-bin"
                     , AuthenticationTokenStorage.Current.Token);

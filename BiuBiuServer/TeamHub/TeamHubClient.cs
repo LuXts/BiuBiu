@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using BiuBiuShare.ImInfos;
-using BiuBiuShare.SignIn;
 using BiuBiuShare.TalkInfo;
+using BiuBiuShare.TeamHub;
 using Grpc.Net.Client;
 using MagicOnion.Client;
 
-namespace BiuBiuShare.TeamHub
+namespace BiuBiuServer.TeamHub
 {
     public class TeamHubClient : ITeamHubReceiver
     {
@@ -17,17 +17,17 @@ namespace BiuBiuShare.TeamHub
             await client.JoinAsync(new TeamInfo() { TeamId = teamId });
         }
 
-        public void SendMessage(Message message)
+        public void ServerSendMessage(Message message)
         {
             client.SendMessage(message);
         }
 
-        public void AddUser(UserInfo userInfo)
+        public void ServerAddUser(UserInfo userInfo)
         {
             client.AddUser(userInfo);
         }
 
-        public void DelUser(UserInfo userInfo)
+        public void ServerDelUser(UserInfo userInfo)
         {
             client.DelUser(userInfo);
         }
@@ -40,6 +40,18 @@ namespace BiuBiuShare.TeamHub
         public Task WaitForDisconnect()
         {
             return client.WaitForDisconnect();
+        }
+
+        public void SendMessage(Message message)
+        {
+        }
+
+        public void AddUser(UserInfo userInfo)
+        {
+        }
+
+        public void DelUser(UserInfo userInfo)
+        {
         }
     }
 }

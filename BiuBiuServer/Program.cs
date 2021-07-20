@@ -5,8 +5,10 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using BiuBiuShare.Tool;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace BiuBiuServer
 {
@@ -22,6 +24,15 @@ namespace BiuBiuServer
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureKestrel(options =>
+                    {
+                        options.Listen(IPAddress.Any, 5001, listenOptions =>
+                        {
+                            listenOptions.Protocols = HttpProtocols.Http2;
+                            listenOptions.UseHttps("./BiuBiuServer.pfx",
+                                "ABaABaABa");
+                        });
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }

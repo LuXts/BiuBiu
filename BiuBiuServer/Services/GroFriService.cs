@@ -10,6 +10,8 @@ using System.Threading;
 using BiuBiuServer.Database;
 using MagicOnion.Server.Authentication;
 using System.Collections.Generic;
+using BiuBiuServer.TeamHub;
+using BiuBiuServer.Userhub;
 using BiuBiuShare.GrouFri;
 using BiuBiuShare.ImInfos;
 using BiuBiuShare.SignIn;
@@ -37,10 +39,9 @@ namespace BiuBiuServer.Services
             FriendRequestResponse temp = await _igroFriDatabaseDriven.WriteFriendRequest(request);
             if (temp.Success == true)
             {
-                var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);//生成一个信道
                 UserHubClient client = new UserHubClient();//定义一个客户端
-                await client.ConnectAsync(channel, request.ReceiverId);//利用信道与目标ID建立联系
-                client.SendFriendRequest(request);//操作
+                await client.ConnectAsync(Initialization.GChannel, request.ReceiverId);//利用信道与目标ID建立联系
+                client.ServerSendFriendRequest(request);//操作
                 await client.DisposeAsync();
                 await client.WaitForDisconnect();//关闭
             }
@@ -54,11 +55,10 @@ namespace BiuBiuServer.Services
             TeamRequestResponse temp = await _igroFriDatabaseDriven.WriteGroupRequest(request);
             if (temp.Success == true)
             {
-                var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
                 UserHubClient client = new UserHubClient();
                 TeamInfo teamInfo = await _imInfoDatabaseDriven.GetTeamInfo(request.TeamId);
-                await client.ConnectAsync(channel, teamInfo.OwnerId);
-                client.SendGroupRequest(request);
+                await client.ConnectAsync(Initialization.GChannel, teamInfo.OwnerId);
+                client.ServerSendGroupRequest(request);
                 await client.DisposeAsync();
                 await client.WaitForDisconnect();
             }
@@ -73,10 +73,9 @@ namespace BiuBiuServer.Services
             var temp = await _igroFriDatabaseDriven.WriteGroupInvitation(invitation);
             if (temp.Success == true)
             {
-                var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
                 UserHubClient client = new UserHubClient();
-                await client.ConnectAsync(channel, invitation.ReceiverId);
-                client.SendGroupInvitation(invitation);
+                await client.ConnectAsync(Initialization.GChannel, invitation.ReceiverId);
+                client.ServerSendGroupInvitation(invitation);
                 await client.DisposeAsync();
                 await client.WaitForDisconnect();
             }
@@ -104,11 +103,10 @@ namespace BiuBiuServer.Services
             var temp = await _igroFriDatabaseDriven.ReplyFriendRequest(request, replyResult);
             if (temp.Success)
             {
-                var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
                 UserHubClient client = new UserHubClient();
-                await client.ConnectAsync(channel, request.SenderId);
+                await client.ConnectAsync(Initialization.GChannel, request.SenderId);
                 //给申请者发好友申请结果
-                client.SendFriendRequest(request);
+                client.ServerSendFriendRequest(request);
                 await client.DisposeAsync();
                 await client.WaitForDisconnect();
             }
@@ -121,22 +119,21 @@ namespace BiuBiuServer.Services
             if (temp.Success)
             {
                 var teamInfo = await _imInfoDatabaseDriven.GetTeamInfo(invitation.TeamId);
-                var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
                 UserHubClient client = new UserHubClient();
-                await client.ConnectAsync(channel, teamInfo.OwnerId);
+                await client.ConnectAsync(Initialization.GChannel, teamInfo.OwnerId);
                 // 给群主发邀请某人入群的结果
-                client.SendGroupInvitation(invitation);
+                client.ServerSendGroupInvitation(invitation);
                 if (replyResult)
                 {
                     // 群发新用户入群消息
                     TeamHubClient client2 = new TeamHubClient();
-                    await client2.ConnectAsync(channel, invitation.TeamId);
+                    await client2.ConnectAsync(Initialization.GChannel, invitation.TeamId);
                     UserInfoResponse userInfo
                         = await _imInfoDatabaseDriven.GetUserInfo(
                             invitation.ReceiverId);
                     if (userInfo.Success)
                     {
-                        client2.AddUser(userInfo);
+                        client2.ServerAddUser(userInfo);
                     }
                     else
                     {
@@ -156,24 +153,22 @@ namespace BiuBiuServer.Services
             var temp = await _igroFriDatabaseDriven.ReplyGroupRequest(request, replyResult);
             if (temp.Success)
             {
-                var channel = GrpcChannel.ForAddress(Initialization.GrpcAddress);
-
                 UserHubClient client = new UserHubClient();
-                await client.ConnectAsync(channel, request.SenderId);
+                await client.ConnectAsync(Initialization.GChannel, request.SenderId);
                 // 给申请者发入群申请结果
-                client.SendGroupRequest(request);
+                client.ServerSendGroupRequest(request);
 
                 if (replyResult)
                 {
                     // 群发新用户入群消息
                     TeamHubClient client2 = new TeamHubClient();
-                    await client2.ConnectAsync(channel, request.TeamId);
+                    await client2.ConnectAsync(Initialization.GChannel, request.TeamId);
                     UserInfoResponse userInfo
                         = await _imInfoDatabaseDriven.GetUserInfo(
                             request.SenderId);
                     if (userInfo.Success)
                     {
-                        client2.AddUser(userInfo);
+                        client2.ServerAddUser(userInfo);
                     }
                     else
                     {
@@ -207,8 +202,28 @@ namespace BiuBiuServer.Services
         public async UnaryResult<bool> DeleteMemberFromGroup(UserInfo sponsoriInfo, UserInfo memberInfo
             , TeamInfo teamInfo)
         {
-            return await _igroFriDatabaseDriven.DeleteMemberFromGroup(
+            var temp = await _igroFriDatabaseDriven.DeleteMemberFromGroup(
                 sponsoriInfo.UserId, memberInfo.UserId, teamInfo.TeamId);
+            if (temp)
+            {
+                // 群发消息
+                TeamHubClient client2 = new TeamHubClient();
+                await client2.ConnectAsync(Initialization.GChannel, teamInfo.TeamId);
+                UserInfoResponse userInfo
+                    = await _imInfoDatabaseDriven.GetUserInfo(
+                        memberInfo.UserId);
+                if (userInfo.Success)
+                {
+                    client2.ServerDelUser(userInfo);
+                }
+                else
+                {
+                    Initialization.Logger.Error("查无此人！");
+                }
+                await client2.DisposeAsync();
+                await client2.WaitForDisconnect();
+            }
+            return temp;
         }
 
         public async UnaryResult<bool> EstablishTeam(UserInfo builderInfo, TeamInfo teamInfo)

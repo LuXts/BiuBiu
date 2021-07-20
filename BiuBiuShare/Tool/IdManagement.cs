@@ -13,8 +13,8 @@ namespace BiuBiuShare.Tool
         , TeamInvitationId = 6
         , MessageId = 7
         , IconId = 8
-        ,FriendRelationId = 9 
-        ,TeamRelationId = 10
+        , FriendRelationId = 9
+        , TeamRelationId = 10
     }
 
     public class IdManagement
@@ -32,17 +32,16 @@ namespace BiuBiuShare.Tool
 
         public static ulong TimeGen()
         {
-            return (ulong)DateTime.UtcNow.Millisecond;
+            return (ulong)new DateTimeOffset(DateTime.UtcNow)
+                .ToUnixTimeMilliseconds();
         }
 
         public static ulong GenerateId(IdType dataType)
         {
-            _timestampId = TimeGen() << (int)(_idBits - _timestampIdBits);
-            _typeId = (uint)dataType <<
-                      (int)(_idBits - _timestampIdBits - _typeIdBits);
-            _indexId = _index << (int)(_idBits - _timestampIdBits -
-                                        _typeIdBits - _indexIdBits);
-            _index = (_index + 1) % (uint)(Math.Pow(2, _indexIdBits));
+            _timestampId = TimeGen() << 20;
+            _typeId = (uint)dataType << 12;
+            _indexId = _index << 2;
+            _index = (_index + 1) % 1024;
             return _timestampId + _typeId + _indexId + _expandId;
         }
 

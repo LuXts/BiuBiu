@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using BiuBiuShare.SignIn;
 using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.Tests;
+using BiuBiuShare.Tool;
 using Grpc.Core;
 using Grpc.Net.Client;
 using LitJWT;
@@ -21,13 +23,25 @@ namespace BiuBiuTerminalClient
 {
     internal class Program
     {
-        private static async Task UploadFile(ITalkService clientTalkService)
+        private static async Task UploadFile(ITalkService clientTalkService
+            , string path)
         {
+            ulong id = IdManagement.GenerateId(IdType.IconId);
+            Console.WriteLine(id);
             var n2 = clientTalkService.SendDataAsync(
-                new MessageResponse() { MessageId = 20191122 }, 34567, true);
-            FileStream fs
-                = File.Open("F://MyPicture/Snipaste_2021-06-01_07-28-25.png"
-                    , FileMode.Open);
+                new MessageResponse()
+                {
+                    MessageId = id
+                    ,
+                    Type = "Icon"
+                    ,
+                    Data = path
+                    ,
+                    SourceId = 0
+                    ,
+                    TargetId = 0
+                }, 55400, true);
+            FileStream fs = File.Open(path, FileMode.Open);
             byte[] fileBytes = new byte[fs.Length];
             using (fs)
             {
@@ -38,7 +52,7 @@ namespace BiuBiuTerminalClient
 
             IPAddress address = IPAddress.Parse("127.0.0.1");
             TcpClient client = new TcpClient();
-            client.Connect(address, 34567);
+            client.Connect(address, 55400);
             using (client)
             {
                 //连接完服务器后便在客户端和服务端之间产生一个流的通道
@@ -47,12 +61,13 @@ namespace BiuBiuTerminalClient
                 {
                     //通过此通道将图片数据写入网络流，传向服务器端接收
                     ns.Write(fileBytes, 0, fileBytes.Length);
+                    ns.Close();
                 }
             }
 
             client.Close();
 
-            bool n = await n2;
+            bool n = (await n2).Success;
             Console.WriteLine(n);
         }
 
@@ -91,7 +106,7 @@ namespace BiuBiuTerminalClient
                 client.Close();
             }
 
-            bool n = await n2;
+            bool n = (await n2).Success;
             Console.WriteLine(n);
         }
 
@@ -130,29 +145,15 @@ namespace BiuBiuTerminalClient
              Console.WriteLine(IdManagement.GenerateTsById(id4).ToString("x"));
             */
 
-            var options = new[]
-            {
-                // send keepalive ping every 10 second, default is 2 hours
-                new ChannelOption("grpc.keepalive_time_ms", 10000),
-                // keepalive ping time out after 5 seconds, default is 20 seconds
-                new ChannelOption("grpc.keepalive_timeout_ms", 5000)
-                ,
-                // allow grpc pings from client every 10 seconds
-                new ChannelOption("grpc.http2.min_time_between_pings_ms", 10000)
-                ,
-                // allow unlimited amount of keepalive pings without data
-                new ChannelOption("grpc.http2.max_pings_without_data", 0)
-                ,
-                // allow keepalive pings when there's no gRPC calls
-                new ChannelOption("grpc.keepalive_permit_without_calls", 1)
-                ,
-                // allow grpc pings from client without data every 5 seconds
-                new ChannelOption("grpc.http2.min_ping_interval_without_data_ms"
-                    , 5000)
-                ,
-            };
+            var httpClientHandler = new HttpClientHandler();
+            // Return `true` to allow certificates that are untrusted/invalid
+            httpClientHandler.ServerCertificateCustomValidationCallback
+                = HttpClientHandler
+                    .DangerousAcceptAnyServerCertificateValidator;
+            var httpClient = new HttpClient(httpClientHandler);
 
-            var channel2 = GrpcChannel.ForAddress("https://localhost:5001");
+            var channel2 = GrpcChannel.ForAddress("https://192.168.100.11:5001"
+                , new GrpcChannelOptions { HttpClient = httpClient });
 
             var client2
                 = MagicOnion.Client.MagicOnionClient.Create<ITalkService>(
@@ -162,26 +163,17 @@ namespace BiuBiuTerminalClient
                         new AdminWithAuthenticationFilter("18578967136"
                             , "123456789", channel2)
                     });
-            //await UploadFile(client2);
-            //await DownloadFile(client2);
-            OnlineHubClient client = new OnlineHubClient();
-            client.ConnectAsync(channel2
-                , new UserInfo() { UserId = 2019, DisplayName = "Wang" });
+            //await UploadFile(client2, "E://Image/2287.jpg");
+            //await UploadFile(client2, "E://Image/2310.jpg");
 
-            Console.ReadKey();
-            OnlineHubClient client1 = new OnlineHubClient();
-            client1.ConnectAsync(channel2
-                , new UserInfo() { UserId = 2021, DisplayName = "Hu" });
-            Console.ReadKey();
-
-            var c = MagicOnionClient.Create<IMyTestService>(channel2);
-            int d = await c.SumAsync2(2, 3);
-
-            Console.ReadKey();
-            client.DisposeAsync();
-            client.WaitForDisconnect();
-            client1.DisposeAsync();
-            client1.WaitForDisconnect();
+            Console.WriteLine(IdManagement.GenerateId(IdType.UserId));
+            Console.WriteLine(IdManagement.GenerateId(IdType.UserId));
+            Console.WriteLine();
+            Console.WriteLine(IdManagement.GenerateId(IdType.FriendRelationId));
+            Console.WriteLine(IdManagement.GenerateId(IdType.FriendRelationId));
+            Console.WriteLine(IdManagement.GenerateId(IdType.FriendRelationId));
+            Console.WriteLine(IdManagement.GenerateId(IdType.FriendRelationId));
+            Console.WriteLine(IdManagement.GenerateId(IdType.FriendRelationId));
         }
     }
 }

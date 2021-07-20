@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BiuBiuShare;
 using BiuBiuShare.ServiceInterfaces;
 using Grpc.Core;
 using Grpc.Net.Client;
 using MagicOnion.Client;
 
-namespace BiuBiuTerminalClient
+namespace BiuBiuWpfClient.Login
 {
-    internal class WithAuthenticationFilter : IClientFilter
+    public class WithAuthenticationFilter : IClientFilter
     {
         private readonly string _signInId;
         private readonly string _password;
@@ -31,7 +30,7 @@ namespace BiuBiuTerminalClient
             if (AuthenticationTokenStorage.Current.IsExpired)
             {
                 Console.WriteLine(
-                    $@"[WithAuthenticationFilter/IAccountService.SignInAsync] Try signing in as '{_signInId}'... ({(AuthenticationTokenStorage.Current.Token == null ? "FirstTime" : "RefreshToken")})");
+                    $@"[WithAuthenticationFilter/IAccountService.SignInAsync] Try signing in as '{_signInId}'... ({(AuthenticationTokenStorage.Token == null ? "FirstTime" : "RefreshToken")})");
 
                 var client = MagicOnionClient.Create<IAccountService>(_channel);
                 var authResult
@@ -45,7 +44,7 @@ namespace BiuBiuTerminalClient
                 Console.WriteLine(
                     $@"[WithAuthenticationFilter/IAccountService.SignInAsync] User authenticated as {authResult.DisplayName} (UserId:{authResult.UserId})");
 
-                AuthenticationTokenStorage.Current.Update(authResult.Token
+                AuthenticationTokenStorage.Update(authResult.Token
                     , authResult
                         .Expiration); // NOTE: You can also read the token expiration date from JWT.
 
@@ -69,9 +68,8 @@ namespace BiuBiuTerminalClient
 
             if (temp)
             {
-                Console.WriteLine("Test");
                 context.CallOptions.Headers.Add("auth-token-bin"
-                    , AuthenticationTokenStorage.Current.Token);
+                    , AuthenticationTokenStorage.Token);
             }
 
             return await next(context);

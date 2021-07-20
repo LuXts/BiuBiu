@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BiuBiuServer.Authentication;
 using BiuBiuServer.Services;
+using Grpc.AspNetCore.Server;
 using LitJWT;
 using LitJWT.Algorithms;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +29,8 @@ namespace BiuBiuServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddGrpc(); // MagicOnion depends on ASP.NET Core gRPC service.
+            services.AddGrpc();
+            // MagicOnion depends on ASP.NET Core gRPC service.
             services.AddMagicOnion()
                 .AddJwtAuthentication<CustomJwtAuthenticationProvider>(options =>
                 {
@@ -36,7 +38,7 @@ namespace BiuBiuServer
                     var algorithm = new HS512Algorithm(preSharedKey); // Use Symmetric algorithm (HMAC SHA-512)
                     options.Encoder = new JwtEncoder(algorithm);
                     options.Decoder = new JwtDecoder(new JwtAlgorithmResolver(algorithm));
-                    options.Expire = TimeSpan.FromSeconds(5);
+                    options.Expire = TimeSpan.FromMinutes(20);
                 });
         }
 
@@ -47,12 +49,16 @@ namespace BiuBiuServer
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseHttpsRedirection();
             app.UseRouting();
-
+            app.UseCertificateForwarding();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapMagicOnionService();
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+                });
             });
         }
     }

@@ -2,10 +2,16 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<SignAssembly>false</SignAssembly>
+		<AssemblyOriginatorKeyFile>BiuBiuServer.pfx</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Content Remove="NLog.config" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Services\vdyrs5fg.uxl~" />
 	</ItemGroup>
 
 	<ItemGroup>

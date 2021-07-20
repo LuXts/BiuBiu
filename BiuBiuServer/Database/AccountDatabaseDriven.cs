@@ -18,7 +18,7 @@ namespace BiuBiuServer.Database
         {
             List<(string, ulong)> Target = await Fsql.Ado.QueryAsync<(string, ulong)>(
                 "select DisplayName,UserId from user" +
-                " where (PhoneNumber = ?si or JobNumber = ?si) and and Password = ?pd", new { si = signInId, pd = password });
+                " where (PhoneNumber = ?si or JobNumber = ?si) and Password = ?pd ", new { si = signInId, pd = password });
             if (Target.Count != 0)
             {
                 var VARIABLE = Target[0];

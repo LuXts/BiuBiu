@@ -1,12 +1,30 @@
-﻿{
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "https://192.168.100.11:5001",
+      "sslPort": 0
+    },
+    "iisExpress": {
+      "applicationUrl": "https://192.168.100.11:5001/",
+      "sslPort": 44313
+    }
+  },
   "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
     "BiuBiuServer": {
       "commandName": "Project",
-      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+      "applicationUrl": "https://192.168.100.11:5001;http://192.168.100.11:5000"
     }
   }
 }
