@@ -4,7 +4,7 @@ namespace BiuBiuServer
 {
     public class MySqlDriven
     {
-        private readonly static string _ip = "127.0.0.1";
+        private readonly static string _ip = "192.168.100.11";
         private readonly static string _user = "luxts";
         private readonly static string _password = "JL4i7nVuymwBnGr";
 
