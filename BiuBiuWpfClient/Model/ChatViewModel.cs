@@ -27,6 +27,8 @@ namespace BiuBiuWpfClient.Model
 
         private BitmapImage _bitmap;
 
+        public ulong TargetId = 0;
+
         public BitmapImage BImage
         {
             get { return _bitmap; }
@@ -65,12 +67,25 @@ namespace BiuBiuWpfClient.Model
             }
         }
 
-        public ulong LastMessageTime;
+        private ulong _lastMessageTime;
+
+        public ulong LastMessageTime
+        {
+            get { return _lastMessageTime; }
+            set
+            {
+                _lastMessageTime = value;
+                Notify("LastMessageTime");
+            }
+        }
+
+        public string InputData;
 
         private ITalkService _talkService;
 
         public ChatViewModel(ulong userId)
         {
+            TargetId = userId;
             _chatId = userId;
             BImage = new BitmapImage();
             InitChat();

@@ -1,4 +1,5 @@
-﻿using BiuBiuShare.ServiceInterfaces;
+﻿using System;
+using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.TalkInfo;
 using BiuBiuWpfClient.Login;
 using BiuBiuWpfClient.Model;
@@ -11,7 +12,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using BiuBiuServer.Userhub;
 using BiuBiuShare.ImInfos;
+using BiuBiuShare.Tool;
 using HandyControl.Data;
+using HandyControl.Tools.Extension;
 
 namespace BiuBiuWpfClient
 {
@@ -27,7 +30,15 @@ namespace BiuBiuWpfClient
         public ObservableCollection<ChatInfoModel> ChatInfos { get; set; }
             = new ObservableCollection<ChatInfoModel>();
 
-        public ObservableCollection<ChatViewModel> ChatListCollection = new ObservableCollection<ChatViewModel>();
+        public ObservableCollection<ChatViewModel> ChatListCollection
+            = new ObservableCollection<ChatViewModel>();
+
+        private CollectionViewSource _collectionView
+            = new CollectionViewSource();
+
+        private ulong currentTargetId = 0;
+
+        private ChatViewModel currentChatViewModel;
 
         public MainWindow()
         {
@@ -39,13 +50,12 @@ namespace BiuBiuWpfClient
             _imInfoService = MagicOnionClient.Create<IImInfoService>(
                 Initialization.GChannel, new[] { Initialization.ClientFilter });
 
-            ListBoxChat.ItemsSource = ChatInfos;
-
-            var view = CollectionViewSource.GetDefaultView(ChatListCollection);
-            view.SortDescriptions.Add(new SortDescription("LastMessageTime"
-                , ListSortDirection.Descending));
-
-            ChatListBox.ItemsSource = view;
+            _collectionView.Source = ChatListCollection;
+            _collectionView.View.Refresh();
+            _collectionView.View.SortDescriptions.Add(
+                new SortDescription("LastMessageTime"
+                    , ListSortDirection.Descending));
+            ChatListBox.ItemsSource = _collectionView.View;
 
             _userHubClient = new UserHubClient();
             _userHubClient.ConnectAsync(Initialization.GChannel
@@ -65,7 +75,20 @@ namespace BiuBiuWpfClient
                         ,
                         Role = ChatRoleType.Receiver
                     };
-                    this.ChatInfos.Add(info);
+
+                    foreach (var chatViewModel in ChatListCollection)
+                    {
+                        if (chatViewModel.TargetId == message.SourceId)
+                        {
+                            chatViewModel.ChatInfos.Add(info);
+                            chatViewModel.LastMessage = message.Data;
+                            chatViewModel.LastMessageTime
+                                = IdManagement.TimeGen() << 20;
+                            break;
+                        }
+                    }
+
+                    _collectionView.View.Refresh();
                 }
             };
 
@@ -79,8 +102,13 @@ namespace BiuBiuWpfClient
                 new UserInfo() { UserId = AuthenticationTokenStorage.UserId });
             foreach (var user in userInfos)
             {
+                Initialization.Logger.Debug(user.UserId);
+                Initialization.Logger.Debug(user.DisplayName);
+                Initialization.Logger.Debug(user.Description);
+                Initialization.Logger.Debug(user.IconId);
+                Initialization.Logger.Debug(user.Email);
                 ChatListCollection.Add(
-                    new ChatViewModel(user.UserId) { LastMessageTime = 0 });
+                    new ChatViewModel(user.UserId) { LastMessageTime = IdManagement.TimeGen() << 20 });
             }
         }
 
@@ -96,18 +124,9 @@ namespace BiuBiuWpfClient
             RowDefinition.MaxHeight = this.Height / 2;
         }
 
-        private void SendMessageButton_OnClick(object sender, RoutedEventArgs e)
+        private async void SendMessageButton_OnClick(object sender
+            , RoutedEventArgs e)
         {
-            ulong TargetId;
-            if (AuthenticationTokenStorage.UserId == 1705766111136452612)
-            {
-                TargetId = 1705766111094509568;
-            }
-            else
-            {
-                TargetId = 1705766111136452612;
-            }
-
             var info = new ChatInfoModel
             {
                 Message = ChatInputbox.Text
@@ -120,7 +139,7 @@ namespace BiuBiuWpfClient
             };
             ChatInfos.Add(info);
 
-            var re = _talkService.SendMessageAsync(new Message()
+            var re = await _talkService.SendMessageAsync(new Message()
             {
                 Data = ChatInputbox.Text
                 ,
@@ -128,17 +147,42 @@ namespace BiuBiuWpfClient
                 ,
                 SourceId = AuthenticationTokenStorage.UserId
                 ,
-                TargetId = TargetId
+                TargetId = currentTargetId
             });
-
+            currentChatViewModel.LastMessageTime
+                = re.Item1.MessageId;
+            currentChatViewModel.LastMessage = ChatInputbox.Text;
+            _collectionView.View.Refresh();
+            currentChatViewModel.InputData = "";
             ChatInputbox.Text = "";
         }
 
         private void ChatListBox_OnSelectionChanged(object sender
             , SelectionChangedEventArgs e)
         {
-            MessageBoxX.Show(ChatListBox.SelectedIndex.ToString());
-            Initialization.Logger.Debug(ChatListBox.SelectedItem.GetType());
+            ChatView.Visibility = Visibility.Visible;
+            var chatView = ChatListBox.SelectedItem as ChatViewModel;
+            if (chatView is null)
+            {
+                ChatView.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                ListBoxChat.ItemsSource = chatView.ChatInfos;
+                ChatInfos = chatView.ChatInfos;
+                currentTargetId = chatView.TargetId;
+                ChatInputbox.Text = chatView.InputData;
+                currentChatViewModel = chatView;
+            }
+        }
+
+        private void ChatInputbox_OnTextChanged(object sender
+            , TextChangedEventArgs e)
+        {
+            currentChatViewModel.LastMessageTime
+                = IdManagement.TimeGen() << 20;
+            currentChatViewModel.InputData = ChatInputbox.Text;
+            _collectionView.View.Refresh();
         }
     }
 }

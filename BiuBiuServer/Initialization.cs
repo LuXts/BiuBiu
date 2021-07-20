@@ -7,7 +7,7 @@ namespace BiuBiuServer
     public class Initialization
     {
         public readonly static string GrpcAddress
-            = "https://192.168.100.11:5001";
+            = "https://127.0.0.1:5001";
 
         public static GrpcChannel GChannel;
 
