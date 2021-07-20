@@ -17,7 +17,7 @@ namespace BiuBiuServer.Database
         public async UnaryResult<bool> DeleteFriend(ulong sponsorId, ulong targetId)
         {
             List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
-                                                                   "SendId = ?sd,ReceiveId = ?rd",
+                                                                   " SendId = ?sd,ReceiveId = ?rd",
                 new { sd = sponsorId, rd = targetId });
             if (Target1.Count != 0)
             {
@@ -26,7 +26,7 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong> Target2 = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
-                                                                   "SendId = ?sd,ReceiveId = ?rd",
+                                                                   " SendId = ?sd,ReceiveId = ?rd",
                 new { sd = targetId, rd = sponsorId });
             if (Target2.Count != 0)
             {
@@ -35,11 +35,11 @@ namespace BiuBiuServer.Database
             }
             Target1.Clear();
             Target1 = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
-                                                       "SendId = ?sd,ReceiveId = ?rd",
+                                                       " SendId = ?sd,ReceiveId = ?rd",
                 new { sd = sponsorId, rd = targetId });
             Target2.Clear();
             Target2 = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
-                                                       "SendId = ?sd,ReceiveId = ?rd",
+                                                       " SendId = ?sd,ReceiveId = ?rd",
                 new { sd = targetId, rd = sponsorId });
             if (Target1.Count == 0 && Target2.Count == 0)
             {
@@ -56,7 +56,7 @@ namespace BiuBiuServer.Database
         {
             List<(ulong, ulong)> Target = await Fsql.Ado.QueryAsync<(ulong, ulong)>(
                 "select TeamId,OwnerId from group where" +
-                "TeamId=?gd", new { gd = groupId });
+                " TeamId=?gd", new { gd = groupId });
             if (Target[0].Item2 == sponsorId)
             {
                 await Fsql.Ado.QueryAsync<object>("delete from groupconstitute where UserId=?ui,TeamId=?gd",
@@ -64,7 +64,7 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong> list = await Fsql.Ado.QueryAsync<ulong>("select UserId from groupconstitute where" +
-                                                                   "UserId=?ui,TeamId=?gd",
+                                                                   " UserId=?ui,TeamId=?gd",
                 new { ui = targetId, gd = groupId });
             if (list.Count == 0)
             {
@@ -81,20 +81,20 @@ namespace BiuBiuServer.Database
         {
             List<(ulong, ulong)> Target = await Fsql.Ado.QueryAsync<(ulong, ulong)>(
                 "select TeamId,OwnerId from group where" +
-                "TeamId=?gd", new { gd = groupId });
+                " TeamId=?gd", new { gd = groupId });
 
             if (Target[0].Item2 == sponsorId)
             {
                 await Fsql.Ado.QueryAsync<object>("delete from groupconstitute where" +
-                                                  "TeamId=?gd", new { gd = groupId });
+                                                  " TeamId=?gd", new { gd = groupId });
                 await Fsql.Ado.QueryAsync<object>("delete from group where" +
-                                                  "TeamId=?gd", new { gd = groupId });
+                                                  " TeamId=?gd", new { gd = groupId });
             }
 
             List<ulong> list1 = await Fsql.Ado.QueryAsync<ulong>("select TeamId from groupconstitute where" +
-                                                                   "TeamId=?gd", new { gd = groupId });
+                                                                   " TeamId=?gd", new { gd = groupId });
             List<ulong> list2 = await Fsql.Ado.QueryAsync<ulong>("select TeamId from group where" +
-                                                                   "TeamId=?gd", new { gd = groupId });
+                                                                   " TeamId=?gd", new { gd = groupId });
             if (list2.Count == 0 && list1.Count == 0)
             {
                 return true;
@@ -110,15 +110,15 @@ namespace BiuBiuServer.Database
         {
             List<(ulong, ulong)> Target = await Fsql.Ado.QueryAsync<(ulong, ulong)>(
                 "select TeamId,OwnerId from group where" +
-                "TeamId=?gd", new {gd = groupId});
+                " TeamId=?gd", new {gd = groupId});
             if (Target[0].Item2 != sponsorId)
             {
                 await Fsql.Ado.QueryAsync<object>("delete from groupconstitute where" +
-                                                  "UserId=?ui,TeamId=?gd", new { ui = sponsorId, gd = groupId });
+                                                  " UserId=?ui,TeamId=?gd", new { ui = sponsorId, gd = groupId });
             }
 
             List<ulong> list = await Fsql.Ado.QueryAsync<ulong>("select UserId from groupconstitute where" +
-                                                                   "UserId=?ui,TeamId=?gd",
+                                                                   " UserId=?ui,TeamId=?gd",
                 new { ui = sponsorId, gd = groupId });
             if (list.Count == 0)
             {
@@ -136,7 +136,7 @@ namespace BiuBiuServer.Database
             List<(ulong, ulong, ulong, string, string)> Target =
                 await Fsql.Ado.QueryAsync<(ulong, ulong, ulong, string, string)>(
                     "Select AddId,SendId,ReceiveId,Identity,Result from friendadd where" +
-                    "ReceiveId=?rd", new {rd = userId});
+                    " ReceiveId=?rd", new {rd = userId});
             List<FriendRequest> friend = new List<FriendRequest>();
             foreach (var tuple in Target)
             {
@@ -158,7 +158,7 @@ namespace BiuBiuServer.Database
             List<(ulong, ulong, ulong, string, string)> Target =
                 await Fsql.Ado.QueryAsync<(ulong, ulong, ulong, string, string)>(
                     "select InviteId,TeamId,UserId,Identity,Result from groupinvite where" +
-                    "Userid=?ui", new { ui = userId });
+                    " Userid=?ui", new { ui = userId });
 
             List<TeamInvitation> group = new List<TeamInvitation>();
             foreach (var tuple in Target)
@@ -182,14 +182,14 @@ namespace BiuBiuServer.Database
         public async UnaryResult<List<TeamRequest>> GetGroupRequest(ulong userId)
         {
             List<ulong> groupOwnerId = await Fsql.Ado.QueryAsync<ulong>("select TeamId from group where" +
-                                                                        "OwnerId=?ui", new { ui = userId });
+                                                                        " OwnerId=?ui", new { ui = userId });
             List<(ulong, ulong, ulong, string, string)> group = new List<(ulong, ulong, ulong, string, string)>();
             foreach (var ownerId in groupOwnerId)
             {
                 List<(ulong, ulong, ulong, string, string)> Target =
                     await Fsql.Ado.QueryAsync<(ulong, ulong, ulong, string, string)>(
                         "select ApplyId,TeamId,UserId,Identity,Result from groupapply where" +
-                        "TeamId = ?gd", new { gd = ownerId });
+                        " TeamId = ?gd", new { gd = ownerId });
                 foreach (var item in Target)
                 {
                     group.Add(item);
@@ -219,7 +219,7 @@ namespace BiuBiuServer.Database
         {
             List<(ulong, ulong)> friendApply = await Fsql.Ado.QueryAsync<(ulong, ulong)>(
                 "select SendId,ReceiveId from friendadd where" +
-                "AddId=?ad", new {ad = request.RequestId});
+                " AddId=?ad", new {ad = request.RequestId});
             if (friendApply.Count != 0)
             {
                 if (replyResult)
@@ -232,11 +232,11 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
-                                                                  "SendId=?sd,ReceiveId=?rd",
+                                                                  " SendId=?sd,ReceiveId=?rd",
                 new {sd = request.SenderId, rd = request.ReceiverId});
 
             await Fsql.Ado.QueryAsync<object>("delete from friendadd where" +
-                                              "AddId=?ad", new {ad = request.RequestId});
+                                              " AddId=?ad", new {ad = request.RequestId});
 
             if (Target.Count == 0)
             {
@@ -253,7 +253,7 @@ namespace BiuBiuServer.Database
         public async UnaryResult<TeamInvitationResponse> ReplyGroupInvitation(TeamInvitation invitation, bool replyResult)
         {
             List<ulong> groupRelation = await Fsql.Ado.QueryAsync<ulong>("select InviteId from groupinvite where" +
-                                                                         "InviteId = ?iid",
+                                                                         " InviteId = ?iid",
                 new {iid = invitation.InvitationId});
             if (groupRelation.Count != 0)
             {
@@ -273,11 +273,11 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select RelationId from groupconstitute where" +
-                                                                  "UserId=?ui,GroupId=?gd",
+                                                                  " UserId=?ui,GroupId=?gd",
                 new {ui = invitation.ReceiverId, gd = invitation.TeamId});
 
             await Fsql.Ado.QueryAsync<object>("delete from groupinvite where" +
-                                              "InviteId=?iid", new {iid = invitation.InvitationId});
+                                              " InviteId=?iid", new {iid = invitation.InvitationId});
 
             if (Target.Count == 0)
             {
@@ -293,7 +293,7 @@ namespace BiuBiuServer.Database
         public async UnaryResult<TeamRequestResponse> ReplyGroupRequest(TeamRequest request, bool replyResult)
         {
             List<ulong> groupRelation = await Fsql.Ado.QueryAsync<ulong>("select ApplyId from groupapply where" +
-                                                                         "ApplyId=?ad", new {ad = request.RequestId});
+                                                                         " ApplyId=?ad", new {ad = request.RequestId});
             if (groupRelation.Count != 0)
             {
                 if (replyResult)
@@ -312,11 +312,11 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select RelationId from groupconstitute where" +
-                                                                  "UserId=?ui,GroupId=?gd",
+                                                                  " UserId=?ui,GroupId=?gd",
                 new {ui = request.SenderId, gd = request.TeamId});
 
             await Fsql.Ado.QueryAsync<object>("delete from groupapply where" +
-                                              "ApplyId=?ad", new {ad = request.RequestId});
+                                              " ApplyId=?ad", new {ad = request.RequestId});
 
             if (Target.Count == 0)
             {
@@ -332,16 +332,16 @@ namespace BiuBiuServer.Database
         public async UnaryResult<FriendRequestResponse> WriteFriendRequest(FriendRequest request)
         {
             List<ulong> IsFriend1 = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
-                                                                     "SendId=?sd,ReceiveId=?rd",
+                                                                     " SendId=?sd,ReceiveId=?rd",
                 new {sd = request.SenderId, rd = request.ReceiverId});
             List<ulong> IsFriend2 = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
-                                                                     "SendId=?sd,ReceiveId=?rd",
+                                                                     " SendId=?sd,ReceiveId=?rd",
                 new { sd = request.ReceiverId, rd = request.SenderId });
             List<ulong> hasAdd1 = await Fsql.Ado.QueryAsync<ulong>("select AddId from friendadd where" +
-                                                                   "SendId=?sd,ReceiveId=?rd",
+                                                                   " SendId=?sd,ReceiveId=?rd",
                 new {sd = request.SenderId, rd = request.ReceiverId});
             List<ulong> hasAdd2 = await Fsql.Ado.QueryAsync<ulong>("select AddId from friendadd where" +
-                                                                   "SendId=?sd,ReceiveId=?rd",
+                                                                   " SendId=?sd,ReceiveId=?rd",
                 new { sd = request.ReceiverId, rd = request.SenderId });
 
             if (IsFriend1.Count == 0 && IsFriend2.Count == 0 && hasAdd1.Count == 0 && hasAdd2.Count == 0)
@@ -355,7 +355,7 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select AddId from friendadd where" +
-                                                                  "SendId=?sd,ReceiveId=?rd",
+                                                                  " SendId=?sd,ReceiveId=?rd",
                 new { sd = request.SenderId, rd = request.ReceiverId });
 
             if (Target.Count == 0)
@@ -372,14 +372,14 @@ namespace BiuBiuServer.Database
         public async UnaryResult<TeamInvitationResponse> WriteGroupInvitation(TeamInvitation invitation)
         {
             List<ulong> InGroup = await Fsql.Ado.QueryAsync<ulong>("select RelationId from groupconstitute where" +
-                                                                   "UserId=?ui,GroupId=?gd",
+                                                                   " UserId=?ui,GroupId=?gd",
                 new {ui = invitation.ReceiverId, gd = invitation.TeamId});
 
             List<ulong>hasInvite = await Fsql.Ado.QueryAsync<ulong>("select InviteId from groupinvite where" +
-                                                                    "UserId=?ui,GroupId=?gd",
+                                                                    " UserId=?ui,GroupId=?gd",
                 new { ui = invitation.ReceiverId, gd = invitation.TeamId });
             List<ulong>hasApply = await Fsql.Ado.QueryAsync<ulong>("select ApplyId from groupapply where" +
-                                                                   "UserId=?ui,GroupId=?gd",
+                                                                   " UserId=?ui,GroupId=?gd",
                 new { ui = invitation.ReceiverId, gd = invitation.TeamId });
 
             if (InGroup.Count == 0 && hasInvite.Count == 0 && hasApply.Count == 0)
@@ -393,7 +393,7 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select InviteId from groupinvite where" +
-                                                                  "UserId=?ui,GroupId=?gd",
+                                                                  " UserId=?ui,GroupId=?gd",
                 new { ui = invitation.ReceiverId, gd = invitation.TeamId });
 
             if (Target.Count == 0)
@@ -410,14 +410,14 @@ namespace BiuBiuServer.Database
         public async UnaryResult<TeamRequestResponse> WriteGroupRequest(TeamRequest request)
         {
             List<ulong> InGroup = await Fsql.Ado.QueryAsync<ulong>("select RelationId from groupconstitute where" +
-                                                                   "UserId=?ui,GroupId=?gd",
+                                                                   " UserId=?ui,GroupId=?gd",
                 new {ui = request.SenderId, gd = request.TeamId});
 
             List<ulong> hasInvite = await Fsql.Ado.QueryAsync<ulong>("select InviteId from groupinvite where" +
-                                                                     "UserId=?ui,GroupId=?gd",
+                                                                     " UserId=?ui,GroupId=?gd",
                 new { ui = request.SenderId, gd = request.TeamId });
             List<ulong> hasApply = await Fsql.Ado.QueryAsync<ulong>("select ApplyId from groupapply where" +
-                                                                    "UserId=?ui,GroupId=?gd",
+                                                                    " UserId=?ui,GroupId=?gd",
                 new { ui = request.SenderId, gd = request.TeamId });
 
             if (InGroup.Count == 0 && hasInvite.Count == 0 && hasApply.Count == 0)
@@ -431,7 +431,7 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong>Target = await Fsql.Ado.QueryAsync<ulong>("select ApplyId from groupapply where" +
-                                                                 "UserId=?ui,GroupId=?gd",
+                                                                 " UserId=?ui,GroupId=?gd",
                 new { ui = request.SenderId, gd = request.TeamId });
 
             if (Target.Count == 0)
@@ -444,10 +444,50 @@ namespace BiuBiuServer.Database
             }
         }
 
-        //TODO ：实现建立群聊 群组信息 返回是否成功
+        //实现建立群聊 群组信息 返回是否成功
         public async UnaryResult<bool> EstablishTeam(TeamInfo teamInfo)
         {
-            throw new System.NotImplementedException();
+            List<ulong> group = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where" +
+                                                                 " GroupId = ?gd", new {gd = teamInfo.TeamId});
+
+            if (group.Count == 0)
+            {
+                await Fsql.Ado.QueryAsync<object>("insert into group values (?gd,?gn,?dp,?ic,?od)",
+                    new
+                    {
+                        gd = teamInfo.TeamId,
+                        gn = teamInfo.TeamName,
+                        dp = teamInfo.Description,
+                        ic = teamInfo.IconId,
+                        od = teamInfo.OwnerId
+                    });
+
+                IdType type = IdType.TeamRelationId;
+                ulong relationId = IdManagement.GenerateId(type);
+
+                await Fsql.Ado.QueryAsync<object>("insert into groupconstitute values(?ui,?gd,?it,?rd)",
+                    new
+                    {
+                        ui=teamInfo.OwnerId,
+                        gd=teamInfo.TeamId,
+                        it="群主",
+                        rd=relationId
+                    });
+            }
+
+            List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where GroupId=?gd",
+                new {gd = teamInfo.TeamId});
+            List<ulong> Target2 = await Fsql.Ado.QueryAsync<ulong>(
+                "select RelationId from groupconstitute where UserId=?ui,GroupId=?gd",
+                new {ui = teamInfo.OwnerId, gd = teamInfo.TeamId});
+            if (Target2.Count != 0 && Target1.Count != 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }
