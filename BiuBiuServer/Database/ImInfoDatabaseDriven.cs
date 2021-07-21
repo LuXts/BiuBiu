@@ -233,7 +233,7 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, ulong, ulong)> Target
                 = await Fsql.Ado
                     .QueryAsync<(ulong, string, string, ulong, ulong)>(
-                        "select GroupId,GroupName,Description,Icon,OwnerId from Group where" +
+                        "select GroupId,GroupName,Description,Icon,OwnerId from team where" +
                         " GroupId=?gd", new { gd = teamId.ToString() });
             if (Target.Count == 0)
             {
@@ -265,12 +265,12 @@ namespace BiuBiuServer.Database
             // 同上
             // 如果没成功就返回 return TeamInfoResponse.Failed;
             // 如果成功就返回 return new TeamInfoResponse(){ Success = true };
-            List<ulong> group = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where GroupId=?gd",
+            List<ulong> group = await Fsql.Ado.QueryAsync<ulong>("select GroupId from team where GroupId=?gd",
                 new { gd = teamInfo.TeamId.ToString() });
 
             if (group.Count != 0)
             {
-                await Fsql.Ado.QueryAsync<object>("update group set GroupName=?gn,Description=?dp,Icon=?ic,OwnerId=?od where" +
+                await Fsql.Ado.QueryAsync<object>("update team set GroupName=?gn,Description=?dp,Icon=?ic,OwnerId=?od where" +
                                                   " GroupId=?gd",
                                                   new
                                                   {
@@ -282,7 +282,7 @@ namespace BiuBiuServer.Database
                                                   });
             }
 
-            List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where" +
+            List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select GroupId from team where" +
                                                                   " GroupId=?gd,GroupName=?gn,Description=?dp,Icon=?ic,OwnerId=?od",
                 new
                 {
@@ -413,7 +413,7 @@ namespace BiuBiuServer.Database
         {
             List<(ulong, string, string, ulong, ulong)> Target =
                 await Fsql.Ado.QueryAsync<(ulong, string, string, ulong, ulong)>(
-                    "select g.GroupId,g.GroupName,g.Description,g.Icon,g.OwnerId from group g,groupconstitute c where" +
+                    "select g.GroupId,g.GroupName,g.Description,g.Icon,g.OwnerId from team g,groupconstitute c where" +
                     " g.GroupId=c.GroupId,c.UserId=?ui", new { ui = userId.ToString() });
             List<TeamInfo> group = new List<TeamInfo>();
             foreach (var VARIABLE in Target)
