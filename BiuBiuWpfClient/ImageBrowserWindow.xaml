@@ -1,0 +1,59 @@
+﻿<pu:WindowX x:Class="BiuBiuWpfClient.ImageBrowserWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:hc="https://handyorg.github.io/handycontrol"
+            xmlns:local="clr-namespace:BiuBiuWpfClient"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+            Title=""
+            Width="960"
+            Height="640"
+            MinWidth="960"
+            MinHeight="640"
+            pu:WindowXCaption.Background="#fff"
+            pu:WindowXCaption.Foreground="#EE000000"
+            pu:WindowXCaption.Height="40"
+            FontSize="20"
+            mc:Ignorable="d">
+    <pu:WindowXCaption.MinimizeButtonStyle>
+        <Style BasedOn="{StaticResource {ComponentResourceKey ResourceId=WindowXMinimizeButtonStyle, TypeInTargetAssembly={x:Type pu:WindowX}}}" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="pu:ButtonHelper.HoverBackground" Value="#33000000" />
+            <Setter Property="pu:ButtonHelper.HoverForeground" Value="Black" />
+            <Setter Property="MaxWidth" Value="30" />
+            <Setter Property="MaxHeight" Value="30" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+    </pu:WindowXCaption.MinimizeButtonStyle>
+    <pu:WindowXCaption.MaximizeButtonStyle>
+        <Style BasedOn="{StaticResource {ComponentResourceKey ResourceId=WindowXMaximizeButtonStyle, TypeInTargetAssembly={x:Type pu:WindowX}}}" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="pu:ButtonHelper.HoverBackground" Value="#33000000" />
+            <Setter Property="pu:ButtonHelper.HoverForeground" Value="Black" />
+            <Setter Property="MaxWidth" Value="30" />
+            <Setter Property="MaxHeight" Value="30" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+    </pu:WindowXCaption.MaximizeButtonStyle>
+    <pu:WindowXCaption.CloseButtonStyle>
+        <Style BasedOn="{StaticResource {ComponentResourceKey ResourceId=WindowXCloseButtonStyle, TypeInTargetAssembly={x:Type pu:WindowX}}}" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="pu:ButtonHelper.HoverBackground" Value="Red" />
+            <Setter Property="MaxWidth" Value="30" />
+            <Setter Property="MaxHeight" Value="30" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+    </pu:WindowXCaption.CloseButtonStyle>
+    <Grid>
+        <hc:ImageViewer Name="ImageBViewer"
+                        Margin="0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="{DynamicResource SecondaryRegionBrush}"
+                        IsFullScreen="True" />
+    </Grid>
+</pu:WindowX>

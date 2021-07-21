@@ -1,5 +1,4 @@
 ﻿using System;
-using Org.BouncyCastle.Bcpg;
 
 namespace BiuBiuShare.Tool
 {
@@ -60,6 +59,28 @@ namespace BiuBiuShare.Tool
             id = id >> (int)(_expandIdBits + _indexIdBits);
             id = id % (ulong)Math.Pow(2, _typeIdBits);
             return (IdType)id;
+        }
+
+        public static string GenerateStrById(ulong id)
+        {
+            ulong oldTime = id >> 20;
+
+            ulong newTime = TimeGen();
+
+            DateTime dtStart
+                = TimeZone.CurrentTimeZone.ToLocalTime(
+                    new DateTime(1970, 1, 1));
+            ulong lTime = oldTime * 10000;
+            TimeSpan toNow = new TimeSpan((long)lTime);
+            DateTime targetDt = dtStart.Add(toNow);
+            if (newTime - oldTime >= 3600 * 1000 * 24)
+            {
+                return targetDt.ToString("MM-dd");
+            }
+            else
+            {
+                return targetDt.ToString("t");
+            }
         }
     }
 }

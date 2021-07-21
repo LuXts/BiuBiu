@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading;
+using BiuBiuWpfClient.Tools;
 using Grpc.Core;
 using Grpc.Net.Client;
 using MagicOnion.Client;
@@ -9,7 +10,7 @@ namespace BiuBiuWpfClient
 {
     public class Initialization
     {
-        public readonly static string GrpcIp = "192.168.100.11";
+        public readonly static string GrpcIp = "127.0.0.1";
 
         public readonly static string GrpcPort = ":5001";
 
@@ -19,6 +20,10 @@ namespace BiuBiuWpfClient
 
         public static readonly NLog.Logger Logger
             = NLog.LogManager.GetCurrentClassLogger();
+
+        public static LiteDBDriven LiteDb = new LiteDBDriven();
+
+        public static DataDriven DataDb = new DataDriven();
 
         public Initialization()
         {

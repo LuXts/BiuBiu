@@ -1,13 +1,19 @@
-﻿using System.Net.Http;
-using BiuBiuServer.Services;
+﻿using System;
+using System.Net.Http;
+using System.Threading;
+using Grpc.Core;
 using Grpc.Net.Client;
+using MagicOnion.Client;
 
-namespace BiuBiuServer
+namespace BiuBiuWpfClient
 {
     public class Initialization
     {
-        public readonly static string GrpcAddress
-            = "https://127.0.0.1:5001";
+        public readonly static string GrpcIp = "127.0.0.1";
+
+        public readonly static string GrpcPort = ":5001";
+
+        public static IClientFilter ClientFilter;
 
         public static GrpcChannel GChannel;
 
@@ -23,12 +29,8 @@ namespace BiuBiuServer
                     .DangerousAcceptAnyServerCertificateValidator;
             var httpClient = new HttpClient(httpClientHandler);
 
-            GChannel = GrpcChannel.ForAddress(GrpcAddress
+            GChannel = GrpcChannel.ForAddress("https://" + GrpcIp + GrpcPort
                 , new GrpcChannelOptions { HttpClient = httpClient });
-            for (uint i = 0; i < 200; i++)
-            {
-                TalkService.PortList.AddLast(i);
-            }
         }
     }
 }
