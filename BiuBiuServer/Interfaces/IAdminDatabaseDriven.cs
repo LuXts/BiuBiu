@@ -1,4 +1,5 @@
-﻿using BiuBiuShare.ImInfos;
+﻿using System.Collections.Generic;
+using BiuBiuShare.ImInfos;
 using BiuBiuShare.UserManagement;
 using MagicOnion;
 
@@ -26,5 +27,11 @@ namespace BiuBiuServer.Interfaces
 
         //函数功能：审核消息 输入：用户Id与审核结果（0表示不通过，1表示通过） 输出：是否成功
         UnaryResult<bool> ReviewMessage(ulong userId, bool reviewResults);
+
+        /// <summary>
+        /// 获取待审核列表
+        /// </summary>
+        /// <returns></returns>
+        UnaryResult<List<UserInfo>> GetModifyInfo();
     }
 }

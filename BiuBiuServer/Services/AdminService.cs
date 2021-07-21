@@ -12,6 +12,7 @@ using BiuBiuShare.ImInfos;
 using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.Tool;
 using MagicOnion.Server.Authentication;
+using System.Collections.Generic;
 
 namespace BiuBiuServer.Services
 {
@@ -34,6 +35,11 @@ namespace BiuBiuServer.Services
         public UnaryResult<bool> DeleteUser(ulong userId)
         {
             return _adminDatabaseDatabaseDriven.DeleteUser(userId);
+        }
+
+        public async UnaryResult<List<UserInfo>> GetModifyInfo()
+        {
+            return await _adminDatabaseDatabaseDriven.GetModifyInfo();
         }
 
         public async UnaryResult<int> RegisteredUsers(RegisterInfo registerInfos)

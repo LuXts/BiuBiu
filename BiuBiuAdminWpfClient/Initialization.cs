@@ -5,11 +5,11 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using MagicOnion.Client;
 
-namespace BiuBiuWpfClient
+namespace BiuBiuAdminWpfClient
 {
     public class Initialization
     {
-        public readonly static string GrpcIp = "127.0.0.1";
+        public readonly static string GrpcIp = "192.168.100.10";
 
         public readonly static string GrpcPort = ":5001";
 

@@ -5,7 +5,7 @@ using BiuBiuShare.ServiceInterfaces;
 using Grpc.Net.Client;
 using MagicOnion.Client;
 
-namespace BiuBiuWpfClient.Login
+namespace BiuBiuAdminWpfClient.Login
 {
     public class AuthenticationTokenStorage
     {

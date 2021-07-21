@@ -5,7 +5,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using MagicOnion.Client;
 
-namespace BiuBiuWpfClient.Login
+namespace BiuBiuAdminWpfClient.Login
 {
     public class WithAuthenticationFilter : IClientFilter
     {
