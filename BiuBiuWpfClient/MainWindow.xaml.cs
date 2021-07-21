@@ -7,14 +7,20 @@ using MagicOnion.Client;
 using Panuon.UI.Silver;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using BiuBiuServer.Userhub;
 using BiuBiuShare.ImInfos;
 using BiuBiuShare.Tool;
 using HandyControl.Data;
 using HandyControl.Tools.Extension;
+using Microsoft.Win32;
 
 namespace BiuBiuWpfClient
 {
@@ -40,6 +46,8 @@ namespace BiuBiuWpfClient
 
         private ChatViewModel currentChatViewModel;
 
+        public BitmapImage MyHeadIcon { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -61,35 +69,54 @@ namespace BiuBiuWpfClient
             _userHubClient.ConnectAsync(Initialization.GChannel
                 , AuthenticationTokenStorage.UserId);
 
-            _userHubClient.SMEvent += (Message message) =>
+            _userHubClient.SMEvent += async (Message message) =>
             {
+                object data;
+                ChatInfoType type;
                 if (message.Type == "Text")
                 {
-                    var info = new ChatInfoModel
-                    {
-                        Message = message.Data
-                        ,
-                        SenderId = message.SourceId.ToString()
-                        ,
-                        Type = ChatMessageType.String
-                        ,
-                        Role = ChatRoleType.Receiver
-                    };
-
-                    foreach (var chatViewModel in ChatListCollection)
-                    {
-                        if (chatViewModel.TargetId == message.SourceId)
-                        {
-                            chatViewModel.ChatInfos.Add(info);
-                            chatViewModel.LastMessage = message.Data;
-                            chatViewModel.LastMessageTime
-                                = IdManagement.TimeGen() << 20;
-                            break;
-                        }
-                    }
-
-                    _collectionView.View.Refresh();
+                    data = message.Data;
+                    type = ChatInfoType.TextTypeChat;
                 }
+                else if (message.Type == "Image")
+                {
+                    data = await Initialization.DataDb.GetBitmapImage(
+                        message.MessageId);
+                    type = ChatInfoType.ImageTypeChat;
+                }
+                else
+                {
+                    data = message.Data;
+                    type = ChatInfoType.TextTypeChat;
+                }
+                foreach (var chatViewModel in ChatListCollection)
+                {
+                    if (chatViewModel.TargetId == message.SourceId)
+                    {
+                        var info = new ChatInfoModel
+                        {
+                            Message = data
+                            ,
+                            SenderId = message.SourceId.ToString()
+                            ,
+                            Type = type
+                            ,
+                            Role = TypeLocalMessageLocation.chatRecv
+                            ,
+                            MessageOnwer = chatViewModel.DisplayName
+                            ,
+                            BImage = chatViewModel.BImage
+                        };
+                        Initialization.Logger.Debug(chatViewModel
+                            .DisplayName);
+                        chatViewModel.ChatInfos.Add(info);
+                        chatViewModel.LastMessage = message.Data;
+                        chatViewModel.LastMessageTime
+                            = IdManagement.TimeGen() << 20;
+                        break;
+                    }
+                }
+                _collectionView.View.Refresh();
             };
 
             this.Closed += MainWindow_Closed;
@@ -98,18 +125,33 @@ namespace BiuBiuWpfClient
 
         private async void InitChat()
         {
+            var myInfo = await _imInfoService.GetUserInfo(new UserInfo()
+            {
+                UserId = AuthenticationTokenStorage.UserId
+            });
+
+            MyHeadIcon
+                = await Initialization.DataDb.GetBitmapImage(myInfo.IconId);
+
             var userInfos = await _imInfoService.GetUserFriendsId(
                 new UserInfo() { UserId = AuthenticationTokenStorage.UserId });
             foreach (var user in userInfos)
             {
-                Initialization.Logger.Debug(user.UserId);
-                Initialization.Logger.Debug(user.DisplayName);
-                Initialization.Logger.Debug(user.Description);
-                Initialization.Logger.Debug(user.IconId);
-                Initialization.Logger.Debug(user.Email);
-                ChatListCollection.Add(
-                    new ChatViewModel(user.UserId) { LastMessageTime = IdManagement.TimeGen() << 20 });
+                var chat = new ChatViewModel(user.UserId)
+                {
+                    LastMessageTime = IdManagement.TimeGen() << 20
+                };
+                ChatListCollection.Add(chat);
+                chat.ChatInfos.CollectionChanged += ListBox_SourceUpdated;
             }
+        }
+
+        private void ListBox_SourceUpdated(object sender, EventArgs e)
+        {
+            Decorator decorator
+                = (Decorator)VisualTreeHelper.GetChild(ListBoxChat, 0);
+            ScrollViewer scrollViewer = (ScrollViewer)decorator.Child;
+            scrollViewer.ScrollToEnd();
         }
 
         private void MainWindow_Closed(object sender, System.EventArgs e)
@@ -133,9 +175,13 @@ namespace BiuBiuWpfClient
                 ,
                 SenderId = AuthenticationTokenStorage.UserId.ToString()
                 ,
-                Type = ChatMessageType.String
+                Type = ChatInfoType.TextTypeChat
                 ,
-                Role = ChatRoleType.Sender
+                Role = TypeLocalMessageLocation.chatSend
+                ,
+                BImage = MyHeadIcon
+                ,
+                MessageOnwer = AuthenticationTokenStorage.DisplayName
             };
             ChatInfos.Add(info);
 
@@ -149,8 +195,8 @@ namespace BiuBiuWpfClient
                 ,
                 TargetId = currentTargetId
             });
-            currentChatViewModel.LastMessageTime
-                = re.Item1.MessageId;
+
+            currentChatViewModel.LastMessageTime = re.Item1.MessageId;
             currentChatViewModel.LastMessage = ChatInputbox.Text;
             _collectionView.View.Refresh();
             currentChatViewModel.InputData = "";
@@ -179,10 +225,66 @@ namespace BiuBiuWpfClient
         private void ChatInputbox_OnTextChanged(object sender
             , TextChangedEventArgs e)
         {
-            currentChatViewModel.LastMessageTime
-                = IdManagement.TimeGen() << 20;
+            currentChatViewModel.LastMessageTime = IdManagement.TimeGen() << 20;
             currentChatViewModel.InputData = ChatInputbox.Text;
             _collectionView.View.Refresh();
+        }
+
+        private async void LoadImageButton_OnClick(object sender
+            , RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                var fileName = dialog.FileName;
+                if (File.Exists(fileName))
+                {
+                    var re = await Initialization.DataDb.SendImageToServer(
+                        currentTargetId, fileName);
+                    Initialization.Logger.Debug(re.Success);
+                    if (re.Success)
+                    {
+                        var image
+                            = await Initialization.DataDb
+                                .GetBitmapImage(re.MessageId);
+                        var info = new ChatInfoModel
+                        {
+                            Message
+                                = image
+                            ,
+                            SenderId
+                                = AuthenticationTokenStorage.UserId
+                                    .ToString()
+                            ,
+                            Type = ChatInfoType.ImageTypeChat
+                            ,
+                            Role = TypeLocalMessageLocation.chatSend
+                            ,
+                            BImage = MyHeadIcon
+                            ,
+                            MessageOnwer = AuthenticationTokenStorage
+                                .DisplayName
+                        };
+                        ChatInfos.Add(info);
+                    }
+                }
+                else
+                {
+                    MessageBoxX.Show("文件不存在！");
+                }
+            }
+        }
+
+        private void EventSetter_OnHandler(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount > 1)
+            {
+                ListBoxItem temp = sender as ListBoxItem;
+                ChatInfoModel chatInfoModel = temp?.DataContext as ChatInfoModel;
+                if (chatInfoModel?.Type == ChatInfoType.ImageTypeChat)
+                {
+                }
+            }
         }
     }
 }

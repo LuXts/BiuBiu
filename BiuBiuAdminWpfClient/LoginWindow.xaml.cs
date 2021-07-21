@@ -42,7 +42,7 @@ namespace BiuBiuWpfClient
 
         private async void LoginButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ButtonHelper.SetIsPending(LoginButton, true);
+            LoginButton.IsEnabled = false;
 
             string signIn = AccountTextBox.Text;
             string password = PasswdBox.Password;
@@ -58,16 +58,18 @@ namespace BiuBiuWpfClient
                 AuthenticationTokenStorage.DisplayName = response.DisplayName;
 
                 Service.InitService();
-
+                /*
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
                 this.Owner = mainWindow;
                 this.Close();
+                */
             }
             else
             {
                 MessageBoxX.Show("登陆失败！");
             }
+            LoginButton.IsEnabled = true;
         }
 
         private void HelpButton_OnClick(object sender, RoutedEventArgs e)

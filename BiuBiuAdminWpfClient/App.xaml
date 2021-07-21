@@ -1,12 +1,11 @@
-﻿<Application x:Class="BiuBiuWpfClient.App"
+﻿<Application x:Class="BiuBiuAdminWpfClient.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:local="clr-namespace:BiuBiuWpfClient"
+             xmlns:local="clr-namespace:BiuBiuAdminWpfClient"
              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
              StartupUri="LoginWindow.xaml">
     <Application.Resources>
-
         <ResourceDictionary>
             <pu:GlobalSettings x:Key="globalSettings"
                                FontFamily="pack://application:,,,/MyLibrary;component/Resources/Fonts/#OPPOSans R"
@@ -15,7 +14,6 @@
                 <hc:ThemeResources />
                 <hc:Theme />
                 <ResourceDictionary Source="pack://application:,,,/Panuon.UI.Silver;component/Control.xaml" />
-                <ResourceDictionary Source="ChatBubbleListBoxStyle.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

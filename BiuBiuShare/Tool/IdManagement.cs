@@ -1,5 +1,4 @@
 ﻿using System;
-using Org.BouncyCastle.Bcpg;
 
 namespace BiuBiuShare.Tool
 {

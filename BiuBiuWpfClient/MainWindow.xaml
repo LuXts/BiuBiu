@@ -5,6 +5,7 @@
             xmlns:hc="https://handyorg.github.io/handycontrol"
             xmlns:local="clr-namespace:BiuBiuWpfClient"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
             Title=""
             Width="975"
@@ -44,120 +45,10 @@
         </Style>
     </pu:WindowXCaption.CloseButtonStyle>
     <Window.Resources>
-
-        <Style TargetType="Label" x:Key="chatRecv">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Label}">
-                        <Grid Margin="0,5,0,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <Image Width="35" Height="35" Source="userIcon.jpg" />
-
-                            <Border x:Name="border1"
-                            Grid.Column="1"
-                            CornerRadius="1"
-                            BorderBrush="#EDEDED"
-                            BorderThickness="1"
-                            VerticalAlignment="Top"
-                            Margin="10,2,0,2"
-                            Background="#FFFFFF"
-                            HorizontalAlignment="Left"
-                            Padding="5"
-                            MinHeight="35"
-                            MinWidth="50">
-                                <ContentPresenter VerticalAlignment="Center" />
-                            </Border>
-                            <Canvas Grid.Column="1"
-                            Width="10"
-                            Height="16"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Margin="3,14,0,0"
-                            Background="Transparent">
-                                <Path x:Name="path1"
-                              Stroke="#EDEDED"
-                              StrokeThickness="1"
-                              Fill="#FFFFFF">
-                                    <Path.Data>
-                                        <PathGeometry Figures="M 8,0 L 0,6,8,12" />
-                                    </Path.Data>
-                                </Path>
-                            </Canvas>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="path1"
-                                Property="Fill"
-                                Value="#F6F6F6" />
-                                <Setter TargetName="border1"
-                                Property="Background"
-                                Value="#F6F6F6" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style TargetType="Label" x:Key="chatSend">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Label}">
-                        <Grid Margin="0,5,0,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="40" />
-                            </Grid.ColumnDefinitions>
-
-                            <Image Grid.Column="1"
-                           Width="35" Height="35"
-                           Source="userIcon.jpg" />
-
-                            <Border x:Name="border1"
-                            CornerRadius="1"
-                            BorderBrush="#9EEA6A"
-                            BorderThickness="1"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Right"
-                            Margin="0,2,10,2"
-                            Background="#9EEA6A"
-                            Padding="5"
-                            MinHeight="35"
-                            MinWidth="50">
-                                <ContentPresenter VerticalAlignment="Center" />
-                            </Border>
-                            <Canvas Width="10"
-                            Height="16"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            Margin="5,14,0,0"
-                            Background="Transparent">
-                                <Path x:Name="path1"
-                              Stroke="#9EEA6A"
-                              StrokeThickness="0.5"
-                              Fill="#9EEA6A">
-                                    <Path.Data>
-                                        <PathGeometry Figures="M 0,12 L 0,0,8,6" />
-                                    </Path.Data>
-                                </Path>
-                            </Canvas>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="path1"
-                                Property="Fill"
-                                Value="#98E165" />
-                                <Setter TargetName="border1"
-                                Property="Background"
-                                Value="#98E165" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        <Style x:Key="MyListBoxItemChatStyle"
+               BasedOn="{StaticResource ListBoxItemChatStyle}"
+               TargetType="{x:Type ListBoxItem}">
+            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="EventSetter_OnHandler" />
         </Style>
     </Window.Resources>
     <Grid>
@@ -215,7 +106,6 @@
                     Background="#EDEEEF" />
         <StackPanel Grid.Column="2">
             <ListBox Name="ChatListBox"
-                     Margin="5"
                      HorizontalAlignment="Stretch"
                      HorizontalContentAlignment="Stretch"
                      BorderThickness="0"
@@ -269,7 +159,7 @@
                       VerticalAlignment="Stretch" />
         <Grid Name="ChatView"
               Grid.Column="4"
-              Background="#EDEEEF"
+              Background="#F1F2F3"
               Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -278,25 +168,34 @@
             </Grid.RowDefinitions>
             <hc:SimplePanel Grid.Row="0">
                 <ListBox Name="ListBoxChat"
+                         Margin="15,10"
+                         HorizontalAlignment="Stretch"
+                         pu:ListBoxHelper.AutoScrollIntoView="True"
                          Background="#0000"
                          BorderThickness="0"
+                         ItemContainerStyle="{StaticResource MyListBoxItemChatStyle}"
                          ScrollViewer.CanContentScroll="False"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         Style="{StaticResource StackPanelVerticalListBox}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <hc:SimplePanel Background="Aqua">
-                                <TextBlock Margin=""> sss</TextBlock>
-                                <hc:ChatBubble Margin="10 25 10 10" MaxWidth="300"
-                                               Content="{Binding Message}"
-                                               FontSize="16"
-                                               Foreground="#EE000000"
-                                               Role="{Binding Role}"
-                                               Tag="{Binding}"
-                                               Type="{Binding Type}" />
-                            </hc:SimplePanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListBox.Style>
+                        <Style TargetType="ListBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBox">
+                                        <Border x:Name="Bd"
+                                                Padding="0"
+                                                HorizontalAlignment="Stretch"
+                                                Background="#0000"
+                                                BorderThickness="0">
+                                            <ScrollViewer Focusable="False">
+                                                <ItemsPresenter />
+                                            </ScrollViewer>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.Style>
                 </ListBox>
             </hc:SimplePanel>
             <GridSplitter Grid.Row="1"
@@ -319,7 +218,8 @@
                             pu:ButtonHelper.CornerRadius="5"
                             pu:ButtonHelper.HoverBackground="#DDDEDF"
                             Background="#0000"
-                            BorderThickness="0">
+                            BorderThickness="0"
+                            Click="LoadImageButton_OnClick">
                         <Image Margin="0"
                                Source="Resource/Images/image.png"
                                Stretch="Fill" />

@@ -1,6 +1,21 @@
-﻿namespace BiuBiuWpfClient.Model
+﻿using System.Windows;
+using System.Windows.Controls;
+using HandyControl.Data;
+
+namespace BiuBiuWpfClient.Model
 {
-    public class ChatBubbleSelector
+    internal class ChatBubbleSelector : DataTemplateSelector
     {
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            var u = container as FrameworkElement;
+
+            ChatInfoModel message = item as ChatInfoModel;
+
+            if (message.Role == TypeLocalMessageLocation.chatSend)
+                return u.FindResource("chatSend") as DataTemplate;
+            else
+                return u.FindResource("chatRecv") as DataTemplate;
+        }
     }
 }

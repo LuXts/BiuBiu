@@ -62,7 +62,7 @@ namespace BiuBiuServer.Services
                     port = PortList.First.Value + 55000;
                     PortList.RemoveFirst();
                 }
-                response = new MessageResponse(temp);
+                response = new MessageResponse(temp) { Success = true };
             }
             return (response, port);
         }
@@ -103,7 +103,7 @@ namespace BiuBiuServer.Services
                 var re1 = await _noSQLDriven.AddMessageAsync(message);
                 if (re0.Success && re1.Success)
                 {
-                    //await ForwardMessage(message);
+                    await ForwardMessage(message);
                     return re1;
                 }
                 else

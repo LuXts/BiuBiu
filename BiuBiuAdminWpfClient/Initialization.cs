@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading;
-using BiuBiuWpfClient.Tools;
 using Grpc.Core;
 using Grpc.Net.Client;
 using MagicOnion.Client;
@@ -20,10 +19,6 @@ namespace BiuBiuWpfClient
 
         public static readonly NLog.Logger Logger
             = NLog.LogManager.GetCurrentClassLogger();
-
-        public static LiteDBDriven LiteDb = new LiteDBDriven();
-
-        public static DataDriven DataDb = new DataDriven();
 
         public Initialization()
         {
