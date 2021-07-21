@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BiuBiuShare.ImInfos;
@@ -14,6 +16,7 @@ using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.Tool;
 using BiuBiuWpfClient.Login;
+using BiuBiuWpfClient.TeamHub;
 using BiuBiuWpfClient.Tools;
 using MagicOnion.Client;
 
@@ -31,6 +34,8 @@ namespace BiuBiuWpfClient.Model
         }
 
         public ulong TargetId = 0;
+
+        private TeamHubClient _clientTeamHub;
 
         private BitmapImage _bitmap;
 
@@ -105,6 +110,7 @@ namespace BiuBiuWpfClient.Model
             _chatId = chatId;
             DisplayName = displayName;
             NoReadNumber = 0;
+
             InitChat(iconId);
         }
 
@@ -115,15 +121,76 @@ namespace BiuBiuWpfClient.Model
 
             ulong time = IdManagement.TimeGen();
             ulong oldTime = time - 3600 * 1000 * 24;
+            List<Message> reList;
+            if (IdManagement.GenerateIdTypeById(TargetId) == IdType.TeamId)
+            {
+                reList = await Service.TalkService.GetTeamMessagesRecordAsync(
+                    TargetId, oldTime << 20, time << 20);
+            }
+            else
+            {
+                reList = await Service.TalkService.GetChatMessagesRecordAsync(
+                    _chatId, AuthenticationTokenStorage.UserId, oldTime << 20
+                    , time << 20);
+            }
 
-            var reList = await Service.TalkService.GetChatMessagesRecordAsync(_chatId
-                , AuthenticationTokenStorage.UserId, oldTime << 20, time << 20);
             Initialization.Logger.Debug(reList.Count);
             foreach (var message in reList)
             {
                 var temp = await MessageToChatInfo.TransformChatInfoModel(message);
                 ChatInfos.Add(temp);
                 LastMessageTime = message.MessageId;
+                if (message.Type == "Text")
+                {
+                    LastMessage = message.Data;
+                }
+                else if (message.Type == "Image")
+                {
+                    LastMessage = "[图片]";
+                }
+                else
+                {
+                    LastMessage = "[文件]";
+                }
+            }
+
+            if (IdManagement.GenerateIdTypeById(TargetId) == IdType.TeamId)
+            {
+                _clientTeamHub = new TeamHubClient();
+                await _clientTeamHub.ConnectAsync(Initialization.GChannel
+                    , TargetId);
+                _clientTeamHub.SMEvent += async (Message message) =>
+                {
+                    if (message.SourceId != AuthenticationTokenStorage.UserId)
+                    {
+                        var temp = await MessageToChatInfo.TransformChatInfoModel(message);
+                        string tip;
+                        if (message.Type == "Text")
+                        {
+                            tip = message.Data;
+                        }
+                        else if (message.Type == "Image")
+                        {
+                            tip = "[图片]";
+                        }
+                        else
+                        {
+                            tip = "[文件]";
+                        }
+
+                        var user
+                            = await Initialization.DataDb.GetUserInfoByServer(
+                                message.SourceId);
+
+                        temp.BImage = await Initialization.DataDb.GetBitmapImage(user.IconId);
+                        temp.MessageOnwer = user.DisplayName;
+                        this.ChatInfos.Add(temp);
+                        this.LastMessage = tip;
+                        this.LastMessageTime
+                            = IdManagement.TimeGen() << 20;
+                        MainWindow.CollectionView.View.Refresh();
+                    }
+                };
             }
         }
     }

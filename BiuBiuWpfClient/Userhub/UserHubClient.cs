@@ -7,7 +7,7 @@ using BiuBiuShare.UserHub;
 using Grpc.Net.Client;
 using MagicOnion.Client;
 
-namespace BiuBiuServer.Userhub
+namespace BiuBiuWpfClient.Userhub
 {
     public class UserHubClient : IUserHubReceiver
     {

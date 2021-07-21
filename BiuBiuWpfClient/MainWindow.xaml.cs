@@ -15,10 +15,10 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using BiuBiuServer.Userhub;
 using BiuBiuShare.ImInfos;
 using BiuBiuShare.Tool;
 using BiuBiuWpfClient.Tools;
+using BiuBiuWpfClient.Userhub;
 using HandyControl.Controls;
 using HandyControl.Data;
 using HandyControl.Tools.Extension;
@@ -38,7 +38,7 @@ namespace BiuBiuWpfClient
         public ObservableCollection<ChatViewModel> ChatListCollection
             = new ObservableCollection<ChatViewModel>();
 
-        private CollectionViewSource _collectionView
+        public static CollectionViewSource CollectionView
             = new CollectionViewSource();
 
         private UserHubClient _userHubClient;
@@ -53,12 +53,12 @@ namespace BiuBiuWpfClient
         {
             InitializeComponent();
 
-            _collectionView.Source = ChatListCollection;
-            _collectionView.View.Refresh();
-            _collectionView.View.SortDescriptions.Add(
+            CollectionView.Source = ChatListCollection;
+            CollectionView.View.Refresh();
+            CollectionView.View.SortDescriptions.Add(
                 new SortDescription("LastMessageTime"
                     , ListSortDirection.Descending));
-            ChatListBox.ItemsSource = _collectionView.View;
+            ChatListBox.ItemsSource = CollectionView.View;
 
             _userHubClient = new UserHubClient();
             _userHubClient.ConnectAsync(Initialization.GChannel
@@ -100,7 +100,7 @@ namespace BiuBiuWpfClient
                     }
                 }
 
-                _collectionView.View.Refresh();
+                CollectionView.View.Refresh();
             };
 
             this.Closed += MainWindow_Closed;
@@ -121,9 +121,21 @@ namespace BiuBiuWpfClient
             {
                 var chat = new ChatViewModel(user.UserId, user.IconId, user.DisplayName)
                 {
-                    LastMessageTime = IdManagement.TimeGen() << 20
+                    LastMessageTime = 0
                 };
 
+                ChatListCollection.Add(chat);
+            }
+
+            var teamInfos = await Service.ImInfoService.GetUserTeamsId(
+                new UserInfo() { UserId = AuthenticationTokenStorage.UserId });
+            foreach (var team in teamInfos)
+            {
+                var chat
+                    = new ChatViewModel(team.TeamId, team.IconId, team.TeamName)
+                    {
+                        LastMessageTime = 0
+                    };
                 ChatListCollection.Add(chat);
             }
         }
@@ -189,7 +201,7 @@ namespace BiuBiuWpfClient
                 ChatInfos.Add(info);
                 currentChatViewModel.LastMessageTime = re.Item1.MessageId;
                 currentChatViewModel.LastMessage = ChatInputbox.Text;
-                _collectionView.View.Refresh();
+                CollectionView.View.Refresh();
                 currentChatViewModel.InputData = "";
                 ChatInputbox.Text = "";
             }
@@ -222,7 +234,7 @@ namespace BiuBiuWpfClient
         {
             currentChatViewModel.LastMessageTime = IdManagement.TimeGen() << 20;
             currentChatViewModel.InputData = ChatInputbox.Text;
-            _collectionView.View.Refresh();
+            CollectionView.View.Refresh();
         }
 
         private async void LoadImageButton_OnClick(object sender
@@ -264,7 +276,7 @@ namespace BiuBiuWpfClient
                         ChatInfos.Add(info);
                         currentChatViewModel.LastMessageTime
                             = IdManagement.TimeGen() << 20;
-                        _collectionView.View.Refresh();
+                        CollectionView.View.Refresh();
                     }
                 }
                 else
@@ -349,7 +361,7 @@ namespace BiuBiuWpfClient
                         ChatInfos.Add(info);
                         currentChatViewModel.LastMessageTime
                             = IdManagement.TimeGen() << 20;
-                        _collectionView.View.Refresh();
+                        CollectionView.View.Refresh();
                     }
                 }
             }

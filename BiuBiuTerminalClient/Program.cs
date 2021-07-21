@@ -152,7 +152,7 @@ namespace BiuBiuTerminalClient
                     .DangerousAcceptAnyServerCertificateValidator;
             var httpClient = new HttpClient(httpClientHandler);
 
-            var channel2 = GrpcChannel.ForAddress("https://192.168.100.11:5001"
+            var channel2 = GrpcChannel.ForAddress("https://127.0.0.1:5001"
                 , new GrpcChannelOptions { HttpClient = httpClient });
 
             var client2
@@ -163,17 +163,7 @@ namespace BiuBiuTerminalClient
                         new AdminWithAuthenticationFilter("18578967136"
                             , "123456789", channel2)
                     });
-            //await UploadFile(client2, "E://Image/2287.jpg");
-            //await UploadFile(client2, "E://Image/2310.jpg");
-
-            Console.WriteLine(IdManagement.GenerateId(IdType.UserId));
-            Console.WriteLine(IdManagement.GenerateId(IdType.UserId));
-            Console.WriteLine();
-            Console.WriteLine(IdManagement.GenerateId(IdType.FriendRelationId));
-            Console.WriteLine(IdManagement.GenerateId(IdType.FriendRelationId));
-            Console.WriteLine(IdManagement.GenerateId(IdType.FriendRelationId));
-            Console.WriteLine(IdManagement.GenerateId(IdType.FriendRelationId));
-            Console.WriteLine(IdManagement.GenerateId(IdType.FriendRelationId));
+            await UploadFile(client2, "E://Image/de.jpg");
         }
     }
 }
