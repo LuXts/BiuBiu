@@ -43,7 +43,7 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Resource\Images\folder-download.png">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Resource\Images\image.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -66,6 +66,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-			  <Folder Include="Tools\" />
+		<Folder Include="Control\" />
+		<Folder Include="Tools\" />
+		<Folder Include="Controls\" />
 	</ItemGroup>
 </Project>

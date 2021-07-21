@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using BiuBiuShare.ImInfos;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.Tool;
 using BiuBiuWpfClient.Login;
@@ -16,6 +17,33 @@ namespace BiuBiuWpfClient.Tools
     public class DataDriven
     {
         private Dictionary<ulong, BitmapImage> _bitmapDictionary = new Dictionary<ulong, BitmapImage>();
+
+        private Dictionary<ulong, UserInfoResponse> _userInfoDictionary = new Dictionary<ulong, UserInfoResponse>();
+
+        public async Task<UserInfoResponse> GetUserInfoByServer(ulong userId)
+        {
+            lock (_userInfoDictionary)
+            {
+                if (_userInfoDictionary.ContainsKey(userId))
+                {
+                    return _userInfoDictionary[userId];
+                }
+            }
+            var response
+                = await Service.ImInfoService.GetUserInfo(
+                    new UserInfo() { UserId = userId });
+            if (response.Success)
+            {
+                lock (_userInfoDictionary)
+                {
+                    if (!_userInfoDictionary.ContainsKey(userId))
+                    {
+                        _userInfoDictionary.Add(userId, response);
+                    }
+                }
+            }
+            return response;
+        }
 
         public async Task<BitmapImage> GetBitmapImage(ulong imageId)
         {

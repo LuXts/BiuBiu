@@ -47,7 +47,7 @@ namespace BiuBiuServer.Services
                 port = 0;
                 if ((await _noSQLDriven.AddMessageAsync(temp)).Success)
                 {
-                    response = new MessageResponse(temp);
+                    response = new MessageResponse(temp) { Success = true };
                     await ForwardMessage(message);
                 }
                 else

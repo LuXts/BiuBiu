@@ -12,7 +12,9 @@ using System.Windows.Media.Imaging;
 using BiuBiuShare.ImInfos;
 using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.TalkInfo;
+using BiuBiuShare.Tool;
 using BiuBiuWpfClient.Login;
+using BiuBiuWpfClient.Tools;
 using MagicOnion.Client;
 
 namespace BiuBiuWpfClient.Model
@@ -24,7 +26,8 @@ namespace BiuBiuWpfClient.Model
         private void Notify(String propertyName)
         {
             if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                PropertyChanged.Invoke(this
+                    , new PropertyChangedEventArgs(propertyName));
         }
 
         public ulong TargetId = 0;
@@ -53,7 +56,8 @@ namespace BiuBiuWpfClient.Model
             }
         }
 
-        public ObservableCollection<ChatInfoModel> ChatInfos { get; set; } = new ObservableCollection<ChatInfoModel>();
+        public ObservableCollection<ChatInfoModel> ChatInfos { get; set; }
+            = new ObservableCollection<ChatInfoModel>();
 
         private ulong _chatId;
 
@@ -95,31 +99,32 @@ namespace BiuBiuWpfClient.Model
 
         public string InputData;
 
-        private ITalkService _talkService;
-
-        public ChatViewModel(ulong userId)
+        public ChatViewModel(ulong chatId, ulong iconId, string displayName)
         {
-            TargetId = userId;
-            _chatId = userId;
-            BImage = new BitmapImage();
+            TargetId = chatId;
+            _chatId = chatId;
+            DisplayName = displayName;
             NoReadNumber = 0;
-            InitChat();
+            InitChat(iconId);
         }
 
-        public async Task InitChat()
+        public async Task InitChat(ulong iconId)
         {
-            IImInfoService service
-                = MagicOnionClient.Create<IImInfoService>(Initialization
-                    .GChannel, new[]
-                {
-                    Initialization.ClientFilter
-                });
-            var userInfo
-                = await service.GetUserInfo(new UserInfo() { UserId = _chatId });
-            DisplayName = userInfo.DisplayName;
-            LastMessage = userInfo.Description;
-            BImage = await Initialization.DataDb
-                .GetBitmapImage(userInfo.IconId);
+            BImage = await Initialization.DataDb.GetBitmapImage(iconId);
+            LastMessage = "";
+
+            ulong time = IdManagement.TimeGen();
+            ulong oldTime = time - 3600 * 1000 * 24;
+
+            var reList = await Service.TalkService.GetChatMessagesRecordAsync(_chatId
+                , AuthenticationTokenStorage.UserId, oldTime << 20, time << 20);
+            Initialization.Logger.Debug(reList.Count);
+            foreach (var message in reList)
+            {
+                var temp = await MessageToChatInfo.TransformChatInfoModel(message);
+                ChatInfos.Add(temp);
+                LastMessageTime = message.MessageId;
+            }
         }
     }
 }
