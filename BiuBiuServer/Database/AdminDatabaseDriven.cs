@@ -15,10 +15,10 @@ namespace BiuBiuServer.Database
         public async UnaryResult<bool> ChangePassword(ulong userId, string newPassword)
         {
             await Fsql.Ado.QueryAsync<object>("update user set Password = ?np where UserId = ?ui",
-                new { nm = newPassword, ui = userId });
+                new { nm = newPassword, ui = userId.ToString() });
 
             List<string> Target =
-                await Fsql.Ado.QueryAsync<string>("select Password from user where UserId = ?ui", new { ui = userId });
+                await Fsql.Ado.QueryAsync<string>("select Password from user where UserId = ?ui", new { ui = userId.ToString() });
 
             if (Target[0] == newPassword)
             {
@@ -42,9 +42,9 @@ namespace BiuBiuServer.Database
                     up = newUserInfo.Description,
                     pn = newUserInfo.PhoneNumber,
                     em = newUserInfo.Email,
-                    ic = newUserInfo.IconId,
+                    ic = newUserInfo.IconId.ToString(),
                     isa = newUserInfo.Permissions.ToString(),
-                    ui = newUserInfo.UserId
+                    ui = newUserInfo.UserId.ToString()
                 });
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select UserId from user" +
                                                                   " where DisplayName = ?un and JobNumber = ?jn and Description = ?up and PhoneNumber = ?pn and Email = ?em and Icon = ?ic and IsAdmin = ?isa and UserId = ?ui",
@@ -55,9 +55,9 @@ namespace BiuBiuServer.Database
                     up = newUserInfo.Description,
                     pn = newUserInfo.PhoneNumber,
                     em = newUserInfo.Email,
-                    ic = newUserInfo.IconId,
+                    ic = newUserInfo.IconId.ToString(),
                     isa = newUserInfo.Permissions.ToString(),
-                    ui = newUserInfo.UserId
+                    ui = newUserInfo.UserId.ToString()
                 });
 
             if (Target.Count==0)
@@ -73,10 +73,10 @@ namespace BiuBiuServer.Database
         //函数功能：删除用户 输入：用户Id 输出：是否成功
         public async UnaryResult<bool> DeleteUser(ulong userId)
         {
-            await Fsql.Ado.QueryAsync<object>("delete from user where UserId = ?ui", new { ui = userId });
+            await Fsql.Ado.QueryAsync<object>("delete from user where UserId = ?ui", new { ui = userId.ToString() });
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select UserId from user" +
-                                                                  " where UserId = ?ui", new { ui = userId });
+                                                                  " where UserId = ?ui", new { ui = userId.ToString() });
             if (Target.Count == 0)
             {
                 return true;
@@ -127,7 +127,7 @@ namespace BiuBiuServer.Database
                 await Fsql.Ado.QueryAsync<object>("insert into user values (?ui,?dn,?jn,null,?pn,null,0,?isa,?pd)",
                     new
                     {
-                        ui = userId,
+                        ui = userId.ToString(),
                         dn = registerInfos.UserName,
                         jn = registerInfos.JobNumber,
                         pn = registerInfos.PhoneNumber,
@@ -137,7 +137,7 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong> Target3 = await Fsql.Ado.QueryAsync<ulong>("select UserId from user" +
-                                                                   " where UserId = ?ui", new { ui = userId });
+                                                                   " where UserId = ?ui", new { ui = userId.ToString() });
             if (Target3.Count==0)
             {
                 mark = 0;
@@ -154,13 +154,13 @@ namespace BiuBiuServer.Database
                 List<(string, string, string, string, string, ulong)> Target =
                     await Fsql.Ado.QueryAsync<(string, string, string, string, string, ulong)>(
                         "Select DisplayName,JobNumber,Description,PhoneNumber,Email,Icon from userchange where UserId=?ui",
-                        new {ui = userId});
+                        new {ui = userId.ToString()});
                 await Fsql.Ado.QueryAsync<object>(
                     "update user set DisplayName = ?un,JobNumber = ?jn,Description = ?up,PhoneNumber = ?pn,Email = ?em,Icon = ?ic where UserId = ?ui ",
                     new
                     {
                         un = Target[0].Item1, jn = Target[0].Item2, up = Target[0].Item3, pn = Target[0].Item4,
-                        em = Target[0].Item5, ic = Target[0].Item6, ui = userId
+                        em = Target[0].Item5, ic = Target[0].Item6.ToString(), ui = userId.ToString()
                     });
                 List<ulong> Target2 = await Fsql.Ado.QueryAsync<ulong>("select UserId from user" +
                                                                        " where DisplayName = ?un and JobNumber = ?jn and Description = ?up and PhoneNumber = ?pn and Email = ?em and Icon = ?ic",
@@ -171,7 +171,7 @@ namespace BiuBiuServer.Database
                         up = Target[0].Item3,
                         pn = Target[0].Item4,
                         em = Target[0].Item5,
-                        ic = Target[0].Item6
+                        ic = Target[0].Item6.ToString()
                     });
                 if (Target2.Count==0)
                 {
@@ -179,16 +179,16 @@ namespace BiuBiuServer.Database
                 }
                 else
                 {
-                    await Fsql.Ado.QueryAsync<object>("delete from userchange where UserId = ?ui", new { ui = userId });
+                    await Fsql.Ado.QueryAsync<object>("delete from userchange where UserId = ?ui", new { ui = userId.ToString() });
                     return true;
                 }
             }
             else
             {
-                await Fsql.Ado.QueryAsync<object>("delete from userchange where UserId = ?ui", new {ui = userId});
+                await Fsql.Ado.QueryAsync<object>("delete from userchange where UserId = ?ui", new {ui = userId.ToString()});
                 List<ulong> Target =
                     await Fsql.Ado.QueryAsync<ulong>("select UserId from userchange where UserId = ?ui",
-                        new {ui = userId});
+                        new {ui = userId.ToString()});
                 if(Target.Count==0)
                 {
                     return true;
@@ -233,7 +233,7 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, string, string, string)> Target =
                 await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string)>(
                     "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email from user" +
-                    " where UserId = ?ui", new { ui = userId });
+                    " where UserId = ?ui", new { ui = userId.ToString() });
             if (Target.Count!=0)
             {
                 var user = new UserInfo();
