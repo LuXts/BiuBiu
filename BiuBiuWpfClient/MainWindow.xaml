@@ -3,12 +3,14 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:hc="https://handyorg.github.io/handycontrol"
+            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
             xmlns:local="clr-namespace:BiuBiuWpfClient"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:model="clr-namespace:BiuBiuWpfClient.Model"
             xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
             xmlns:purs="clr-namespace:Panuon.UI.Silver.Resources;assembly=Panuon.UI.Silver"
+            xmlns:visualBasic="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic.Core"
             Title=""
             Width="975"
             Height="600"
@@ -180,38 +182,25 @@
                                    MinHeight="130" />
                 </Grid.RowDefinitions>
                 <hc:SimplePanel Grid.Row="0">
-                    <ListBox Name="ListBoxChat"
+                    <ListBox Name="ScrollingListBoxChat"
+                             SourceUpdated="ListBox_SourceUpdated"
                              Margin="15,10"
                              HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             hc:ScrollViewerAttach.AutoHide="True"
                              pu:ListBoxHelper.AutoScrollIntoView="True"
                              Background="#0000"
                              BorderThickness="0"
                              Focusable="False"
                              ItemContainerStyle="{StaticResource MyListBoxItemChatStyle}"
-                             ScrollViewer.CanContentScroll="False"
+                             ScrollViewer.CanContentScroll="True"
                              ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                             ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                        <ListBox.Style>
-                            <Style TargetType="ListBox">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListBox">
-                                            <Border x:Name="Bd"
-                                                    Padding="0"
-                                                    HorizontalAlignment="Stretch"
-                                                    Background="#0000"
-                                                    BorderThickness="0"
-                                                    Focusable="False">
-                                                <ScrollViewer Focusable="False">
-                                                    <ItemsPresenter />
-                                                </ScrollViewer>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.Style>
-                    </ListBox>
+                             ScrollViewer.VerticalScrollBarVisibility="Visible"
+                             VirtualizingPanel.CacheLength="20"
+                             VirtualizingPanel.CacheLengthUnit="Item"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.ScrollUnit="Pixel"
+                             VirtualizingPanel.VirtualizationMode="Standard" />
                 </hc:SimplePanel>
                 <GridSplitter Grid.Row="1"
                               Height="2"

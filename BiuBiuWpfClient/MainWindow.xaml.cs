@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using BiuBiuServer.Userhub;
 using BiuBiuShare.ImInfos;
 using BiuBiuShare.Tool;
+using BiuBiuWpfClient.Tools;
 using HandyControl.Controls;
 using HandyControl.Data;
 using HandyControl.Tools.Extension;
@@ -31,10 +32,6 @@ namespace BiuBiuWpfClient
     /// </summary>
     public partial class MainWindow : WindowX
     {
-        private ITalkService _talkService;
-        private IImInfoService _imInfoService;
-        private UserHubClient _userHubClient;
-
         public ObservableCollection<ChatInfoModel> ChatInfos { get; set; }
             = new ObservableCollection<ChatInfoModel>();
 
@@ -43,6 +40,8 @@ namespace BiuBiuWpfClient
 
         private CollectionViewSource _collectionView
             = new CollectionViewSource();
+
+        private UserHubClient _userHubClient;
 
         private ulong currentTargetId = 0;
 
@@ -53,12 +52,6 @@ namespace BiuBiuWpfClient
         public MainWindow()
         {
             InitializeComponent();
-
-            _talkService = MagicOnionClient.Create<ITalkService>(
-                Initialization.GChannel, new[] { Initialization.ClientFilter });
-
-            _imInfoService = MagicOnionClient.Create<IImInfoService>(
-                Initialization.GChannel, new[] { Initialization.ClientFilter });
 
             _collectionView.Source = ChatListCollection;
             _collectionView.View.Refresh();
@@ -73,26 +66,18 @@ namespace BiuBiuWpfClient
 
             _userHubClient.SMEvent += async (Message message) =>
             {
-                object data;
-                ChatInfoType type;
+                var temp = await MessageToChatInfo.TransformChatInfoModel(message);
                 string tip;
                 if (message.Type == "Text")
                 {
-                    data = message.Data;
-                    type = ChatInfoType.TextTypeChat;
                     tip = message.Data;
                 }
                 else if (message.Type == "Image")
                 {
-                    data = await Initialization.DataDb.GetBitmapImage(
-                        message.MessageId);
-                    type = ChatInfoType.ImageTypeChat;
                     tip = "[图片]";
                 }
                 else
                 {
-                    data = message.Data;
-                    type = ChatInfoType.FileTypeChat;
                     tip = "[文件]";
                 }
 
@@ -105,24 +90,9 @@ namespace BiuBiuWpfClient
                             chatViewModel.NoReadNumber += 1;
                         }
 
-                        var info = new ChatInfoModel
-                        {
-                            Message = data
-                            ,
-                            SenderId = message.SourceId.ToString()
-                            ,
-                            Type = type
-                            ,
-                            Role = TypeLocalMessageLocation.chatRecv
-                            ,
-                            MessageOnwer = chatViewModel.DisplayName
-                            ,
-                            BImage = chatViewModel.BImage
-                            ,
-                            MessageId = message.MessageId
-                        };
-                        Initialization.Logger.Debug(chatViewModel.DisplayName);
-                        chatViewModel.ChatInfos.Add(info);
+                        temp.BImage = chatViewModel.BImage;
+                        temp.MessageOnwer = chatViewModel.DisplayName;
+                        chatViewModel.ChatInfos.Add(temp);
                         chatViewModel.LastMessage = tip;
                         chatViewModel.LastMessageTime
                             = IdManagement.TimeGen() << 20;
@@ -139,31 +109,33 @@ namespace BiuBiuWpfClient
 
         private async void InitChat()
         {
-            var myInfo = await _imInfoService.GetUserInfo(new UserInfo()
-            {
-                UserId = AuthenticationTokenStorage.UserId
-            });
-
+            var myInfo
+                = await Initialization.DataDb.GetUserInfoByServer(
+                    AuthenticationTokenStorage.UserId);
             MyHeadIcon
                 = await Initialization.DataDb.GetBitmapImage(myInfo.IconId);
 
-            var userInfos = await _imInfoService.GetUserFriendsId(
+            var userInfos = await Service.ImInfoService.GetUserFriendsId(
                 new UserInfo() { UserId = AuthenticationTokenStorage.UserId });
             foreach (var user in userInfos)
             {
-                var chat = new ChatViewModel(user.UserId)
+                var chat = new ChatViewModel(user.UserId, user.IconId, user.DisplayName)
                 {
                     LastMessageTime = IdManagement.TimeGen() << 20
                 };
+
                 ChatListCollection.Add(chat);
-                chat.ChatInfos.CollectionChanged += ListBox_SourceUpdated;
             }
         }
 
         private void ListBox_SourceUpdated(object sender, EventArgs e)
         {
-            Decorator decorator
-                = (Decorator)VisualTreeHelper.GetChild(ListBoxChat, 0);
+            ListUpdate();
+        }
+
+        private void ListUpdate()
+        {
+            Decorator decorator = (Decorator)VisualTreeHelper.GetChild(ScrollingListBoxChat, 0);
             ScrollViewer scrollViewer = (ScrollViewer)decorator.Child;
             scrollViewer.ScrollToEnd();
         }
@@ -183,7 +155,8 @@ namespace BiuBiuWpfClient
         private async void SendMessageButton_OnClick(object sender
             , RoutedEventArgs e)
         {
-            var re = await _talkService.SendMessageAsync(new Message()
+            Initialization.Logger.Debug(currentTargetId);
+            var re = await Service.TalkService.SendMessageAsync(new Message()
             {
                 Data = ChatInputbox.Text
                 ,
@@ -193,6 +166,7 @@ namespace BiuBiuWpfClient
                 ,
                 TargetId = currentTargetId
             });
+            Initialization.Logger.Debug(re.Item1.Success);
             if (re.Item1.Success)
             {
                 var info = new ChatInfoModel
@@ -213,7 +187,6 @@ namespace BiuBiuWpfClient
                     MessageId = re.Item1.MessageId
                 };
                 ChatInfos.Add(info);
-
                 currentChatViewModel.LastMessageTime = re.Item1.MessageId;
                 currentChatViewModel.LastMessage = ChatInputbox.Text;
                 _collectionView.View.Refresh();
@@ -233,13 +206,15 @@ namespace BiuBiuWpfClient
             }
             else
             {
-                ListBoxChat.ItemsSource = chatView.ChatInfos;
+                ScrollingListBoxChat.ItemsSource = chatView.ChatInfos;
                 ChatInfos = chatView.ChatInfos;
                 currentTargetId = chatView.TargetId;
                 ChatInputbox.Text = chatView.InputData;
                 currentChatViewModel = chatView;
                 currentChatViewModel.NoReadNumber = 0;
             }
+
+            ListUpdate();
         }
 
         private void ChatInputbox_OnTextChanged(object sender
