@@ -1,5 +1,8 @@
-﻿namespace BiuBiuShare.UserManagement
+﻿using MessagePack;
+
+namespace BiuBiuShare.UserManagement
 {
+    [MessagePackObject(true)]
     public class RegisterInfo
     {
         public string JobNumber { get; set; }

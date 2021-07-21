@@ -5,8 +5,10 @@
             xmlns:hc="https://handyorg.github.io/handycontrol"
             xmlns:local="clr-namespace:BiuBiuWpfClient"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:model="clr-namespace:BiuBiuWpfClient.Model"
             xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+            xmlns:purs="clr-namespace:Panuon.UI.Silver.Resources;assembly=Panuon.UI.Silver"
             Title=""
             Width="975"
             Height="600"
@@ -50,247 +52,267 @@
                TargetType="{x:Type ListBoxItem}">
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="EventSetter_OnHandler" />
         </Style>
+        <model:NoReadNumberConverter x:Key="NRNC" />
     </Window.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
+    <hc:SimplePanel>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="65" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition MinWidth="215" MaxWidth="320" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition MinWidth="650" />
+            </Grid.ColumnDefinitions>
 
-            <ColumnDefinition Width="65" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition MinWidth="215" MaxWidth="320" />
-            <ColumnDefinition Width="Auto" />
+            <Grid Grid.Row="0"
+                  Grid.Column="0"
+                  Background="#EBEBEB">
 
-            <ColumnDefinition MinWidth="650" />
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Row="0"
-              Grid.Column="0"
-              Background="#EBEBEB">
-
-            <ToggleButton Width="50"
-                          Height="50"
-                          Margin="7.5"
-                          Padding="10"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Top"
-                          pu:ToggleButtonHelper.CheckedBackground="#D1D3D5"
-                          pu:ToggleButtonHelper.CornerRadius="10"
-                          pu:ToggleButtonHelper.HoverBackground="#DDDEDF"
-                          IsChecked="True">
-                <Image Source="Resource/Images/message-text-outline.png" Stretch="Fill" />
-            </ToggleButton>
-            <ToggleButton Width="50"
-                          Height="50"
-                          Margin="7.5,65,7.5,7.5"
-                          Padding="10"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Top"
-                          pu:ToggleButtonHelper.CheckedBackground="#D1D3D5"
-                          pu:ToggleButtonHelper.CornerRadius="10"
-                          pu:ToggleButtonHelper.HoverBackground="#DDDEDF">
-                <Image Source="Resource/Images/account-multiple-outline.png" Stretch="Fill" />
-            </ToggleButton>
-            <Button Width="50"
-                    Height="50"
-                    Margin="7.5"
-                    Padding="10"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    pu:ButtonHelper.ClickBackground="#D1D3D5"
-                    pu:ButtonHelper.CornerRadius="10"
-                    pu:ButtonHelper.HoverBackground="#DDDEDF">
-                <Image Source="Resource/Images/settings.png" Stretch="Fill" />
-            </Button>
-        </Grid>
-        <StackPanel Grid.Column="1"
-                    Width="2"
-                    Background="#EDEEEF" />
-        <StackPanel Grid.Column="2">
-            <ListBox Name="ChatListBox"
-                     HorizontalAlignment="Stretch"
-                     HorizontalContentAlignment="Stretch"
-                     BorderThickness="0"
-                     SelectionChanged="ChatListBox_OnSelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border Height="45"
-                                Margin="0,5"
-                                HorizontalAlignment="Stretch">
-                            <DockPanel LastChildFill="True">
-                                <Image Width="45"
-                                       Height="45"
-                                       Source="{Binding BImage}" />
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0"
-                                               Grid.Column="1"
-                                               Margin="0"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Center"
-                                               Foreground="#CC000000"
-                                               Text="时间" />
-                                    <TextBlock Grid.Row="0"
-                                               Grid.Column="0"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               Text="{Binding DisplayName}" />
-                                    <TextBlock Grid.Row="1"
-                                               Grid.ColumnSpan="2"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               Foreground="#CC000000"
-                                               Text="{Binding LastMessage}" />
-                                </Grid>
-                            </DockPanel>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-        <GridSplitter Grid.Column="3"
-                      Width="2"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Stretch" />
-        <Grid Name="ChatView"
-              Grid.Column="4"
-              Background="#F1F2F3"
-              Visibility="Hidden">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Name="RowDefinition" MinHeight="130" />
-            </Grid.RowDefinitions>
-            <hc:SimplePanel Grid.Row="0">
-                <ListBox Name="ListBoxChat"
-                         Margin="15,10"
+                <ToggleButton Width="50"
+                              Height="50"
+                              Margin="7.5"
+                              Padding="10"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Top"
+                              pu:ToggleButtonHelper.CheckedBackground="#D1D3D5"
+                              pu:ToggleButtonHelper.CornerRadius="10"
+                              pu:ToggleButtonHelper.HoverBackground="#DDDEDF"
+                              IsChecked="True">
+                    <Image Source="Resource/Images/message-text-outline.png" Stretch="Fill" />
+                </ToggleButton>
+                <ToggleButton Width="50"
+                              Height="50"
+                              Margin="7.5,65,7.5,7.5"
+                              Padding="10"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Top"
+                              pu:ToggleButtonHelper.CheckedBackground="#D1D3D5"
+                              pu:ToggleButtonHelper.CornerRadius="10"
+                              pu:ToggleButtonHelper.HoverBackground="#DDDEDF">
+                    <Image Source="Resource/Images/account-multiple-outline.png" Stretch="Fill" />
+                </ToggleButton>
+                <Button Width="50"
+                        Height="50"
+                        Margin="7.5"
+                        Padding="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        pu:ButtonHelper.ClickBackground="#D1D3D5"
+                        pu:ButtonHelper.CornerRadius="10"
+                        pu:ButtonHelper.HoverBackground="#DDDEDF">
+                    <Image Source="Resource/Images/settings.png" Stretch="Fill" />
+                </Button>
+            </Grid>
+            <StackPanel Grid.Column="1"
+                        Width="2"
+                        Background="#EDEEEF" />
+            <StackPanel Grid.Column="2">
+                <ListBox Name="ChatListBox"
                          HorizontalAlignment="Stretch"
-                         pu:ListBoxHelper.AutoScrollIntoView="True"
-                         Background="#0000"
+                         HorizontalContentAlignment="Stretch"
                          BorderThickness="0"
-                         ItemContainerStyle="{StaticResource MyListBoxItemChatStyle}"
-                         ScrollViewer.CanContentScroll="False"
-                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                    <ListBox.Style>
-                        <Style TargetType="ListBox">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListBox">
-                                        <Border x:Name="Bd"
-                                                Padding="0"
-                                                HorizontalAlignment="Stretch"
-                                                Background="#0000"
-                                                BorderThickness="0">
-                                            <ScrollViewer Focusable="False">
-                                                <ItemsPresenter />
-                                            </ScrollViewer>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.Style>
-                </ListBox>
-            </hc:SimplePanel>
-            <GridSplitter Grid.Row="1"
-                          Height="2"
-                          Margin="10,0,10,0"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Center"
-                          Background="#10000000" />
-            <Grid Grid.Row="2">
+                         SelectionChanged="ChatListBox_OnSelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Height="45"
+                                    Margin="0,5"
+                                    HorizontalAlignment="Stretch">
+                                <DockPanel LastChildFill="True">
 
-                <Grid Height="45"
-                      MinHeight="45"
-                      VerticalAlignment="Top">
-                    <Button Width="35"
-                            Height="35"
-                            Margin="15,0,0,0"
-                            Padding="6"
-                            HorizontalAlignment="Left"
-                            pu:ButtonHelper.ClickBackground="#D1D3D5"
-                            pu:ButtonHelper.CornerRadius="5"
-                            pu:ButtonHelper.HoverBackground="#DDDEDF"
-                            Background="#0000"
-                            BorderThickness="0"
-                            Click="LoadImageButton_OnClick">
-                        <Image Margin="0"
-                               Source="Resource/Images/image.png"
-                               Stretch="Fill" />
-                    </Button>
-                    <Button Width="35"
-                            Height="35"
-                            Margin="55,0,0,0"
-                            Padding="7"
-                            HorizontalAlignment="Left"
-                            pu:ButtonHelper.ClickBackground="#D1D3D5"
-                            pu:ButtonHelper.CornerRadius="5"
-                            pu:ButtonHelper.HoverBackground="#DDDEDF"
-                            Background="#0000"
-                            BorderThickness="0">
-                        <Image Margin="0"
-                               Source="Resource/Images/file.png"
-                               Stretch="Fill" />
-                    </Button>
-                    <Button Width="35"
-                            Height="35"
-                            Margin="95,0,0,0"
-                            Padding="5"
-                            HorizontalAlignment="Left"
-                            pu:ButtonHelper.ClickBackground="#D1D3D5"
-                            pu:ButtonHelper.CornerRadius="5"
-                            pu:ButtonHelper.HoverBackground="#DDDEDF"
-                            Background="#0000"
-                            BorderThickness="0">
-                        <Image Margin="0"
-                               Source="Resource/Images/video.png"
-                               Stretch="Fill" />
-                    </Button>
-                </Grid>
-                <TextBox x:Name="ChatInputbox"
-                         Margin="10,50,10,50"
-                         HorizontalContentAlignment="Left"
-                         VerticalContentAlignment="Stretch"
-                         AcceptsReturn="True"
-                         Background="#0fff"
-                         BorderThickness="0"
-                         FontSize="16"
-                         TextChanged="ChatInputbox_OnTextChanged"
-                         TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Visible" />
-                <Grid Height="50"
-                      MinHeight="50"
-                      VerticalAlignment="Bottom">
-                    <Label Width="200"
-                           Height="30"
-                           Margin="0,0,80,10"
-                           HorizontalAlignment="Right"
-                           Background="#00FFFFFF"
-                           BorderThickness="0"
-                           Foreground="#CC000000">
-                        Ctrl+Enter 发送，Enter 换行
-                    </Label>
-                    <Button Width="70"
-                            Height="30"
-                            Margin="0,0,20,10"
-                            HorizontalAlignment="Right"
-                            pu:ButtonHelper.CornerRadius="5"
-                            pu:ButtonHelper.HoverBackground="#39A3FF"
-                            Background="#0089FF"
-                            Click="SendMessageButton_OnClick"
-                            FontFamily="Light"
-                            FontSize="15"
-                            Foreground="White">
-                        发送
-                    </Button>
+                                    <Image Width="45"
+                                           Height="45"
+                                           Source="{Binding BImage}" />
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <hc:Badge Grid.Row="0"
+                                                  Grid.Column="1"
+                                                  Height="30"
+                                                  BadgeMargin="0,4,30,0"
+                                                  Maximum="99"
+                                                  ShowBadge="{Binding NoReadNumber, Converter={StaticResource NRNC}}"
+                                                  Status="Text"
+                                                  Style="{DynamicResource BadgeInfo}"
+                                                  Value="{Binding NoReadNumber}">
+                                            <TextBlock Margin="0"
+                                                       HorizontalAlignment="Right"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#CC000000"
+                                                       Text="时间" />
+                                        </hc:Badge>
+                                        <TextBlock Grid.Row="0"
+                                                   Grid.Column="0"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="16"
+                                                   Text="{Binding DisplayName}" />
+                                        <TextBlock Grid.Row="1"
+                                                   Grid.ColumnSpan="2"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#CC000000"
+                                                   Text="{Binding LastMessage}" />
+                                    </Grid>
+                                </DockPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+            <GridSplitter Grid.Column="3"
+                          Width="2"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Stretch" />
+            <Grid Name="ChatView"
+                  Grid.Column="4"
+                  Background="#F1F2F3"
+                  Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Name="RowDefinition"
+                                   Height="250"
+                                   MinHeight="130" />
+                </Grid.RowDefinitions>
+                <hc:SimplePanel Grid.Row="0">
+                    <ListBox Name="ListBoxChat"
+                             Margin="15,10"
+                             HorizontalAlignment="Stretch"
+                             pu:ListBoxHelper.AutoScrollIntoView="True"
+                             Background="#0000"
+                             BorderThickness="0"
+                             Focusable="False"
+                             ItemContainerStyle="{StaticResource MyListBoxItemChatStyle}"
+                             ScrollViewer.CanContentScroll="False"
+                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                             ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <ListBox.Style>
+                            <Style TargetType="ListBox">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBox">
+                                            <Border x:Name="Bd"
+                                                    Padding="0"
+                                                    HorizontalAlignment="Stretch"
+                                                    Background="#0000"
+                                                    BorderThickness="0"
+                                                    Focusable="False">
+                                                <ScrollViewer Focusable="False">
+                                                    <ItemsPresenter />
+                                                </ScrollViewer>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.Style>
+                    </ListBox>
+                </hc:SimplePanel>
+                <GridSplitter Grid.Row="1"
+                              Height="2"
+                              Margin="10,0,10,0"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
+                              Background="#10000000" />
+                <Grid Grid.Row="2">
+
+                    <Grid Height="45"
+                          MinHeight="45"
+                          VerticalAlignment="Top">
+                        <Button Width="35"
+                                Height="35"
+                                Margin="15,0,0,0"
+                                Padding="6"
+                                HorizontalAlignment="Left"
+                                pu:ButtonHelper.ClickBackground="#D1D3D5"
+                                pu:ButtonHelper.CornerRadius="5"
+                                pu:ButtonHelper.HoverBackground="#DDDEDF"
+                                Background="#0000"
+                                BorderThickness="0"
+                                Click="LoadImageButton_OnClick">
+                            <Image Margin="0"
+                                   Source="Resource/Images/image.png"
+                                   Stretch="Fill" />
+                        </Button>
+                        <Button Width="35"
+                                Height="35"
+                                Margin="55,0,0,0"
+                                Padding="7"
+                                HorizontalAlignment="Left"
+                                pu:ButtonHelper.ClickBackground="#D1D3D5"
+                                pu:ButtonHelper.CornerRadius="5"
+                                pu:ButtonHelper.HoverBackground="#DDDEDF"
+                                Background="#0000"
+                                BorderThickness="0"
+                                Click="UploadFileButton_OnClick">
+                            <Image Margin="0"
+                                   Source="Resource/Images/file.png"
+                                   Stretch="Fill" />
+                        </Button>
+                        <Button Width="35"
+                                Height="35"
+                                Margin="95,0,0,0"
+                                Padding="5"
+                                HorizontalAlignment="Left"
+                                pu:ButtonHelper.ClickBackground="#D1D3D5"
+                                pu:ButtonHelper.CornerRadius="5"
+                                pu:ButtonHelper.HoverBackground="#DDDEDF"
+                                Background="#0000"
+                                BorderThickness="0">
+                            <Image Margin="0"
+                                   Source="Resource/Images/video.png"
+                                   Stretch="Fill" />
+                        </Button>
+                    </Grid>
+                    <TextBox x:Name="ChatInputbox"
+                             Margin="10,50,10,50"
+                             HorizontalContentAlignment="Left"
+                             VerticalContentAlignment="Stretch"
+                             AcceptsReturn="True"
+                             Background="#0fff"
+                             BorderThickness="0"
+                             FontSize="16"
+                             TextChanged="ChatInputbox_OnTextChanged"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Visible" />
+                    <Grid Height="50"
+                          MinHeight="50"
+                          VerticalAlignment="Bottom">
+                        <Label Width="200"
+                               Height="30"
+                               Margin="0,0,80,10"
+                               HorizontalAlignment="Right"
+                               Background="#00FFFFFF"
+                               BorderThickness="0"
+                               Foreground="#CC000000">
+                            Ctrl+Enter 发送，Enter 换行
+                        </Label>
+                        <Button Width="70"
+                                Height="30"
+                                Margin="0,0,20,10"
+                                HorizontalAlignment="Right"
+                                pu:ButtonHelper.CornerRadius="5"
+                                pu:ButtonHelper.HoverBackground="#39A3FF"
+                                Background="#0089FF"
+                                Click="SendMessageButton_OnClick"
+                                FontFamily="Light"
+                                FontSize="15"
+                                Foreground="White">
+                            发送
+                        </Button>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>
-    </Grid>
+        <ScrollViewer HorizontalAlignment="Right" VerticalScrollBarVisibility="Hidden">
+            <StackPanel Margin="0,10,10,10"
+                        VerticalAlignment="Top"
+                        hc:Growl.GrowlParent="True" />
+        </ScrollViewer>
+    </hc:SimplePanel>
 </pu:WindowX>

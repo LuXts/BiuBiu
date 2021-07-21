@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.Tool;
 using BiuBiuWpfClient.Login;
+using MagicOnion;
 
 namespace BiuBiuWpfClient.Tools
 {
@@ -37,7 +39,7 @@ namespace BiuBiuWpfClient.Tools
                 {
                     var b = Service.TalkService.GetDataAsync(response.Item1
                         , response.Item2, true);
-                    IPAddress address = IPAddress.Parse("127.0.0.1");
+                    IPAddress address = IPAddress.Parse(Initialization.GrpcIp);
                     TcpClient client = new TcpClient();
                     client.Connect(address, (int)response.Item2);
                     using (client)
@@ -126,7 +128,7 @@ namespace BiuBiuWpfClient.Tools
                 AddBitmapImage(reAsync.Item1.MessageId, fileBytes);
                 var reSendDataAsync = Service.TalkService.SendDataAsync(
                     reAsync.Item1, reAsync.Item2, true);
-                IPAddress address = IPAddress.Parse("127.0.0.1");
+                IPAddress address = IPAddress.Parse(Initialization.GrpcIp);
                 TcpClient client = new TcpClient();
                 client.Connect(address, Convert.ToInt32(reAsync.Item2));
                 using (client)
@@ -144,6 +146,98 @@ namespace BiuBiuWpfClient.Tools
             }
 
             return reAsync.Item1;
+        }
+
+        public async Task<MessageResponse> SendFileToServer(ulong targetId
+            , string filePath)
+        {
+            var reAsync = await Service.TalkService.SendMessageAsync(
+                new Message()
+                {
+                    Type = "File"
+                    ,
+                    Data = Path.GetFileName(filePath)
+                    ,
+                    SourceId = AuthenticationTokenStorage.UserId
+                    ,
+                    TargetId = targetId
+                });
+
+            if (reAsync.Item1.Success)
+            {
+                int bufferlength = 1024 * 1024;
+                byte[] buffer = new byte[bufferlength];
+
+                FileStream fs = new FileStream(filePath, FileMode.Open);
+
+                var reSendDataAsync = Service.TalkService.SendDataAsync(
+                    reAsync.Item1, reAsync.Item2, true);
+                IPAddress address = IPAddress.Parse(Initialization.GrpcIp);
+                TcpClient client = new TcpClient();
+                client.Connect(address, Convert.ToInt32(reAsync.Item2));
+                using (client)
+                {
+                    //连接完服务器后便在客户端和服务端之间产生一个流的通道
+                    NetworkStream ns = client.GetStream();
+
+                    int readLength;
+                    //同步读取网络流中的byte信息
+                    do
+                    {
+                        readLength = fs.Read(buffer, 0, bufferlength);
+                        ns.Write(buffer, 0, readLength);
+                    } while (readLength > 0);
+                    ns.Close();
+                }
+
+                client.Close();
+                fs.Close();
+                return await reSendDataAsync;
+            }
+            return MessageResponse.Failed;
+        }
+
+        public async Task<MessageResponse> GetFileByServer(ulong messageId
+            , string filePath)
+        {
+            int bufferlength = 1024 * 1024;
+            byte[] buffer = new byte[bufferlength];
+
+            var n2 = await Service.TalkService.GetMessageAsync(
+                new MessageResponse() { MessageId = messageId });
+
+            if (n2.Item1.Success)
+            {
+                var re = Service.TalkService.GetDataAsync(n2.Item1, n2.Item2
+                    , true);
+
+                FileStream fs = File.Open(filePath
+                    , FileMode.Create);
+                IPAddress address = IPAddress.Parse(Initialization.GrpcIp);
+                TcpClient client = new TcpClient();
+                client.Connect(address, Convert.ToInt32(n2.Item2));
+                using (client)
+                {
+                    NetworkStream ns = client.GetStream();
+                    while (!ns.DataAvailable)
+                    {
+                    }
+
+                    int readLength;
+                    do
+                    {
+                        readLength = ns.Read(buffer, 0, bufferlength);
+                        Initialization.Logger.Debug(readLength);
+                        fs.Write(buffer, 0, readLength);
+                    } while (readLength > 0);
+
+                    fs.Close();
+                    ns.Close();
+                    client.Close();
+                    return await re;
+                }
+            }
+            return MessageResponse.Failed;
         }
     }
 }

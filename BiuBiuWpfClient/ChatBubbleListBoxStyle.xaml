@@ -127,6 +127,34 @@
         </Setter>
     </Style>
 
+    <Style x:Key="FileTypeChat" TargetType="Label">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Label}">
+                    <Grid Width="200" Height="60">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0"
+                               Width="50"
+                               Height="50"
+                               Source="Resource/Images/folder-download.png"
+                               Stretch="Fill" />
+
+                        <TextBlock Grid.Column="1"
+                                   Width="140"
+                                   Margin="10"
+                                   hc:TextBlockAttach.AutoTooltip="True"
+                                   FontSize="16"
+                                   Foreground="#EE000000"
+                                   Text="{Binding Message}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="ListBoxItemChatStyle"
            BasedOn="{StaticResource {x:Type ListBoxItem}}"
            TargetType="{x:Type ListBoxItem}">
@@ -140,9 +168,10 @@
                     <Grid x:Name="grid"
                           Width="Auto"
                           Height="Auto"
-                          HorizontalAlignment="Stretch">
+                          HorizontalAlignment="Stretch"
+                          Focusable="False">
                         <Grid.RowDefinitions>
-                            <RowDefinition />
+                            <RowDefinition Height="*" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <Label Grid.Row="0"

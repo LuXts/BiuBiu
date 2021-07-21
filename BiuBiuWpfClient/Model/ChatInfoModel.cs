@@ -31,5 +31,7 @@ namespace BiuBiuWpfClient.Model
         public string MessageOnwer { get; set; }
 
         public BitmapImage BImage { get; set; }
+
+        public ulong MessageId { get; set; }
     }
 }

@@ -41,6 +41,18 @@ namespace BiuBiuWpfClient.Model
             }
         }
 
+        private int _noReadNumber;
+
+        public int NoReadNumber
+        {
+            get { return _noReadNumber; }
+            set
+            {
+                _noReadNumber = value;
+                Notify("NoReadNumber");
+            }
+        }
+
         public ObservableCollection<ChatInfoModel> ChatInfos { get; set; } = new ObservableCollection<ChatInfoModel>();
 
         private ulong _chatId;
@@ -90,7 +102,7 @@ namespace BiuBiuWpfClient.Model
             TargetId = userId;
             _chatId = userId;
             BImage = new BitmapImage();
-
+            NoReadNumber = 0;
             InitChat();
         }
 
