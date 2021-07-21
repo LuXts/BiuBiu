@@ -137,7 +137,7 @@ namespace BiuBiuServer.Database
         public async UnaryResult<UserInfoResponse> SetUserInfo(
             UserInfo userInfo)
         {
-            List<(ulong, string)> user = await Fsql.Ado.QueryAsync<(ulong, string)>("select UserId from user where" +
+            List<(ulong, string)> user = await Fsql.Ado.QueryAsync<(ulong, string)>("select UserId,Password from user where" +
                                                                 " UserId=?ui", new { ui = userInfo.UserId.ToString() });
             List<ulong> change = await Fsql.Ado.QueryAsync<ulong>("select UserId from userchange where" +
                                                                   " UserId=?ui", new { ui = userInfo.UserId.ToString() });
@@ -233,8 +233,8 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, ulong, ulong)> Target
                 = await Fsql.Ado
                     .QueryAsync<(ulong, string, string, ulong, ulong)>(
-                        "select TeamId,GroupName,Description,Icon,OwnerId from Group where" +
-                        " TeamId=?gd", new { gd = teamId.ToString() });
+                        "select GroupId,GroupName,Description,Icon,OwnerId from Group where" +
+                        " GroupId=?gd", new { gd = teamId.ToString() });
             if (Target.Count == 0)
             {
                 return TeamInfoResponse.Failed;
