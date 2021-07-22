@@ -81,5 +81,10 @@ namespace BiuBiuServer.Services
         {
             return _imInfoDatabaseDriven.GetUserTeamsId(userInfo.UserId);
         }
+
+        public UnaryResult<ulong> GetUserLastLoginTime(UserInfo userInfo)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading;
+using BiuBiuWpfClient.OnlineHub;
 using BiuBiuWpfClient.Tools;
 using Grpc.Core;
 using Grpc.Net.Client;
@@ -10,13 +11,15 @@ namespace BiuBiuWpfClient
 {
     public class Initialization
     {
-        public readonly static string GrpcIp = "192.168.100.10";
+        public readonly static string GrpcIp = "127.0.0.1";
 
         public readonly static string GrpcPort = ":5001";
 
         public static IClientFilter ClientFilter;
 
         public static GrpcChannel GChannel;
+
+        public static OnlineHubClient OnlineHub = new OnlineHubClient();
 
         public static readonly NLog.Logger Logger
             = NLog.LogManager.GetCurrentClassLogger();

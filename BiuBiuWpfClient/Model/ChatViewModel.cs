@@ -80,9 +80,11 @@ namespace BiuBiuWpfClient.Model
 
         private string _displayName;
 
+        private string _status = "";
+
         public string DisplayName
         {
-            get { return _displayName; }
+            get { return _displayName + _status; }
             set
             {
                 _displayName = value;
@@ -121,6 +123,19 @@ namespace BiuBiuWpfClient.Model
             InitChat(iconId);
         }
 
+        private void SetOnlineStatus(bool status)
+        {
+            if (status)
+            {
+                _status = "[在线]";
+            }
+            else
+            {
+                _status = "[离线]";
+            }
+            Notify("DisplayName");
+        }
+
         public async Task InitChat(ulong iconId)
         {
             BImage = await Initialization.DataDb.GetBitmapImage(iconId);
@@ -136,6 +151,32 @@ namespace BiuBiuWpfClient.Model
             }
             else
             {
+                if (Initialization.OnlineHub.OnlineUserDictionary.TryGetValue(
+                    TargetId, out var temp))
+                {
+                    SetOnlineStatus(true);
+                }
+                else
+                {
+                    SetOnlineStatus(false);
+                }
+
+                Initialization.OnlineHub.OJEvent += (UserInfo user) =>
+                 {
+                     if (user.UserId == TargetId)
+                     {
+                         SetOnlineStatus(true);
+                     }
+                 };
+
+                Initialization.OnlineHub.OLEvent += (UserInfo user) =>
+                {
+                    if (user.UserId == TargetId)
+                    {
+                        SetOnlineStatus(false);
+                    }
+                };
+
                 reList = await Service.TalkService.GetChatMessagesRecordAsync(
                     _chatId, AuthenticationTokenStorage.UserId, oldTime << 20
                     , time << 20);

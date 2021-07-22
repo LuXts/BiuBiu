@@ -95,16 +95,13 @@
                         Padding="10"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
+                        hc:Poptip.Content="聊天"
                         pu:ButtonHelper.CornerRadius="10"
                         pu:ButtonHelper.HoverBackground="#1000"
                         Background="#D1D3D5"
                         Click="TalkSwitchButton_OnClick"
                         Focusable="False">
-                    <Image Source="Resource/Images/message-text-outline.png" Stretch="Fill">
-                        <hc:Poptip.Instance>
-                            <hc:Poptip Content="聊天" PlacementType="RightBottom" />
-                        </hc:Poptip.Instance>
-                    </Image>
+                    <Image Source="Resource/Images/message-text-outline.png" Stretch="Fill" />
                 </Button>
                 <Button x:Name="AddressSwitch"
                         Width="50"
@@ -113,15 +110,12 @@
                         Padding="10"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
+                        hc:Poptip.Content="通讯录"
                         pu:ButtonHelper.CornerRadius="10"
                         pu:ButtonHelper.HoverBackground="#1000"
                         Click="AddressBookSwitchButton_OnClick"
                         Focusable="False">
-                    <Image Source="Resource/Images/account-multiple-outline.png" Stretch="Fill">
-                        <hc:Poptip.Instance>
-                            <hc:Poptip Content="通讯录" PlacementType="RightBottom" />
-                        </hc:Poptip.Instance>
-                    </Image>
+                    <Image Source="Resource/Images/account-multiple-outline.png" Stretch="Fill" />
                 </Button>
                 <Button Width="50"
                         Height="50"
@@ -129,15 +123,12 @@
                         Padding="10"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
+                        hc:Poptip.Content="设置"
                         pu:ButtonHelper.ClickBackground="#D1D3D5"
                         pu:ButtonHelper.CornerRadius="10"
                         pu:ButtonHelper.HoverBackground="#DDDEDF"
                         Focusable="False">
-                    <Image Source="Resource/Images/settings.png" Stretch="Fill">
-                        <hc:Poptip.Instance>
-                            <hc:Poptip Content="设置" PlacementType="RightBottom" />
-                        </hc:Poptip.Instance>
-                    </Image>
+                    <Image Source="Resource/Images/settings.png" Stretch="Fill" />
                 </Button>
             </hc:SimplePanel>
             <StackPanel Grid.Column="1"
@@ -215,7 +206,8 @@
                                FontSize="16"
                                Text="通讯录"
                                TextAlignment="Left" />
-                    <Button Height="55"
+                    <Button Name="AFriendsButton"
+                            Height="55"
                             Margin="7,1"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
@@ -224,6 +216,7 @@
                             pu:ButtonHelper.HoverBackground="#EFF0F1"
                             Background="White"
                             BorderThickness="0"
+                            Click="AFriendsButton_OnClick"
                             Focusable="False">
                         <Grid Margin="0" HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
@@ -246,7 +239,8 @@
                                        Text="好友" />
                         </Grid>
                     </Button>
-                    <Button Height="55"
+                    <Button Name="ANewFriendsButton"
+                            Height="55"
                             Margin="7,1"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
@@ -255,6 +249,7 @@
                             pu:ButtonHelper.HoverBackground="#EFF0F1"
                             Background="White"
                             BorderThickness="0"
+                            Click="ANewFriendsButton_OnClick"
                             Focusable="False">
                         <Grid Margin="0" HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
@@ -278,7 +273,8 @@
                         </Grid>
                     </Button>
 
-                    <Button Height="55"
+                    <Button Name="ATeamsButton"
+                            Height="55"
                             Margin="7,1"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
@@ -287,6 +283,7 @@
                             pu:ButtonHelper.HoverBackground="#EFF0F1"
                             Background="White"
                             BorderThickness="0"
+                            Click="ATeamsButton_OnClick"
                             Focusable="False">
                         <Grid Margin="0" HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
@@ -309,7 +306,10 @@
                                        Text="我的群组" />
                         </Grid>
                     </Button>
-                    <Button Height="55"
+                    <Button
+                        Name="ATeamInvitationButton"
+                        Click="ATeamInvitationButton_OnClick"
+                        Height="55"
                             Margin="7,1"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
@@ -340,7 +340,11 @@
                                        Text="群组邀请" />
                         </Grid>
                     </Button>
-                    <Button Height="55"
+                    <Button
+                        Name="ATeamRequestButton"
+                        Click="ATeamRequestButton_OnClick"
+
+                        Height="55"
                             Margin="7,1"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
@@ -425,6 +429,7 @@
                                 Margin="15,0,0,0"
                                 Padding="6"
                                 HorizontalAlignment="Left"
+                                hc:Poptip.Content="发送图片"
                                 pu:ButtonHelper.ClickBackground="#D1D3D5"
                                 pu:ButtonHelper.CornerRadius="5"
                                 pu:ButtonHelper.HoverBackground="#DDDEDF"
@@ -441,6 +446,7 @@
                                 Margin="55,0,0,0"
                                 Padding="7"
                                 HorizontalAlignment="Left"
+                                hc:Poptip.Content="发送文件"
                                 pu:ButtonHelper.ClickBackground="#D1D3D5"
                                 pu:ButtonHelper.CornerRadius="5"
                                 pu:ButtonHelper.HoverBackground="#DDDEDF"
@@ -457,6 +463,7 @@
                                 Margin="95,0,0,0"
                                 Padding="5"
                                 HorizontalAlignment="Left"
+                                hc:Poptip.Content="视频聊天"
                                 pu:ButtonHelper.ClickBackground="#D1D3D5"
                                 pu:ButtonHelper.CornerRadius="5"
                                 pu:ButtonHelper.HoverBackground="#DDDEDF"
@@ -512,7 +519,8 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Visibility="Collapsed">
-                <TextBlock Height="40"
+                <TextBlock Name="InfoTitle"
+                           Height="40"
                            Margin="15,10,15,10"
                            Padding="0,15"
                            HorizontalAlignment="Stretch"
@@ -546,32 +554,13 @@
                                             <ColumnDefinition Width="3*" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <hc:Badge Grid.Row="0"
-                                                  Grid.Column="1"
-                                                  Height="30"
-                                                  BadgeMargin="0,4,30,0"
-                                                  Maximum="99"
-                                                  ShowBadge="{Binding NoReadNumber, Converter={StaticResource NRNC}}"
-                                                  Status="Text"
-                                                  Style="{StaticResource BadgePrimary}"
-                                                  Value="{Binding NoReadNumber}">
-                                            <TextBlock Margin="0"
-                                                       HorizontalAlignment="Right"
-                                                       VerticalAlignment="Top"
-                                                       Foreground="#CC000000"
-                                                       Text="{Binding LastMessageTimeStr}" />
-                                        </hc:Badge>
+
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="0"
+                                                   Margin="10,0"
                                                    VerticalAlignment="Center"
                                                    FontSize="16"
                                                    Text="{Binding DisplayName}" />
-                                        <TextBlock Grid.Row="1"
-                                                   Grid.ColumnSpan="2"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Center"
-                                                   Foreground="#CC000000"
-                                                   Text="{Binding LastMessage}" />
                                     </Grid>
                                 </DockPanel>
                             </Border>

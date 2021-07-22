@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BiuBiuShare.ImInfos;
 using BiuBiuWpfClient.Login;
 using Grpc.Net.Client;
 using NLog.Fluent;
@@ -43,7 +44,7 @@ namespace BiuBiuWpfClient
         private async void LoginButton_OnClick(object sender, RoutedEventArgs e)
         {
             ButtonHelper.SetIsPending(LoginButton, true);
-
+            LoginButton.IsEnabled = false;
             string signIn = AccountTextBox.Text;
             string password = PasswdBox.Password;
             var response = await AuthenticationTokenStorage.Login(signIn
@@ -51,13 +52,26 @@ namespace BiuBiuWpfClient
 
             if (response.Success)
             {
-                Initialization.ClientFilter = new WithAuthenticationFilter(signIn, password
-                    , Initialization.GChannel);
-
                 AuthenticationTokenStorage.UserId = response.UserId;
                 AuthenticationTokenStorage.DisplayName = response.DisplayName;
 
+                Initialization.ClientFilter
+                    = new WithAuthenticationFilter(signIn, password
+                        , Initialization.GChannel);
+
                 Service.InitService();
+                Initialization.Logger.Debug("sssss");
+                var temp = await Initialization.OnlineHub.ConnectAsync(
+                    Initialization.GChannel
+                    , new UserInfo() { UserId = response.UserId });
+                Initialization.Logger.Debug("1sssss1");
+                if (temp is null)
+                {
+                    MessageBoxX.Show("你已经在另一处登录!");
+                    LoginButton.IsEnabled = true;
+                    ButtonHelper.SetIsPending(LoginButton, false);
+                    return;
+                }
 
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
@@ -68,6 +82,9 @@ namespace BiuBiuWpfClient
             {
                 MessageBoxX.Show("登陆失败！");
             }
+
+            LoginButton.IsEnabled = true;
+            ButtonHelper.SetIsPending(LoginButton, false);
         }
 
         private void HelpButton_OnClick(object sender, RoutedEventArgs e)

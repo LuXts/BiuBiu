@@ -414,7 +414,7 @@ namespace BiuBiuServer.Database
             List<(ulong, string, string, ulong, ulong)> Target =
                 await Fsql.Ado.QueryAsync<(ulong, string, string, ulong, ulong)>(
                     "select g.GroupId,g.GroupName,g.Description,g.Icon,g.OwnerId from team g,groupconstitute c where" +
-                    " g.GroupId=c.GroupId,c.UserId=?ui", new { ui = userId.ToString() });
+                    " g.GroupId=c.GroupId and c.UserId=?ui", new { ui = userId.ToString() });
             List<TeamInfo> group = new List<TeamInfo>();
             foreach (var VARIABLE in Target)
             {
@@ -430,6 +430,20 @@ namespace BiuBiuServer.Database
             }
 
             return group;
+        }
+
+        // TODO: 获取某用户的最后登录时间 （那个一直没用上的字段）
+        // 查不到用户就返回 0
+        public async UnaryResult<ulong> GetUserLastLoginTime(ulong userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        // TODO: 设置某用户的最后登录时间 （那个一直没用上的字段）
+        // 通过 bool 返回是否成功
+        public async UnaryResult<bool> SetUserLastLoginTime(ulong userId, ulong lastLoginTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

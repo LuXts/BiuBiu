@@ -424,6 +424,7 @@ namespace BiuBiuWpfClient
                 ChatListBox.Visibility = Visibility.Visible;
                 ChatView.Visibility = _visibility;
                 AddressPanel.Visibility = Visibility.Collapsed;
+                _visibility2 = InfoPanel.Visibility;
                 InfoPanel.Visibility = Visibility.Collapsed;
             }
         }
@@ -431,6 +432,8 @@ namespace BiuBiuWpfClient
         private bool _addressSwitch = false;
 
         private Visibility _visibility = Visibility.Collapsed;
+
+        private Visibility _visibility2 = Visibility.Collapsed;
 
         public void AddressBookSwitchButton_OnClick(object sender
             , RoutedEventArgs e)
@@ -451,8 +454,71 @@ namespace BiuBiuWpfClient
                 ChatListBox.Visibility = Visibility.Collapsed;
                 ChatView.Visibility = Visibility.Collapsed;
                 AddressPanel.Visibility = Visibility.Visible;
-                InfoPanel.Visibility = Visibility.Visible;
+                InfoPanel.Visibility = _visibility2;
             }
+        }
+
+        private readonly static SolidColorBrush _noSelectBrush
+            = new SolidColorBrush(
+                Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF));
+
+        private readonly static SolidColorBrush _selectBrush
+            = new SolidColorBrush(
+                Color.FromArgb(0xFF, 0xEF, 0xF0, 0xF1));
+
+        private void AFriendsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            InfoPanel.Visibility = Visibility.Visible;
+            InfoTitle.Text = "好友";
+            AFriendsButton.Background = _selectBrush;
+            ANewFriendsButton.Background = _noSelectBrush;
+            ATeamInvitationButton.Background = _noSelectBrush;
+            ATeamRequestButton.Background = _noSelectBrush;
+            ATeamsButton.Background = _noSelectBrush;
+        }
+
+        private void ANewFriendsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            InfoPanel.Visibility = Visibility.Visible;
+            InfoTitle.Text = "新的好友";
+            AFriendsButton.Background = _noSelectBrush;
+            ANewFriendsButton.Background = _selectBrush;
+            ATeamInvitationButton.Background = _noSelectBrush;
+            ATeamRequestButton.Background = _noSelectBrush;
+            ATeamsButton.Background = _noSelectBrush;
+        }
+
+        private void ATeamsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            InfoPanel.Visibility = Visibility.Visible;
+            InfoTitle.Text = "我的群组";
+            AFriendsButton.Background = _noSelectBrush;
+            ANewFriendsButton.Background = _noSelectBrush;
+            ATeamInvitationButton.Background = _noSelectBrush;
+            ATeamRequestButton.Background = _noSelectBrush;
+            ATeamsButton.Background = _selectBrush;
+        }
+
+        private void ATeamInvitationButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            InfoPanel.Visibility = Visibility.Visible;
+            InfoTitle.Text = "群组邀请";
+            AFriendsButton.Background = _noSelectBrush;
+            ANewFriendsButton.Background = _noSelectBrush;
+            ATeamInvitationButton.Background = _selectBrush;
+            ATeamRequestButton.Background = _noSelectBrush;
+            ATeamsButton.Background = _noSelectBrush;
+        }
+
+        private void ATeamRequestButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            InfoPanel.Visibility = Visibility.Visible;
+            InfoTitle.Text = "入群审核";
+            AFriendsButton.Background = _noSelectBrush;
+            ANewFriendsButton.Background = _noSelectBrush;
+            ATeamInvitationButton.Background = _noSelectBrush;
+            ATeamRequestButton.Background = _selectBrush;
+            ATeamsButton.Background = _noSelectBrush;
         }
     }
 }

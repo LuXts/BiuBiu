@@ -30,9 +30,6 @@ namespace BiuBiuTerminalClient
 
         public void OnJoin(UserInfo user)
         {
-            Console.WriteLine("OnJoin");
-            Console.WriteLine(user.UserId);
-            Console.WriteLine(user.DisplayName);
             users[user.UserId] = user;
         }
 

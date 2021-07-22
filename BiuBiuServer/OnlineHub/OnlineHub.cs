@@ -32,16 +32,14 @@ namespace BiuBiuServer.OnlineHub
 
         protected override async ValueTask OnConnecting()
         {
-            Console.WriteLine("Connecting!");
             await base.OnConnecting();
         }
 
         protected override async ValueTask OnDisconnected()
         {
-            Console.WriteLine("Disconnected!");
             if (IsOnline)
             {
-                Broadcast(room).OnLeave(self);
+                LeaveAsync();
             }
             await base.OnDisconnected();
         }

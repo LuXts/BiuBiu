@@ -74,5 +74,19 @@ namespace BiuBiuServer.Interfaces
         /// <param name="userId">用户Id</param>
         /// <returns>群组信息列表</returns>
         UnaryResult<List<TeamInfo>> GetUserTeamsId(ulong userId);
+
+        /// <summary>
+        /// 获取某Id的最后登录时间
+        /// </summary>
+        /// <param name="userInfo">用户信息</param>
+        /// <returns>最后登录时间</returns>
+        UnaryResult<ulong> GetUserLastLoginTime(ulong userId);
+
+        /// <summary>
+        /// 获取某Id的最后登录时间
+        /// </summary>
+        /// <param name="userInfo">用户信息</param>
+        /// <returns>设置最后登录时间</returns>
+        UnaryResult<bool> SetUserLastLoginTime(ulong userId, ulong lastLoginTime);
     }
 }

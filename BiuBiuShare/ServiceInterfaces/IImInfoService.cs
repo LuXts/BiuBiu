@@ -68,10 +68,17 @@ namespace BiuBiuShare.ServiceInterfaces
         UnaryResult<List<UserInfo>> GetUserFriendsId(UserInfo userInfo);
 
         /// <summary>
-        /// 获取某Id的的群组信息列表
+        /// 获取某Id的群组信息列表
         /// </summary>
         /// <param name="userInfo">用户信息</param>
         /// <returns>群组信息列表</returns>
         UnaryResult<List<TeamInfo>> GetUserTeamsId(UserInfo userInfo);
+
+        /// <summary>
+        /// 获取某Id的最后登录时间
+        /// </summary>
+        /// <param name="userInfo">用户信息</param>
+        /// <returns>群组信息列表</returns>
+        UnaryResult<ulong> GetUserLastLoginTime(UserInfo userInfo);
     }
 }
