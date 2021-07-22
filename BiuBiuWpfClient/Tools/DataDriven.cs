@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using BiuBiuShare.GrouFri;
 using BiuBiuShare.ImInfos;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.Tool;
@@ -19,6 +20,14 @@ namespace BiuBiuWpfClient.Tools
         private Dictionary<ulong, BitmapImage> _bitmapDictionary = new Dictionary<ulong, BitmapImage>();
 
         private Dictionary<ulong, UserInfoResponse> _userInfoDictionary = new Dictionary<ulong, UserInfoResponse>();
+
+        private Dictionary<ulong, FriendRequestResponse>
+            _friendRequestDictionary
+                = new Dictionary<ulong, FriendRequestResponse>();
+
+        private Dictionary<ulong, TeamInvitationResponse>
+            _teamInvitationsdDictionary
+                = new Dictionary<ulong, TeamInvitationResponse>();
 
         public async Task<UserInfoResponse> GetUserInfoByServer(ulong userId)
         {
@@ -266,6 +275,50 @@ namespace BiuBiuWpfClient.Tools
                 }
             }
             return MessageResponse.Failed;
+        }
+
+        public FriendRequestResponse GetFriendRequest(
+            ulong requestId)
+        {
+            lock (_friendRequestDictionary)
+            {
+                if (_friendRequestDictionary.ContainsKey(requestId))
+                {
+                    return _friendRequestDictionary[requestId];
+                }
+            }
+            return FriendRequestResponse.Failed;
+        }
+
+        public void StorageFriendRequest(FriendRequest friendRequest)
+        {
+            lock (_friendRequestDictionary)
+            {
+                _friendRequestDictionary[friendRequest.RequestId]
+                    = new FriendRequestResponse(friendRequest) { Success = true };
+            }
+        }
+
+        public TeamInvitationResponse GetTeamInvitation(
+            ulong invitationId)
+        {
+            lock (_teamInvitationsdDictionary)
+            {
+                if (_teamInvitationsdDictionary.ContainsKey(invitationId))
+                {
+                    return _teamInvitationsdDictionary[invitationId];
+                }
+            }
+            return TeamInvitationResponse.Failed;
+        }
+
+        public void StorageTeamInvitation(TeamInvitation teamInvitation)
+        {
+            lock (_teamInvitationsdDictionary)
+            {
+                _teamInvitationsdDictionary[teamInvitation.InvitationId]
+                    = new TeamInvitationResponse(teamInvitation);
+            }
         }
     }
 }

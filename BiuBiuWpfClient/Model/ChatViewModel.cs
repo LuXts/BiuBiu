@@ -200,7 +200,7 @@ namespace BiuBiuWpfClient.Model
                     LastMessage = "[文件]";
                 }
             }
-
+            MainWindow.CollectionView.View.Refresh();
             if (IdManagement.GenerateIdTypeById(TargetId) == IdType.TeamId)
             {
                 _clientTeamHub = new TeamHubClient();

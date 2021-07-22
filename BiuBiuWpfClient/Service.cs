@@ -7,6 +7,7 @@ namespace BiuBiuWpfClient
     {
         public static ITalkService TalkService;
         public static IImInfoService ImInfoService;
+        public static IGroFriService GroFriService;
 
         public static void InitService()
         {
@@ -14,6 +15,9 @@ namespace BiuBiuWpfClient
                 Initialization.GChannel, new[] { Initialization.ClientFilter });
 
             ImInfoService = MagicOnionClient.Create<IImInfoService>(
+                Initialization.GChannel, new[] { Initialization.ClientFilter });
+
+            GroFriService = MagicOnionClient.Create<IGroFriService>(
                 Initialization.GChannel, new[] { Initialization.ClientFilter });
         }
     }

@@ -78,7 +78,7 @@ namespace BiuBiuShare.ServiceInterfaces
         /// 获取某Id的最后登录时间
         /// </summary>
         /// <param name="userInfo">用户信息</param>
-        /// <returns>群组信息列表</returns>
+        /// <returns>最后登录时间</returns>
         UnaryResult<ulong> GetUserLastLoginTime(UserInfo userInfo);
     }
 }

@@ -80,7 +80,9 @@ namespace BiuBiuWpfClient
                 new SortDescription("LastMessageTime"
                     , ListSortDirection.Descending));
             ChatListBox.ItemsSource = CollectionView.View;
-            InfoListBox.ItemsSource = ChatListCollection;
+
+            InfoListBox.ItemsSource = InfoViewModel.FriendCollection;
+
             _userHubClient = new UserHubClient();
             _userHubClient.ConnectAsync(Initialization.GChannel
                 , AuthenticationTokenStorage.UserId);
@@ -146,6 +148,15 @@ namespace BiuBiuWpfClient
                 new UserInfo() { UserId = AuthenticationTokenStorage.UserId });
             foreach (var user in userInfos)
             {
+                InfoViewModel.FriendCollection.Add(new InfoListItem()
+                {
+                    InfoId = user.UserId
+                    ,
+                    DisplayName = user.DisplayName,
+                    BImage = await Initialization.DataDb.GetBitmapImage(user.IconId)
+                    ,
+                    Type = InfoListItem.InfoType.Friend
+                });
                 var chat
                     = new ChatViewModel(user.UserId, user.IconId
                         , user.DisplayName)
@@ -158,6 +169,15 @@ namespace BiuBiuWpfClient
                 new UserInfo() { UserId = AuthenticationTokenStorage.UserId });
             foreach (var team in teamInfos)
             {
+                InfoViewModel.TeamCollection.Add(new InfoListItem()
+                {
+                    InfoId = team.TeamId
+                    ,
+                    DisplayName = team.TeamName,
+                    BImage = await Initialization.DataDb.GetBitmapImage(team.IconId)
+                    ,
+                    Type = InfoListItem.InfoType.Team
+                });
                 var chat
                     = new ChatViewModel(team.TeamId, team.IconId, team.TeamName)
                     {
@@ -165,8 +185,36 @@ namespace BiuBiuWpfClient
                     };
                 ChatListCollection.Add(chat);
             }
+        }
 
-            CollectionView.View.Refresh();
+        private async void InitInfo()
+        {
+            var friendRequest
+                = await Service.GroFriService.GetFriendRequest(
+                    AuthenticationTokenStorage.UserId);
+            foreach (var request in friendRequest)
+            {
+                Initialization.DataDb.StorageFriendRequest(request);
+
+                var user
+                    = await Initialization.DataDb.GetUserInfoByServer(
+                        request.SenderId);
+
+                InfoViewModel.NewFriendCollection.Add(new InfoListItem()
+                {
+                    BImage = await Initialization.DataDb.GetBitmapImage(user.IconId)
+                    ,
+                    DisplayName = user.DisplayName
+                    ,
+                    InfoId = request.RequestId
+                        ,
+                    Type = InfoListItem.InfoType.NewFriend
+                });
+            }
+
+            var teamInvitation
+                = await Service.GroFriService.GetGroupInvitation(
+                    AuthenticationTokenStorage.UserId);
         }
 
         private void ListBox_SourceUpdated(object sender, EventArgs e)
@@ -402,7 +450,6 @@ namespace BiuBiuWpfClient
 
         private void HeadButton_OnClick(object sender, RoutedEventArgs e)
         {
-            MessageBoxX.Show("Head!");
         }
 
         private bool _talkSwicth = true;
