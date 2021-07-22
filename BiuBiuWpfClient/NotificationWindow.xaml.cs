@@ -121,6 +121,14 @@ namespace BiuBiuWpfClient
                             break;
                         }
                     }
+                    InfoViewModel.TeamCollection.Add(new InfoListItem()
+                    {
+                        BImage = await Initialization.DataDb.GetBitmapImage(team.IconId)
+                        ,
+                        DisplayName = team.TeamName,
+                        InfoId = team.TeamId,
+                        Type = InfoListItem.InfoType.Team
+                    });
                 }
             }
             else if (IdManagement.GenerateIdTypeById(_id) ==
