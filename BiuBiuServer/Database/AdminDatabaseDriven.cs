@@ -106,14 +106,10 @@ namespace BiuBiuServer.Database
                 await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, ulong, string)>(
                     "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,Icon,IsAdmin from userchange");
 
-            
-
             List<UserInfo> user = new List<UserInfo>();
-
 
             foreach (var VARIABLE in Target)
             {
-
                 bool IsAdmin;
                 if (VARIABLE.Item8 == "false")
                 {
@@ -262,15 +258,15 @@ namespace BiuBiuServer.Database
         //函数功能：按照工号查找用户 输入：用户工号 输出：用户信息
         public async UnaryResult<UserInfo> SelectByJobNumber(string jobNumber)
         {
-            List<(ulong, string, string, string, string, string, string)> Target =
-                await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, string)>(
-                    "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,IsAdmin from user" +
+            List<(ulong, string, string, string, string, string, ulong, string)> Target =
+                await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, ulong, string)>(
+                    "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,Icon,IsAdmin from user" +
                     " where JobNumber=?jn", new { jn = jobNumber });
 
             if (Target.Count != 0)
             {
                 bool IsAdmin;
-                if (Target[0].Item7 == "true")
+                if (Target[0].Item8 == "true")
                 {
                     IsAdmin = true;
                 }
@@ -287,6 +283,7 @@ namespace BiuBiuServer.Database
                 user.Description = temp.Item4;
                 user.PhoneNumber = temp.Item5;
                 user.Email = temp.Item6;
+                user.IconId = temp.Item7;
                 user.Permissions = IsAdmin;
 
                 return user;
@@ -300,16 +297,16 @@ namespace BiuBiuServer.Database
         //函数功能：按照用户Id查找用户 输入：用户Id 输出：用户信息
         public async UnaryResult<UserInfo> SelectByUserId(ulong userId)
         {
-            List<(ulong, string, string, string, string, string, string)> Target =
-                await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, string)>(
-                    "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,IsAdmin from user" +
+            List<(ulong, string, string, string, string, string, ulong, string)> Target =
+                await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, ulong, string)>(
+                    "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,Icon,IsAdmin from user" +
                     " where UserId = ?ui", new { ui = userId.ToString() });
 
             bool IsAdmin;
 
             if (Target.Count != 0)
             {
-                if (Target[0].Item7 == "true")
+                if (Target[0].Item8 == "true")
                 {
                     IsAdmin = true;
                 }
@@ -326,6 +323,7 @@ namespace BiuBiuServer.Database
                 user.Description = temp.Item4;
                 user.PhoneNumber = temp.Item5;
                 user.Email = temp.Item6;
+                user.IconId = temp.Item7;
                 user.Permissions = IsAdmin;
 
                 return user;

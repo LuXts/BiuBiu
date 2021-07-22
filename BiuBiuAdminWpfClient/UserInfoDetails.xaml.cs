@@ -21,6 +21,7 @@ namespace BiuBiuAdminWpfClient
         public UserInfoDetails()
         {
             InitializeComponent();
+            WinPosition();
             List<CategoryInfo> category = new List<CategoryInfo>();
             category.Add(new CategoryInfo { Name = "管理员", Value = "Admin" });
             category.Add(new CategoryInfo { Name = "普通用户", Value = "User" });
@@ -31,9 +32,13 @@ namespace BiuBiuAdminWpfClient
 
             InitValue();
 
+        }
 
-
-
+        public void WinPosition()
+        {
+            double ScreenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
+            this.Top = 140;
+            this.Left = 390;
         }
 
         public UserInfo userInfo { get; set; }
@@ -75,7 +80,10 @@ namespace BiuBiuAdminWpfClient
                 ComboBox.SelectedItem = "普通用户";
                 ComboBox.SelectedValue = "User";
             }
+
+            MessageBox.Show(userInfo.IconId.ToString());
         }
+
 
         public class CategoryInfo
         {
@@ -139,6 +147,7 @@ namespace BiuBiuAdminWpfClient
             userInfo.Email = this.EmailInput.Text;
             userInfo.PhoneNumber = this.PhoneNumInput.Text;
             userInfo.Permissions = (string) this.ComboBox.SelectedValue == "Admin" ? true : false;
+            MessageBox.Show(userInfo.IconId.ToString());
             if (await Service.AdminService.ChangeUserInfo(userInfo))
             {
                 MessageBox.Show("修改基本信息成功！");

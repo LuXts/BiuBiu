@@ -47,6 +47,8 @@ namespace BiuBiuAdminWpfClient
             PermissionsInput.ItemsSource = categoryList2;
             PermissionsInput.DisplayMemberPath = "Name";//显示出来的值
             PermissionsInput.SelectedValuePath = "Value";//实际选中后获取的结果的值
+            PermissionsInput.SelectedItem = "普通用户";
+            PermissionsInput.SelectedValue = "NormalUser";
 
             //this.CheckR3.ItemsSource = UserInfoList;
 
@@ -57,12 +59,13 @@ namespace BiuBiuAdminWpfClient
         //声明一条注册信息
         public RegisterInfo registerInfo { get; set; }
         //声明一个用户信息列表
-        public List<UserInfo> UserInfoList { get; set; }
+        public List<UserInfo> UserInfoList { get; set; } 
         //声明一条用户信息
         public UserInfo userInfo { get; set; }
         //test
         public static ulong userId  { get; set; } 
-
+        //
+        public List<UserInfo> NeedReviewList;
         //位置偏移
         public void WinPosition()
         {
@@ -93,14 +96,15 @@ namespace BiuBiuAdminWpfClient
             this.SelectR3.Visibility = Visibility.Visible;
         }
 
-        private void IsShowCheck(object sender, RoutedEventArgs e)
+        private async void IsShowCheck(object sender, RoutedEventArgs e)
         {
             this.AddR.Visibility = Visibility.Collapsed;
             this.SelectR2.Visibility = Visibility.Collapsed;
             this.SelectR3.Visibility = Visibility.Collapsed;
             this.CheckR2.Visibility = Visibility.Visible;
             this.CheckR3.Visibility = Visibility.Visible;
-
+            NeedReviewList = await Service.AdminService.GetModifyInfo();
+            this.CheckR3.ItemsSource = NeedReviewList;
         }
 
         private void IsShowAdd(object sender, RoutedEventArgs e)
@@ -131,7 +135,7 @@ namespace BiuBiuAdminWpfClient
         }
 
 
-        //点击删除按钮
+        //点击添加按钮
         private async void ClickAddSure(object sender, RoutedEventArgs e)
         {
             registerInfo = new RegisterInfo();
@@ -151,7 +155,7 @@ namespace BiuBiuAdminWpfClient
 
             int result= await Service.AdminService.RegisteredUsers(registerInfo);
 
-            MessageBox.Show(result.ToString());
+            //MessageBox.Show(result.ToString());
 
             if (result==1)
             {
@@ -218,11 +222,15 @@ namespace BiuBiuAdminWpfClient
             if (await Service.AdminService.DeleteUser(userInfo.UserId))
             {
                 MessageBox.Show("删除成功！");
+                UserInfoList = new List<UserInfo>();
+                SelectR3.ItemsSource = UserInfoList;
             }
             else
             {
                 MessageBox.Show("删除失败！");
             }
+
+
         }
 
         //点击取消
@@ -236,7 +244,7 @@ namespace BiuBiuAdminWpfClient
         private void ClickSelectDetails(object sender, RoutedEventArgs e)
         {
             userId = userInfo.UserId;
-            MessageBox.Show(userId.ToString());
+            //MessageBox.Show(userId.ToString());
             UserInfoDetails details = new UserInfoDetails();
             details.ShowDialog(); 
         } 
