@@ -15,7 +15,7 @@ namespace BiuBiuServer.Database
         public async UnaryResult<bool> ChangePassword(ulong userId, string newPassword)
         {
             await Fsql.Ado.QueryAsync<object>("update user set Password = ?np where UserId = ?ui",
-                new { nm = newPassword, ui = userId.ToString() });
+                new { np = newPassword, ui = userId.ToString() });
 
             List<string> Target =
                 await Fsql.Ado.QueryAsync<string>("select Password from user where UserId = ?ui", new { ui = userId.ToString() });
