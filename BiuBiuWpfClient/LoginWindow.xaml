@@ -56,7 +56,8 @@
         <Image Width="100"
                Height="100"
                Margin="0,120,0,0"
-               VerticalAlignment="Top" />
+               VerticalAlignment="Top"
+               Source="Resource/Images/Logo.png" />
         <TextBox x:Name="AccountTextBox"
                  Width="300"
                  Height="50"
@@ -133,6 +134,16 @@
                 BorderBrush="{x:Null}"
                 Click="HelpButton_OnClick"
                 Content="帮助"
+                FontSize="14" />
+        <Button Width="75"
+                Margin="0,0,0,34"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                pu:ButtonHelper.HoverBackground="#3000"
+                Background="#0000"
+                BorderBrush="{x:Null}"
+                Click="HelpButton_OnClick"
+                Content="设置"
                 FontSize="14" />
     </Grid>
 </pu:WindowX>

@@ -106,6 +106,7 @@ namespace BiuBiuServer.Services
                 UserHubClient client = new UserHubClient();
                 await client.ConnectAsync(Initialization.GChannel, request.SenderId);
                 //给申请者发好友申请结果
+                request.RequestResult = replyResult.ToString();
                 client.ServerSendFriendRequest(request);
                 await client.DisposeAsync();
                 await client.WaitForDisconnect();
@@ -122,6 +123,7 @@ namespace BiuBiuServer.Services
                 UserHubClient client = new UserHubClient();
                 await client.ConnectAsync(Initialization.GChannel, teamInfo.OwnerId);
                 // 给群主发邀请某人入群的结果
+                invitation.InvitationResult = replyResult.ToString();
                 client.ServerSendGroupInvitation(invitation);
                 if (replyResult)
                 {
@@ -156,6 +158,7 @@ namespace BiuBiuServer.Services
                 UserHubClient client = new UserHubClient();
                 await client.ConnectAsync(Initialization.GChannel, request.SenderId);
                 // 给申请者发入群申请结果
+                request.RequestResult = replyResult.ToString();
                 client.ServerSendGroupRequest(request);
 
                 if (replyResult)

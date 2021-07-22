@@ -16,6 +16,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using BiuBiuShare.GrouFri;
 using BiuBiuShare.ImInfos;
 using BiuBiuShare.Tool;
 using BiuBiuWpfClient.Tools;
@@ -125,6 +126,124 @@ namespace BiuBiuWpfClient
                 }
 
                 CollectionView.View.Refresh();
+            };
+
+            _userHubClient.SFTEvent += async (FriendRequest request) =>
+            {
+                if (request.SenderId == AuthenticationTokenStorage.UserId)
+                {
+                    var user
+                        = await Initialization.DataDb.GetUserInfoByServer(
+                            request.ReceiverId);
+                    if (request.RequestResult == "True")
+                    {
+                        ChatListCollection.Add(new ChatViewModel(
+                            request.ReceiverId, user.IconId, user.DisplayName));
+                        Growl.Info(user.DisplayName + "接受了你的好友请求。");
+                    }
+                    else
+                    {
+                        Growl.Info(user.DisplayName + "拒绝了你的好友请求。");
+                    }
+                }
+                else
+                {
+                    var user
+                        = await Initialization.DataDb.GetUserInfoByServer(
+                            request.SenderId);
+                    InfoViewModel.NewFriendCollection.Add(new InfoListItem()
+                    {
+                        BImage
+                            = await Initialization.DataDb.GetBitmapImage(
+                                user.IconId)
+                        ,
+                        DisplayName = user.DisplayName
+                        ,
+                        InfoId = request.RequestId
+                        ,
+                        Type = InfoListItem.InfoType.NewFriend
+                    });
+                    Initialization.DataDb.StorageFriendRequest(request);
+                    Growl.Info("你有一条新的好友请求。");
+                }
+            };
+
+            _userHubClient.SGIEvent += async (TeamInvitation invitation) =>
+            {
+                var team
+                    = await Initialization.DataDb.GetTeamInfoByServer(
+                        invitation.TeamId);
+                if (invitation.ReceiverId != AuthenticationTokenStorage.UserId)
+                {
+                    var user
+                        = await Initialization.DataDb.GetUserInfoByServer(
+                            invitation.ReceiverId);
+                    if (invitation.InvitationResult == "True")
+                    {
+                        Growl.Info(user.DisplayName + "接受了你的邀请，加入了" + team.TeamName + "群。");
+                    }
+                    else
+                    {
+                        Growl.Info(user.DisplayName + "拒绝了你的邀请。");
+                    }
+                }
+                else
+                {
+                    InfoViewModel.TeamInvitationCollection.Add(new InfoListItem()
+                    {
+                        BImage
+                            = await Initialization.DataDb.GetBitmapImage(
+                                team.IconId)
+                        ,
+                        DisplayName = team.TeamName
+                        ,
+                        InfoId = invitation.InvitationId
+                        ,
+                        Type = InfoListItem.InfoType.TeamInvitation
+                    });
+                    Initialization.DataDb.StorageTeamInvitation(invitation);
+                    Growl.Info("你有一条新的群组邀请。");
+                }
+            };
+
+            _userHubClient.SGREvent += async (TeamRequest request) =>
+            {
+                var user
+                    = await Initialization.DataDb.GetUserInfoByServer(
+                        request.SenderId);
+                var team
+                    = await Initialization.DataDb.GetTeamInfoByServer(request
+                        .TeamId);
+                if (request.SenderId == AuthenticationTokenStorage.UserId)
+                {
+                    if (request.RequestResult == "True")
+                    {
+                        ChatListCollection.Add(new ChatViewModel(
+                            team.TeamId, team.IconId, team.TeamName));
+                        Growl.Info(team.TeamName + "的群主同意了你的申请，你现在已经成功加入群聊！");
+                    }
+                    else
+                    {
+                        Growl.Info(team.TeamName + "的群主拒绝了你的申请。");
+                    }
+                }
+                else
+                {
+                    InfoViewModel.TeamRequestCollection.Add(new InfoListItem()
+                    {
+                        BImage
+                            = await Initialization.DataDb.GetBitmapImage(
+                                user.IconId)
+                        ,
+                        DisplayName = user.DisplayName
+                        ,
+                        InfoId = request.RequestId
+                        ,
+                        Type = InfoListItem.InfoType.TeamRequest
+                    });
+                    Initialization.DataDb.StorageTeamRequestd(request);
+                    Growl.Info("你的" + team.TeamName + "群组有一条新的入群申请。");
+                }
             };
 
             this.Closed += MainWindow_Closed;

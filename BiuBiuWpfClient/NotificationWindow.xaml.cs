@@ -93,6 +93,11 @@ namespace BiuBiuWpfClient
                 mark = re.Success;
                 if (mark)
                 {
+                    var user
+                        = await Initialization.DataDb.GetUserInfoByServer(
+                            request.SenderId);
+                    MainWindow.ChatListCollection.Add(new ChatViewModel(user.UserId, user.IconId, user.DisplayName));
+
                     foreach (var item in InfoViewModel.NewFriendCollection)
                     {
                         if (item.InfoId == _id)
@@ -112,6 +117,10 @@ namespace BiuBiuWpfClient
                 mark = re.Success;
                 if (mark)
                 {
+                    var team
+                        = await Initialization.DataDb.GetTeamInfoByServer(
+                            request.TeamId);
+                    MainWindow.ChatListCollection.Add(new ChatViewModel(team.TeamId, team.IconId, team.TeamName));
                     foreach (var item in InfoViewModel.TeamInvitationCollection)
                     {
                         if (item.InfoId == _id)
@@ -162,6 +171,17 @@ namespace BiuBiuWpfClient
                 var re = await Service.GroFriService.ReplyFriendRequest(request
                     , false);
                 mark = re.Success;
+                if (mark)
+                {
+                    foreach (var item in InfoViewModel.NewFriendCollection)
+                    {
+                        if (item.InfoId == _id)
+                        {
+                            InfoViewModel.NewFriendCollection.Remove(item);
+                            break;
+                        }
+                    }
+                }
             }
             else if (IdManagement.GenerateIdTypeById(_id) ==
                      IdType.TeamInvitationId)
@@ -170,6 +190,17 @@ namespace BiuBiuWpfClient
                 var re = await Service.GroFriService.ReplyGroupInvitation(request
                     , false);
                 mark = re.Success;
+                if (mark)
+                {
+                    foreach (var item in InfoViewModel.TeamInvitationCollection)
+                    {
+                        if (item.InfoId == _id)
+                        {
+                            InfoViewModel.TeamInvitationCollection.Remove(item);
+                            break;
+                        }
+                    }
+                }
             }
             else if (IdManagement.GenerateIdTypeById(_id) ==
                      IdType.TeamRequestId)
@@ -178,6 +209,17 @@ namespace BiuBiuWpfClient
                 var re = await Service.GroFriService.ReplyGroupRequest(request
                     , false);
                 mark = re.Success;
+                if (mark)
+                {
+                    foreach (var item in InfoViewModel.TeamRequestCollection)
+                    {
+                        if (item.InfoId == _id)
+                        {
+                            InfoViewModel.TeamRequestCollection.Remove(item);
+                            break;
+                        }
+                    }
+                }
             }
             else
             {

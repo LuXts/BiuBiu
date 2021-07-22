@@ -4,6 +4,7 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<UseWPF>true</UseWPF>
+		<ApplicationIcon>Logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,6 +14,8 @@
 		<None Remove="Resource\Images\file.png" />
 		<None Remove="Resource\Images\folder-download.png" />
 		<None Remove="Resource\Images\image.png" />
+		<None Remove="Resource\Images\Logo.ico" />
+		<None Remove="Resource\Images\Logo.png" />
 		<None Remove="Resource\Images\message-text-outline.png" />
 		<None Remove="Resource\Images\settings.png" />
 		<None Remove="Resource\Images\video.png" />
@@ -27,13 +30,10 @@
 		<PackageReference Include="Grpc" Version="2.39.0-pre1" />
 		<PackageReference Include="Grpc.Core" Version="2.39.0-pre1" />
 		<PackageReference Include="HandyControls" Version="3.3.7" />
-		<PackageReference Include="LibVLCSharp.WPF" Version="3.5.1" />
 		<PackageReference Include="LiteDB" Version="5.0.10" />
 		<PackageReference Include="MagicOnion.Client" Version="4.3.1" />
 		<PackageReference Include="NLog" Version="4.7.10" />
 		<PackageReference Include="Panuon.UI.Silver" Version="2.2.11-alpha" />
-		<PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.16" />
-		<PackageReference Include="Xabe.FFmpeg" Version="5.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -57,6 +57,12 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Resource\Images\image.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resource\Images\Logo.ico">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resource\Images\Logo.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Resource\Images\message-text-outline.png">

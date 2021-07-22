@@ -133,7 +133,9 @@ namespace BiuBiuWpfClient
 
         private void AddUserButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            InviteUserWindow window = new InviteUserWindow();
+            window.Init(_teamId);
+            window.Show();
         }
     }
 }
