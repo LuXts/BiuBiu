@@ -33,6 +33,15 @@ namespace BiuBiuServer.Database
         //函数功能：管理员修改用户信息 输入：用户ID、新的用户信息 输出：是否修改成功
         public async UnaryResult<bool> ChangeUserInfo(UserInfo newUserInfo)
         {
+            string permission;
+            if (newUserInfo.Permissions)
+            {
+                permission = "true";
+            }
+            else
+            {
+                permission = "false";
+            }
             await Fsql.Ado.QueryAsync<object>(
                 "update user set DisplayName = ?un,JobNumber = ?jn,Description = ?up,PhoneNumber = ?pn,Email = ?em,Icon = ?ic,IsAdmin = ?isa where UserId = ?ui",
                 new
@@ -43,7 +52,7 @@ namespace BiuBiuServer.Database
                     pn = newUserInfo.PhoneNumber,
                     em = newUserInfo.Email,
                     ic = newUserInfo.IconId.ToString(),
-                    isa = newUserInfo.Permissions.ToString(),
+                    isa = permission,
                     ui = newUserInfo.UserId.ToString()
                 });
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select UserId from user" +

@@ -55,7 +55,7 @@ namespace BiuBiuServer.Database
         public async UnaryResult<bool> DeleteMemberFromGroup(ulong sponsorId, ulong targetId, ulong groupId)
         {
             List<(ulong, ulong)> Target = await Fsql.Ado.QueryAsync<(ulong, ulong)>(
-                "select GroupId,OwnerId from group where" +
+                "select GroupId,OwnerId from team where" +
                 " GroupId=?gd", new { gd = groupId.ToString() });
             if (Target[0].Item2 == sponsorId)
             {
@@ -80,20 +80,20 @@ namespace BiuBiuServer.Database
         public async UnaryResult<bool> DissolveGroup(ulong sponsorId, ulong groupId)
         {
             List<(ulong, ulong)> Target = await Fsql.Ado.QueryAsync<(ulong, ulong)>(
-                "select GroupId,OwnerId from group where" +
+                "select GroupId,OwnerId from team where" +
                 " GroupId=?gd", new { gd = groupId.ToString() });
 
             if (Target[0].Item2 == sponsorId)
             {
                 await Fsql.Ado.QueryAsync<object>("delete from groupconstitute where" +
                                                   " GroupId=?gd", new { gd = groupId.ToString() });
-                await Fsql.Ado.QueryAsync<object>("delete from group where" +
+                await Fsql.Ado.QueryAsync<object>("delete from team where" +
                                                   " GroupId=?gd", new { gd = groupId.ToString() });
             }
 
             List<ulong> list1 = await Fsql.Ado.QueryAsync<ulong>("select GroupId from groupconstitute where" +
                                                                    " GroupId=?gd", new { gd = groupId.ToString() });
-            List<ulong> list2 = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where" +
+            List<ulong> list2 = await Fsql.Ado.QueryAsync<ulong>("select GroupId from team where" +
                                                                    " GroupId=?gd", new { gd = groupId.ToString() });
             if (list2.Count == 0 && list1.Count == 0)
             {
@@ -109,7 +109,7 @@ namespace BiuBiuServer.Database
         public async UnaryResult<bool> ExitGroup(ulong sponsorId, ulong groupId)
         {
             List<(ulong, ulong)> Target = await Fsql.Ado.QueryAsync<(ulong, ulong)>(
-                "select GroupId,OwnerId from group where" +
+                "select GroupId,OwnerId from team where" +
                 " GroupId=?gd", new {gd = groupId.ToString()});
             if (Target[0].Item2 != sponsorId)
             {
@@ -181,7 +181,7 @@ namespace BiuBiuServer.Database
         //实现请求某用户需要审核的入群申请列表 用户Id 该用户的需要审核的群组申请数组 tip：该用户为群主 即群主获取到加群申请
         public async UnaryResult<List<TeamRequest>> GetGroupRequest(ulong userId)
         {
-            List<ulong> groupOwnerId = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where" +
+            List<ulong> groupOwnerId = await Fsql.Ado.QueryAsync<ulong>("select GroupId from team where" +
                                                                         " OwnerId=?ui", new { ui = userId.ToString() });
             List<(ulong, ulong, ulong, string, string)> group = new List<(ulong, ulong, ulong, string, string)>();
             foreach (var ownerId in groupOwnerId)
@@ -447,12 +447,12 @@ namespace BiuBiuServer.Database
         //实现建立群聊 群组信息 返回是否成功
         public async UnaryResult<bool> EstablishTeam(TeamInfo teamInfo)
         {
-            List<ulong> group = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where" +
+            List<ulong> group = await Fsql.Ado.QueryAsync<ulong>("select GroupId from team where" +
                                                                  " GroupId = ?gd", new {gd = teamInfo.TeamId.ToString()});
 
             if (group.Count == 0)
             {
-                await Fsql.Ado.QueryAsync<object>("insert into group values (?gd,?gn,?dp,?ic,?od)",
+                await Fsql.Ado.QueryAsync<object>("insert into team values (?gd,?gn,?dp,?ic,?od)",
                     new
                     {
                         gd = teamInfo.TeamId.ToString(),
@@ -475,7 +475,7 @@ namespace BiuBiuServer.Database
                     });
             }
 
-            List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select GroupId from group where GroupId=?gd",
+            List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select GroupId from team where GroupId=?gd",
                 new {gd = teamInfo.TeamId.ToString()});
             List<ulong> Target2 = await Fsql.Ado.QueryAsync<ulong>(
                 "select RelationId from groupconstitute where UserId=?ui,GroupId=?gd",
