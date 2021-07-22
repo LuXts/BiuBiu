@@ -1,4 +1,5 @@
-﻿using BiuBiuShare.ImInfos;
+﻿using System.Collections.Generic;
+using BiuBiuShare.ImInfos;
 using BiuBiuShare.UserManagement;
 using MagicOnion;
 
@@ -59,5 +60,11 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="reviewResults">审核是否通过</param>
         /// <returns>是否成功</returns>
         UnaryResult<bool> ReviewMessage(ulong userId, bool reviewResults);//？
+
+        /// <summary>
+        /// 获取审核列表
+        /// </summary>
+        /// <returns></returns>
+        UnaryResult<List<UserInfo>> GetModifyInfo();
     }
 }

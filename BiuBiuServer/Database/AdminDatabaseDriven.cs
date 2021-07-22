@@ -96,6 +96,15 @@ namespace BiuBiuServer.Database
             }
         }
 
+        /// <summary>
+        /// 获取待审核列表
+        /// </summary>
+        /// <returns></returns>
+        public UnaryResult<List<UserInfo>> GetModifyInfo()
+        {
+            throw new System.NotImplementedException();
+        }
+
         //函数功能：根据ID和注册信息注册新用户 输入：注册用户信息 输出：注册信息提示信息(-1表示该工号被注册，-2表示该手机号码被注册，0表示数据库因故障未插入成功,1表示成功)
         public async UnaryResult<int> RegisteredUsers(ulong userId, RegisterInfo registerInfos)
         {

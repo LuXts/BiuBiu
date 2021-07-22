@@ -1,0 +1,131 @@
+﻿<Window x:Class="BiuBiuAdminWpfClient.UserInfoDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BiuBiuAdminWpfClient"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d"
+        Title="用户详情" Height="600" Width="600">
+    <Grid ShowGridLines="False">
+        <Grid.RowDefinitions  >
+
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <TextBox Grid.Row="0"  
+                 x:Name="UserIdInput"
+                 Style = "{StaticResource TextBoxExtend}" 
+                 hc:InfoElement.TitlePlacement = "Left" 
+                 hc:InfoElement.Title = "用户ID"  
+                 Width = "400"  
+                 FontSize="20"
+                 VerticalAlignment = "Center"
+                 Background="#EBEBEB"
+                 IsEnabled="False"/>
+        <TextBox Grid.Row="1"  
+                 x:Name="JobNumInput"
+                 Style = "{StaticResource TextBoxExtend}" 
+                 hc:InfoElement.TitlePlacement = "Left" 
+                 hc:InfoElement.Title = "工号"  
+                 Width = "400"  
+                 FontSize="20"
+                 VerticalAlignment = "Center"
+                 Background="#EBEBEB"
+                 IsEnabled="False"/>
+        <TextBox Grid.Row="2"
+                 x:Name="UserNameInput"
+                 Style = "{StaticResource TextBoxExtend}" 
+                 hc:InfoElement.TitlePlacement = "Left" 
+                 hc:InfoElement.Title = "用户名"  
+                 Width = "400"  
+                 FontSize="20"
+                 VerticalAlignment = "Center"
+                 Background="#EBEBEB"
+                 IsEnabled="False"/>
+        <TextBox Grid.Row="3" 
+                 x:Name="PhoneNumInput"
+                 Style = "{StaticResource TextBoxExtend}" 
+                 hc:InfoElement.TitlePlacement = "Left" 
+                 hc:InfoElement.Title = "电话号码"  
+                 Width = "400"  
+                 FontSize="20"
+                 VerticalAlignment = "Center" 
+                 Background="#EBEBEB"
+                 IsEnabled="False"/>
+        <TextBox Grid.Row="4"  
+                 x:Name="EmailInput"
+                 Style = "{StaticResource TextBoxExtend}" 
+                 hc:InfoElement.TitlePlacement = "Left" 
+                 hc:InfoElement.Title = "邮箱"  
+                 Width = "400"  
+                 FontSize="20"
+                 VerticalAlignment = "Center" 
+                 Background="#EBEBEB"
+                 IsEnabled="False"/>
+        <ComboBox Grid.Row="5"
+                  x:Name="ComboBox"
+                  hc:InfoElement.Title="权限" 
+                    hc:InfoElement.TitlePlacement = "Left" 
+                  Style="{StaticResource ComboBoxExtend}"
+                    Width = "300"  
+                    FontSize="20"
+            VerticalAlignment = "Center" 
+            HorizontalAlignment="Left"
+            Margin="100,0,0,0"
+            Background="#EBEBEB"
+            IsEnabled="False"/>
+        <TextBox Grid.Row="6"  
+                 x:Name="PasswordInput"
+                 Style = "{StaticResource TextBoxExtend}" 
+                 hc:InfoElement.TitlePlacement = "Left" 
+                 hc:InfoElement.Title = "密码"  
+                 Width = "400"  
+                 FontSize="20"
+                 VerticalAlignment = "Center"
+                 Background="#EBEBEB"
+                 IsEnabled="False" Margin="100,0,100,0"/>
+        <Grid Grid.Row="7">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="1.8*"></ColumnDefinition>
+                <ColumnDefinition Width="6*"></ColumnDefinition>
+            </Grid.ColumnDefinitions >
+            <TextBlock VerticalAlignment="Center"  Grid.Column="0" FontSize="20" Margin="100,0,449,0" Grid.ColumnSpan="2">简介</TextBlock>
+            <TextBox Grid.Column="1" 
+                     x:Name="IntroductionInput"
+                     Style = "{StaticResource TextBoxExtend}" 
+                     Width = "400"  
+                     FontSize="16"
+                     VerticalAlignment = "Center"
+                     HorizontalAlignment="Left"
+                     Background="#EBEBEB"
+                     IsEnabled="False" Margin="10,0,0,0" Height="72"/>
+        </Grid>
+        <Grid Grid.Row="8">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions >
+
+            <Button x:Name="ModifyMessage" Grid.Column="0" Width="80" Height="40" Margin="150,12,70,10"  Click="ClickModifyMessageButton">修改信息
+            </Button>
+            <Button x:Name="ModifyPassword" Grid.Column="1" Width="80" Height="40" Margin="70,12,150,10" Click="ClickModifyPassword" >修改密码
+            </Button>
+            <Button x:Name="ModifyMessageCancel" Visibility="Collapsed" Grid.Column="0" Width="80" Height="40" Margin="150,12,70,10" Click="ClickModifyMessageCancel">取消
+            </Button>
+            <Button x:Name="ModifyMessageSure" Visibility="Collapsed" Grid.Column="1" Width="80" Height="40" Margin="70,12,150,10" Click="ClickModifyMessageSure" >确定
+            </Button>
+            <Button x:Name="ModifyPasswordCancel" Visibility="Collapsed" Grid.Column="0" Width="80" Height="40" Margin="150,12,70,10" Click="ClickModifyPasswordCancel">取消
+            </Button>
+            <Button x:Name="ModifyPasswordSure" Visibility="Collapsed" Grid.Column="1" Width="80" Height="40" Margin="70,12,150,10" Click="ClickModifyPasswordSure">确定
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,16 +1,17 @@
-﻿using BiuBiuShare.ServiceInterfaces;
+﻿using BiuBiuServer;
+using BiuBiuShare.ServiceInterfaces;
 using MagicOnion.Client;
 
-namespace BiuBiuWpfClient
+namespace BiuBiuAdminWpfClient
 {
     public class Service
     {
-        public static ITalkService TalkService;
+        public static IAdminService AdminService;
         public static IImInfoService ImInfoService;
 
         public static void InitService()
         {
-            TalkService = MagicOnionClient.Create<ITalkService>(
+            AdminService = MagicOnionClient.Create<IAdminService>(
                 Initialization.GChannel, new[] { Initialization.ClientFilter });
 
             ImInfoService = MagicOnionClient.Create<IImInfoService>(

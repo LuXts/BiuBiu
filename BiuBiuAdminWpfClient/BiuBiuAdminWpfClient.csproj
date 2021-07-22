@@ -17,6 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\BiuBiuServer\BiuBiuServer.csproj" />
 		<ProjectReference Include="..\BiuBiuShare\BiuBiuShare.csproj" />
 	</ItemGroup>
 </Project>

@@ -10,12 +10,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using BiuBiuWpfClient.Login;
+using BiuBiuServer;
+using BiuBiuAdminWpfClient.Login;
 using Grpc.Net.Client;
 using NLog.Fluent;
 using Panuon.UI.Silver;
 
-namespace BiuBiuWpfClient
+namespace BiuBiuAdminWpfClient
 {
     /// <summary>
     /// LoginWindow.xaml 的交互逻辑
@@ -58,12 +59,11 @@ namespace BiuBiuWpfClient
                 AuthenticationTokenStorage.DisplayName = response.DisplayName;
 
                 Service.InitService();
-                /*
-                MainWindow mainWindow = new MainWindow();
+                
+                AdminWindow mainWindow = new AdminWindow();
                 mainWindow.Show();
-                this.Owner = mainWindow;
                 this.Close();
-                */
+                
             }
             else
             {
