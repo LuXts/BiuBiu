@@ -13,7 +13,6 @@
             MaxWidth="335"
             MaxHeight="450"
             pu:WindowXCaption.Buttons="Close"
-            WindowStartupLocation="CenterOwner"
             mc:Ignorable="d">
     <Grid Name="InfoData"
           Margin="20,10"
@@ -22,7 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -103,31 +102,43 @@
                          TextWrapping="Wrap" />
             </StackPanel>
         </ScrollViewer>
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0"
+        <StackPanel Grid.Row="2" Orientation="Vertical">
+            <Button Name="AddUserButton"
+                    Height="36"
                     Margin="7"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    pu:ButtonHelper.CornerRadius="5"
-                    pu:ButtonHelper.HoverBackground="#dded5736"
-                    Background="#ed5736"
-                    Content="修改信息"
-                    Foreground="White"
-                    IsEnabled="False" />
-            <Button Grid.Column="1"
-                    Margin="7"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
                     pu:ButtonHelper.CornerRadius="5"
                     pu:ButtonHelper.HoverBackground="#47A1FA"
                     Background="#3296FA"
-                    Click="OKButton_OnClick"
-                    Content="确定"
+                    Click="AddUserButton_OnClick"
+                    Content="邀请用户加入群聊"
                     Foreground="White" />
-        </Grid>
+            <Grid Grid.Row="2" Height="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Margin="7"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        pu:ButtonHelper.CornerRadius="5"
+                        pu:ButtonHelper.HoverBackground="#dded5736"
+                        Background="#ed5736"
+                        Content="修改信息"
+                        Foreground="White"
+                        IsEnabled="False" />
+                <Button Grid.Column="1"
+                        Margin="7"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        pu:ButtonHelper.CornerRadius="5"
+                        pu:ButtonHelper.HoverBackground="#47A1FA"
+                        Background="#3296FA"
+                        Click="OKButton_OnClick"
+                        Content="确定"
+                        Foreground="White" />
+            </Grid>
+        </StackPanel>
     </Grid>
 </pu:WindowX>

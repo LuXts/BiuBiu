@@ -233,18 +233,32 @@ namespace BiuBiuServer.Database
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
                                                                   " SendId=?sd and ReceiveId=?rd",
-                new {sd = request.SenderId.ToString(), rd = request.ReceiverId.ToString()});
+                new { sd = request.SenderId.ToString(), rd = request.ReceiverId.ToString() });
 
             await Fsql.Ado.QueryAsync<object>("delete from friendadd where" +
                                               " AddId=?ad", new { ad = request.RequestId.ToString() });
 
             if (Target.Count == 0)
             {
-                return FriendRequestResponse.Failed;
+                if (replyResult)
+                {
+                    return FriendRequestResponse.Failed;
+                }
+                else
+                {
+                    return new FriendRequestResponse() { Success = true };
+                }
             }
             else
             {
-                return new FriendRequestResponse() { Success = true };
+                if (replyResult)
+                {
+                    return new FriendRequestResponse() { Success = true };
+                }
+                else
+                {
+                    return FriendRequestResponse.Failed;
+                }
             }
         }
 
@@ -273,18 +287,32 @@ namespace BiuBiuServer.Database
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select RelationId from groupconstitute where" +
                                                                   " UserId=?ui and GroupId=?gd",
-                new {ui = invitation.ReceiverId.ToString(), gd = invitation.TeamId.ToString()});
+                new { ui = invitation.ReceiverId.ToString(), gd = invitation.TeamId.ToString() });
 
             await Fsql.Ado.QueryAsync<object>("delete from groupinvite where" +
                                               " InviteId=?iid", new { iid = invitation.InvitationId.ToString() });
 
             if (Target.Count == 0)
             {
-                return TeamInvitationResponse.Failed; ;
+                if (replyResult)
+                {
+                    return TeamInvitationResponse.Failed;
+                }
+                else
+                {
+                    return new TeamInvitationResponse() { Success = true };
+                }
             }
             else
             {
-                return new TeamInvitationResponse() { Success = true };
+                if (!replyResult)
+                {
+                    return TeamInvitationResponse.Failed;
+                }
+                else
+                {
+                    return new TeamInvitationResponse() { Success = true };
+                }
             }
         }
 
@@ -312,18 +340,32 @@ namespace BiuBiuServer.Database
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select RelationId from groupconstitute where" +
                                                                   " UserId=?ui and GroupId=?gd",
-                new {ui = request.SenderId.ToString(), gd = request.TeamId.ToString()});
+                new { ui = request.SenderId.ToString(), gd = request.TeamId.ToString() });
 
             await Fsql.Ado.QueryAsync<object>("delete from groupapply where" +
                                               " ApplyId=?ad", new { ad = request.RequestId.ToString() });
 
             if (Target.Count == 0)
             {
-                return TeamRequestResponse.Failed;
+                if (replyResult)
+                {
+                    return TeamRequestResponse.Failed;
+                }
+                else
+                {
+                    return new TeamRequestResponse() { Success = true };
+                }
             }
             else
             {
-                return new TeamRequestResponse() { Success = true };
+                if (!replyResult)
+                {
+                    return TeamRequestResponse.Failed;
+                }
+                else
+                {
+                    return new TeamRequestResponse() { Success = true };
+                }
             }
         }
 
@@ -332,13 +374,13 @@ namespace BiuBiuServer.Database
         {
             List<ulong> IsFriend1 = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
                                                                      " SendId=?sd and ReceiveId=?rd",
-                new {sd = request.SenderId.ToString(), rd = request.ReceiverId.ToString()});
+                new { sd = request.SenderId.ToString(), rd = request.ReceiverId.ToString() });
             List<ulong> IsFriend2 = await Fsql.Ado.QueryAsync<ulong>("select RelationId from friendrelation where" +
                                                                      " SendId=?sd and ReceiveId=?rd",
                 new { sd = request.ReceiverId.ToString(), rd = request.SenderId.ToString() });
             List<ulong> hasAdd1 = await Fsql.Ado.QueryAsync<ulong>("select AddId from friendadd where" +
                                                                    " SendId=?sd and ReceiveId=?rd",
-                new {sd = request.SenderId.ToString(), rd = request.ReceiverId.ToString()});
+                new { sd = request.SenderId.ToString(), rd = request.ReceiverId.ToString() });
             List<ulong> hasAdd2 = await Fsql.Ado.QueryAsync<ulong>("select AddId from friendadd where" +
                                                                    " SendId=?sd and ReceiveId=?rd",
                 new { sd = request.ReceiverId.ToString(), rd = request.SenderId.ToString() });
@@ -375,12 +417,12 @@ namespace BiuBiuServer.Database
         {
             List<ulong> InGroup = await Fsql.Ado.QueryAsync<ulong>("select RelationId from groupconstitute where" +
                                                                    " UserId=?ui and GroupId=?gd",
-                new {ui = invitation.ReceiverId.ToString(), gd = invitation.TeamId.ToString()});
+                new { ui = invitation.ReceiverId.ToString(), gd = invitation.TeamId.ToString() });
 
-            List<ulong>hasInvite = await Fsql.Ado.QueryAsync<ulong>("select InviteId from groupinvite where" +
+            List<ulong> hasInvite = await Fsql.Ado.QueryAsync<ulong>("select InviteId from groupinvite where" +
                                                                     " UserId=?ui and GroupId=?gd",
                 new { ui = invitation.ReceiverId.ToString(), gd = invitation.TeamId.ToString() });
-            List<ulong>hasApply = await Fsql.Ado.QueryAsync<ulong>("select ApplyId from groupapply where" +
+            List<ulong> hasApply = await Fsql.Ado.QueryAsync<ulong>("select ApplyId from groupapply where" +
                                                                    " UserId=?ui and GroupId=?gd",
                 new { ui = invitation.ReceiverId.ToString(), gd = invitation.TeamId.ToString() });
 
@@ -416,7 +458,7 @@ namespace BiuBiuServer.Database
         {
             List<ulong> InGroup = await Fsql.Ado.QueryAsync<ulong>("select RelationId from groupconstitute where" +
                                                                    " UserId=?ui and GroupId=?gd",
-                new {ui = request.SenderId.ToString(), gd = request.TeamId.ToString()});
+                new { ui = request.SenderId.ToString(), gd = request.TeamId.ToString() });
 
             List<ulong> hasInvite = await Fsql.Ado.QueryAsync<ulong>("select InviteId from groupinvite where" +
                                                                      " UserId=?ui and GroupId=?gd",
@@ -438,7 +480,7 @@ namespace BiuBiuServer.Database
                     });
             }
 
-            List<ulong>Target = await Fsql.Ado.QueryAsync<ulong>("select ApplyId from groupapply where" +
+            List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select ApplyId from groupapply where" +
                                                                  " UserId=?ui and GroupId=?gd",
                 new { ui = request.SenderId.ToString(), gd = request.TeamId.ToString() });
 

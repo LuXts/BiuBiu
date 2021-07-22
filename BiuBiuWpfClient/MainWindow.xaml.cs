@@ -712,7 +712,7 @@ namespace BiuBiuWpfClient
                     nWindow = new NotificationWindow();
                     nWindow.Init(user.DisplayName, item.RequestMessage
                         , await Initialization.DataDb.GetBitmapImage(
-                            user.IconId));
+                            user.IconId), infoListItem.InfoId);
                     nWindow.Show();
                 }
                 else if (infoListItem.Type ==
@@ -727,7 +727,7 @@ namespace BiuBiuWpfClient
                     nWindow = new NotificationWindow();
                     nWindow.Init(team.TeamName, item.InvitationMessage
                         , await Initialization.DataDb.GetBitmapImage(
-                            team.IconId));
+                            team.IconId), infoListItem.InfoId);
                     nWindow.Show();
                 }
                 else if (infoListItem.Type == InfoListItem.InfoType.TeamRequest)
@@ -741,7 +741,7 @@ namespace BiuBiuWpfClient
                     nWindow = new NotificationWindow();
                     nWindow.Init(user.DisplayName, item.RequestMessage
                         , await Initialization.DataDb.GetBitmapImage(
-                            user.IconId));
+                            user.IconId), infoListItem.InfoId);
                     nWindow.Show();
                 }
 

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BiuBiuShare.ImInfos;
+using BiuBiuWpfClient.Login;
 using Panuon.UI.Silver;
 
 namespace BiuBiuWpfClient
@@ -107,6 +108,14 @@ namespace BiuBiuWpfClient
 
         public void InitInfo(TeamInfo team, BitmapImage image)
         {
+            if (AuthenticationTokenStorage.UserId == team.OwnerId)
+            {
+                AddUserButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AddUserButton.Visibility = Visibility.Collapsed;
+            }
             DisplayName = team.TeamName;
             _teamId = team.TeamId;
             _ownerId = team.OwnerId;
@@ -120,6 +129,11 @@ namespace BiuBiuWpfClient
             {
                 this.Close();
             }
+        }
+
+        private void AddUserButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

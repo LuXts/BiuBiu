@@ -14,7 +14,6 @@
             MaxWidth="335"
             MaxHeight="450"
             pu:WindowXCaption.Buttons="Close"
-            WindowStartupLocation="CenterOwner"
             mc:Ignorable="d">
     <Grid Name="InfoData"
           Margin="20,10"

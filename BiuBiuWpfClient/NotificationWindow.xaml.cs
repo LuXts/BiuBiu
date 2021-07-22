@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BiuBiuShare.Tool;
+using BiuBiuWpfClient.Model;
 using Panuon.UI.Silver;
 
 namespace BiuBiuWpfClient
@@ -70,21 +72,122 @@ namespace BiuBiuWpfClient
             InfoData.DataContext = this;
         }
 
-        public void Init(string displayName, string description, BitmapImage bImage)
+        private ulong _id;
+
+        public void Init(string displayName, string description, BitmapImage bImage, ulong id)
         {
+            _id = id;
             DisplayName = displayName;
             Description = description;
             BImage = bImage;
         }
 
-        private void OkButton_OnClick(object sender, RoutedEventArgs e)
+        private async void OkButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            bool mark;
+            if (IdManagement.GenerateIdTypeById(_id) == IdType.FriendRequestId)
+            {
+                var request = Initialization.DataDb.GetFriendRequest(_id);
+                var re = await Service.GroFriService.ReplyFriendRequest(request
+                    , true);
+                mark = re.Success;
+                if (mark)
+                {
+                    foreach (var item in InfoViewModel.NewFriendCollection)
+                    {
+                        if (item.InfoId == _id)
+                        {
+                            InfoViewModel.NewFriendCollection.Remove(item);
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (IdManagement.GenerateIdTypeById(_id) ==
+                      IdType.TeamInvitationId)
+            {
+                var request = Initialization.DataDb.GetTeamInvitation(_id);
+                var re = await Service.GroFriService.ReplyGroupInvitation(request
+                    , true);
+                mark = re.Success;
+                if (mark)
+                {
+                    foreach (var item in InfoViewModel.TeamInvitationCollection)
+                    {
+                        if (item.InfoId == _id)
+                        {
+                            InfoViewModel.TeamInvitationCollection.Remove(item);
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (IdManagement.GenerateIdTypeById(_id) ==
+                   IdType.TeamRequestId)
+            {
+                var request = Initialization.DataDb.GetTeamRequest(_id);
+                var re = await Service.GroFriService.ReplyGroupRequest(request
+                    , true);
+                mark = re.Success;
+                if (mark)
+                {
+                    foreach (var item in InfoViewModel.TeamRequestCollection)
+                    {
+                        if (item.InfoId == _id)
+                        {
+                            InfoViewModel.TeamRequestCollection.Remove(item);
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                mark = false;
+            }
+
+            if (!mark)
+            {
+                MessageBoxX.Show("发送失败！");
+            }
+            this.Close();
         }
 
-        private void NoButton_OnClick(object sender, RoutedEventArgs e)
+        private async void NoButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            bool mark;
+            if (IdManagement.GenerateIdTypeById(_id) == IdType.FriendRequestId)
+            {
+                var request = Initialization.DataDb.GetFriendRequest(_id);
+                var re = await Service.GroFriService.ReplyFriendRequest(request
+                    , false);
+                mark = re.Success;
+            }
+            else if (IdManagement.GenerateIdTypeById(_id) ==
+                     IdType.TeamInvitationId)
+            {
+                var request = Initialization.DataDb.GetTeamInvitation(_id);
+                var re = await Service.GroFriService.ReplyGroupInvitation(request
+                    , false);
+                mark = re.Success;
+            }
+            else if (IdManagement.GenerateIdTypeById(_id) ==
+                     IdType.TeamRequestId)
+            {
+                var request = Initialization.DataDb.GetTeamRequest(_id);
+                var re = await Service.GroFriService.ReplyGroupRequest(request
+                    , false);
+                mark = re.Success;
+            }
+            else
+            {
+                mark = false;
+            }
+            if (!mark)
+            {
+                MessageBoxX.Show("发送失败！");
+            }
+            this.Close();
         }
     }
 }
