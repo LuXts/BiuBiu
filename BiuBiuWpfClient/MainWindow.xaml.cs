@@ -46,7 +46,7 @@ namespace BiuBiuWpfClient
         public ObservableCollection<ChatInfoModel> ChatInfos { get; set; }
             = new ObservableCollection<ChatInfoModel>();
 
-        public ObservableCollection<ChatViewModel> ChatListCollection
+        public static ObservableCollection<ChatViewModel> ChatListCollection
             = new ObservableCollection<ChatViewModel>();
 
         public static CollectionViewSource CollectionView
@@ -774,6 +774,18 @@ namespace BiuBiuWpfClient
             uWindow = new UserInfoWindow();
             uWindow.InitInfo(user, this.MyHeadIcon);
             uWindow.Show();
+        }
+
+        private void AddUserButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var window = new AddFOrGWindow();
+            window.ShowDialog();
+        }
+
+        private void ANewTeamButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var window = new NewTeamWindow();
+            window.ShowDialog();
         }
     }
 }

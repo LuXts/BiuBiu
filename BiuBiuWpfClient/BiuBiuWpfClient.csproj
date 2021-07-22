@@ -8,6 +8,8 @@
 
 	<ItemGroup>
 		<None Remove="Resource\Images\account-multiple-outline.png" />
+		<None Remove="Resource\Images\add Groups.png" />
+		<None Remove="Resource\Images\add.png" />
 		<None Remove="Resource\Images\file.png" />
 		<None Remove="Resource\Images\folder-download.png" />
 		<None Remove="Resource\Images\image.png" />
@@ -40,6 +42,12 @@
 
 	<ItemGroup>
 		<Resource Include="Resource\Images\account-multiple-outline.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resource\Images\add Groups.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resource\Images\add.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Resource\Images\file.png">

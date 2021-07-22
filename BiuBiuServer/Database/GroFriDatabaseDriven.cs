@@ -528,7 +528,7 @@ namespace BiuBiuServer.Database
             List<ulong> Target1 = await Fsql.Ado.QueryAsync<ulong>("select GroupId from team where GroupId=?gd",
                 new { gd = teamInfo.TeamId.ToString() });
             List<ulong> Target2 = await Fsql.Ado.QueryAsync<ulong>(
-                "select RelationId from groupconstitute where UserId=?ui,GroupId=?gd",
+                "select RelationId from groupconstitute where UserId=?ui and GroupId=?gd",
                 new { ui = teamInfo.OwnerId.ToString(), gd = teamInfo.TeamId.ToString() });
             if (Target2.Count != 0 && Target1.Count != 0)
             {

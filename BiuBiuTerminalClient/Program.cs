@@ -163,7 +163,22 @@ namespace BiuBiuTerminalClient
                         new AdminWithAuthenticationFilter("18578967136"
                             , "123456789", channel2)
                     });
-            await UploadFile(client2, "E://Image/de.jpg");
+            await UploadFile(client2, "E://Image/01.jpg");
+            await UploadFile(client2, "E://Image/02.jpg");
+            await UploadFile(client2, "E://Image/03.jpg");
+            await UploadFile(client2, "E://Image/04.jpg");
+            await UploadFile(client2, "E://Image/05.jpg");
+            await UploadFile(client2, "E://Image/06.jpg");
+            await UploadFile(client2, "E://Image/07.jpg");
+            await UploadFile(client2, "E://Image/08.jpg");
+            await UploadFile(client2, "E://Image/09.jpg");
+            await UploadFile(client2, "E://Image/10.jpg");
+            await UploadFile(client2, "E://Image/11.jpg");
+            await UploadFile(client2, "E://Image/12.jpg");
+            await UploadFile(client2, "E://Image/13.jpg");
+            await UploadFile(client2, "E://Image/14.jpg");
+            await UploadFile(client2, "E://Image/15.jpg");
+            await UploadFile(client2, "E://Image/16.jpg");
         }
     }
 }

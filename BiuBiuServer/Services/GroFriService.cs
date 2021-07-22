@@ -226,12 +226,13 @@ namespace BiuBiuServer.Services
             return temp;
         }
 
-        public async UnaryResult<bool> EstablishTeam(UserInfo builderInfo, TeamInfo teamInfo)
+        public async UnaryResult<(bool, ulong)> EstablishTeam(UserInfo builderInfo, TeamInfo teamInfo)
         {
             IdType idType = IdType.TeamId;
             teamInfo.TeamId = IdManagement.GenerateId(idType);//生成群组Id，完善群组信息
             teamInfo.OwnerId = builderInfo.UserId;//根据创建者信息填写群组拥有者Id，完善群组信息
-            return await _igroFriDatabaseDriven.EstablishTeam(teamInfo);
+            var re = await _igroFriDatabaseDriven.EstablishTeam(teamInfo);
+            return (re, teamInfo.TeamId);
         }
     }
 }

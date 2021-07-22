@@ -125,6 +125,6 @@ namespace BiuBiuShare.ServiceInterfaces
         /// <param name="builderInfo">建群者信息</param>
         /// <param name="teamInfo">群聊信息</param>
         /// <returns></returns>
-        UnaryResult<bool> EstablishTeam(UserInfo builderInfo, TeamInfo teamInfo);
+        UnaryResult<(bool, ulong)> EstablishTeam(UserInfo builderInfo, TeamInfo teamInfo);
     }
 }
