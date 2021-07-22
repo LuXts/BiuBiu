@@ -1,31 +1,24 @@
-﻿using System;
-using BiuBiuShare.ServiceInterfaces;
+﻿using BiuBiuShare.GrouFri;
+using BiuBiuShare.ImInfos;
 using BiuBiuShare.TalkInfo;
+using BiuBiuShare.Tool;
 using BiuBiuWpfClient.Login;
 using BiuBiuWpfClient.Model;
-using MagicOnion.Client;
+using BiuBiuWpfClient.Tools;
+using BiuBiuWpfClient.Userhub;
+using HandyControl.Controls;
+using Microsoft.Win32;
 using Panuon.UI.Silver;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using BiuBiuShare.GrouFri;
-using BiuBiuShare.ImInfos;
-using BiuBiuShare.Tool;
-using BiuBiuWpfClient.Tools;
-using BiuBiuWpfClient.Userhub;
-using HandyControl.Controls;
-using HandyControl.Data;
-using HandyControl.Tools.Extension;
-using Microsoft.Win32;
-using MessageBox = HandyControl.Controls.MessageBox;
 using ScrollViewer = System.Windows.Controls.ScrollViewer;
 
 namespace BiuBiuWpfClient
@@ -904,6 +897,12 @@ namespace BiuBiuWpfClient
         private void ANewTeamButton_OnClick(object sender, RoutedEventArgs e)
         {
             var window = new NewTeamWindow();
+            window.ShowDialog();
+        }
+
+        private void SettingButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var window = new EditPasswordWindow();
             window.ShowDialog();
         }
     }

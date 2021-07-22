@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using BiuBiuShare.ImInfos;
-using BiuBiuShare.ServiceInterfaces;
+﻿using BiuBiuShare.ImInfos;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.Tool;
 using BiuBiuWpfClient.Login;
 using BiuBiuWpfClient.TeamHub;
 using BiuBiuWpfClient.Tools;
-using MagicOnion.Client;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace BiuBiuWpfClient.Model
 {

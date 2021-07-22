@@ -3,14 +3,10 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:hc="https://handyorg.github.io/handycontrol"
-            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
             xmlns:local="clr-namespace:BiuBiuWpfClient"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:model="clr-namespace:BiuBiuWpfClient.Model"
-            xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-            xmlns:purs="clr-namespace:Panuon.UI.Silver.Resources;assembly=Panuon.UI.Silver"
-            xmlns:visualBasic="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic.Core"
             Title=""
             Width="975"
             Height="600"
@@ -138,6 +134,7 @@
                         pu:ButtonHelper.ClickBackground="#D1D3D5"
                         pu:ButtonHelper.CornerRadius="10"
                         pu:ButtonHelper.HoverBackground="#DDDEDF"
+                        Click="SettingButton_OnClick"
                         Focusable="False">
                     <Image Source="Resource/Images/settings.png" Stretch="Fill" />
                 </Button>
@@ -145,7 +142,6 @@
             <StackPanel Grid.Column="1"
                         Width="2"
                         Background="#EDEEEF" />
-
 
             <ListBox Name="ChatListBox"
                      Grid.Column="2"

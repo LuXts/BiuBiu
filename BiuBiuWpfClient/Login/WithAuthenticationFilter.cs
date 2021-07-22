@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using BiuBiuShare.ServiceInterfaces;
-using Grpc.Core;
+﻿using BiuBiuShare.ServiceInterfaces;
 using Grpc.Net.Client;
 using MagicOnion.Client;
+using System;
+using System.Threading.Tasks;
 
 namespace BiuBiuWpfClient.Login
 {

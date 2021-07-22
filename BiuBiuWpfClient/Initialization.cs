@@ -1,17 +1,14 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading;
-using BiuBiuWpfClient.OnlineHub;
+﻿using BiuBiuWpfClient.OnlineHub;
 using BiuBiuWpfClient.Tools;
-using Grpc.Core;
 using Grpc.Net.Client;
 using MagicOnion.Client;
+using System.Net.Http;
 
 namespace BiuBiuWpfClient
 {
     public class Initialization
     {
-        public readonly static string GrpcIp = "127.0.0.1";
+        public static string GrpcIp = "127.0.0.1";
 
         public readonly static string GrpcPort = ":5001";
 
@@ -28,7 +25,7 @@ namespace BiuBiuWpfClient
 
         public static DataDriven DataDb = new DataDriven();
 
-        public Initialization()
+        public static void Init()
         {
             var httpClientHandler = new HttpClientHandler();
             // Return `true` to allow certificates that are untrusted/invalid

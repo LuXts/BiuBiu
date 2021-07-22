@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using BiuBiuShare.ImInfos;
+﻿using BiuBiuShare.ImInfos;
 using BiuBiuWpfClient.Login;
-using Grpc.Net.Client;
-using NLog.Fluent;
 using Panuon.UI.Silver;
+using System.Windows;
+using System.Windows.Input;
+using BiuBiuWpfClient.Tools;
 
 namespace BiuBiuWpfClient
 {
@@ -23,22 +12,40 @@ namespace BiuBiuWpfClient
     /// </summary>
     public partial class LoginWindow : WindowX
     {
+        private LiteDBDriven temp;
+
         public LoginWindow()
         {
-            new Initialization();
+            temp = new LiteDBDriven();
+            Initialization.GrpcIp = temp.GetIp();
+            Initialization.Init();
             InitializeComponent();
-            PasswdBox.Password = "123456789";
+            PasswdBox.Password = temp.GetPassword();
+            AccountTextBox.Text = temp.GetAccount();
+
+            CheckAccountBox.IsChecked = temp.GetCheckAccount();
+            CheckPasswordBox.IsChecked = temp.GetCheckPassword();
+            this.Closed += LoginWindow_Closed;
+        }
+
+        private void LoginWindow_Closed(object sender, System.EventArgs e)
+        {
+            if ((bool)CheckAccountBox.IsChecked)
+            {
+                temp.SetAccount(AccountTextBox.Text);
+            }
+            if ((bool)CheckPasswordBox.IsChecked)
+            {
+                temp.SetPassword(PasswdBox.Password);
+            }
+            temp.SetCheckAccount((bool)CheckAccountBox.IsChecked);
+            temp.SetCheckPassword((bool)CheckPasswordBox.IsChecked);
         }
 
         private void Window_MouseLeftButtonDown(object sender
             , MouseButtonEventArgs e)
         {
             this.DragMove();
-        }
-
-        private void CloseButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
 
         private async void LoginButton_OnClick(object sender, RoutedEventArgs e)
@@ -90,6 +97,12 @@ namespace BiuBiuWpfClient
         private void HelpButton_OnClick(object sender, RoutedEventArgs e)
         {
             MessageBoxX.Show("请联系管理员电话：139xxxxxxxx", "遇到错误请联系管理员");
+        }
+
+        private void IpSettingButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var window = new IPSettingWindow();
+            window.ShowDialog();
         }
     }
 }

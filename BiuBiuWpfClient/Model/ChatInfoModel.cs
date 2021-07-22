@@ -1,5 +1,4 @@
 ﻿using System.Windows.Media.Imaging;
-using HandyControl.Data;
 
 namespace BiuBiuWpfClient.Model
 {

@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
-using BiuBiuShare.ImInfos;
+﻿using BiuBiuShare.ImInfos;
 using BiuBiuShare.TalkInfo;
-using BiuBiuShare.Tool;
 using BiuBiuWpfClient.Login;
 using BiuBiuWpfClient.Model;
+using System.Threading.Tasks;
 
 namespace BiuBiuWpfClient.Tools
 {

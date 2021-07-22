@@ -437,7 +437,7 @@ namespace BiuBiuServer.Database
         public async UnaryResult<ulong> GetUserLastLoginTime(ulong userId)
         {
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select LastExitTime from user where UserId=?ui",
-                new {ui = userId.ToString()});
+                new { ui = userId.ToString() });
 
             if (Target.Count == 0)
             {
@@ -454,11 +454,11 @@ namespace BiuBiuServer.Database
         public async UnaryResult<bool> SetUserLastLoginTime(ulong userId, ulong lastLoginTime)
         {
             await Fsql.Ado.QueryAsync<object>("update user set LastExitTime = ?lt where UserId = ?ui",
-                new {lt = lastLoginTime.ToString(), ui = userId.ToString()});
+                new { lt = lastLoginTime.ToString(), ui = userId.ToString() });
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>(
-                "select UserId from user where UserId=?ui and LastExitTime=?lt",
-                new {ui = userId.ToString(), lt = lastLoginTime.ToString()});
+                "select UserId from user where UserId=?ui,LastExitTime=?lt",
+                new { ui = userId.ToString(), lt = lastLoginTime.ToString() });
 
             if (Target.Count == 0)
             {
