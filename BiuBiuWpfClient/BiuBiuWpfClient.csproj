@@ -14,6 +14,11 @@
 		<None Remove="Resource\Images\message-text-outline.png" />
 		<None Remove="Resource\Images\settings.png" />
 		<None Remove="Resource\Images\video.png" />
+		<None Remove="Resource\Images\入群审核.png" />
+		<None Remove="Resource\Images\好友.png" />
+		<None Remove="Resource\Images\我的群组.png" />
+		<None Remove="Resource\Images\新的好友.png" />
+		<None Remove="Resource\Images\群组邀请.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -58,6 +63,21 @@
 		</Resource>
 		<Resource Include="Resource\Images\video.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resource\Images\入群审核.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resource\Images\好友.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resource\Images\我的群组.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resource\Images\新的好友.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resource\Images\群组邀请.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 	</ItemGroup>
 

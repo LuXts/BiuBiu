@@ -30,8 +30,17 @@ namespace BiuBiuWpfClient
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : WindowX
+    public partial class MainWindow : WindowX, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void Notify(String propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this
+                    , new PropertyChangedEventArgs(propertyName));
+        }
+
         public ObservableCollection<ChatInfoModel> ChatInfos { get; set; }
             = new ObservableCollection<ChatInfoModel>();
 
@@ -47,11 +56,23 @@ namespace BiuBiuWpfClient
 
         private ChatViewModel currentChatViewModel;
 
-        public BitmapImage MyHeadIcon { get; set; }
+        private BitmapImage _myIcon;
+
+        public BitmapImage MyHeadIcon
+        {
+            get { return _myIcon; }
+            set
+            {
+                _myIcon = value;
+                Notify("MyHeadIcon");
+            }
+        }
 
         public MainWindow()
         {
             InitializeComponent();
+
+            this.DataContext = this;
 
             CollectionView.Source = ChatListCollection;
             CollectionView.View.Refresh();
@@ -59,14 +80,15 @@ namespace BiuBiuWpfClient
                 new SortDescription("LastMessageTime"
                     , ListSortDirection.Descending));
             ChatListBox.ItemsSource = CollectionView.View;
-
+            InfoListBox.ItemsSource = ChatListCollection;
             _userHubClient = new UserHubClient();
             _userHubClient.ConnectAsync(Initialization.GChannel
                 , AuthenticationTokenStorage.UserId);
 
             _userHubClient.SMEvent += async (Message message) =>
             {
-                var temp = await MessageToChatInfo.TransformChatInfoModel(message);
+                var temp
+                    = await MessageToChatInfo.TransformChatInfoModel(message);
                 string tip;
                 if (message.Type == "Text")
                 {
@@ -104,6 +126,11 @@ namespace BiuBiuWpfClient
             };
 
             this.Closed += MainWindow_Closed;
+
+            var temp = WindowXCaption.GetHeaderTemplate(this);
+            Initialization.Logger.Debug(temp.GetType().Name);
+            Initialization.Logger.Debug(temp.Template.GetType().Name);
+            Initialization.Logger.Debug(temp.Triggers);
             InitChat();
         }
 
@@ -119,10 +146,10 @@ namespace BiuBiuWpfClient
                 new UserInfo() { UserId = AuthenticationTokenStorage.UserId });
             foreach (var user in userInfos)
             {
-                var chat = new ChatViewModel(user.UserId, user.IconId, user.DisplayName)
-                {
-                    LastMessageTime = 0
-                };
+                var chat
+                    = new ChatViewModel(user.UserId, user.IconId
+                        , user.DisplayName)
+                    { LastMessageTime = 0 };
 
                 ChatListCollection.Add(chat);
             }
@@ -138,6 +165,8 @@ namespace BiuBiuWpfClient
                     };
                 ChatListCollection.Add(chat);
             }
+
+            CollectionView.View.Refresh();
         }
 
         private void ListBox_SourceUpdated(object sender, EventArgs e)
@@ -147,7 +176,9 @@ namespace BiuBiuWpfClient
 
         private void ListUpdate()
         {
-            Decorator decorator = (Decorator)VisualTreeHelper.GetChild(ScrollingListBoxChat, 0);
+            Decorator decorator
+                = (Decorator)VisualTreeHelper.GetChild(ScrollingListBoxChat
+                    , 0);
             ScrollViewer scrollViewer = (ScrollViewer)decorator.Child;
             scrollViewer.ScrollToEnd();
         }
@@ -205,12 +236,17 @@ namespace BiuBiuWpfClient
                 currentChatViewModel.InputData = "";
                 ChatInputbox.Text = "";
             }
+
+            ListUpdate();
         }
 
         private void ChatListBox_OnSelectionChanged(object sender
             , SelectionChangedEventArgs e)
         {
-            ChatView.Visibility = Visibility.Visible;
+            if (ChatView.Visibility == Visibility.Hidden)
+            {
+                ChatView.Visibility = Visibility.Visible;
+            }
             var chatView = ChatListBox.SelectedItem as ChatViewModel;
             if (chatView is null)
             {
@@ -277,6 +313,7 @@ namespace BiuBiuWpfClient
                         currentChatViewModel.LastMessageTime
                             = IdManagement.TimeGen() << 20;
                         CollectionView.View.Refresh();
+                        ListUpdate();
                     }
                 }
                 else
@@ -299,8 +336,7 @@ namespace BiuBiuWpfClient
                     ImageBrowserWindow window = new ImageBrowserWindow();
                     window.Show();
                     window.Owner = this;
-                    window.InitWindow(chatInfoModel.Message as BitmapImage
-                        , "查看图片");
+                    window.InitWindow(chatInfoModel.Message as BitmapImage, "");
                 }
             }
             else
@@ -333,41 +369,89 @@ namespace BiuBiuWpfClient
             if (dialog.ShowDialog() == true)
             {
                 var fileName = dialog.FileName;
-                if (File.Exists(fileName))
+                var re = await Initialization.DataDb.SendFileToServer(
+                    currentTargetId, fileName);
+                if (re.Success)
                 {
-                    var re = await Initialization.DataDb.SendFileToServer(
-                        currentTargetId, fileName);
-                    if (re.Success)
+                    var info = new ChatInfoModel
                     {
-                        var info = new ChatInfoModel
-                        {
-                            Message = Path.GetFileName(fileName)
-                            ,
-                            SenderId
-                                = AuthenticationTokenStorage.UserId
-                                    .ToString()
-                            ,
-                            Type = ChatInfoType.FileTypeChat
-                            ,
-                            Role = TypeLocalMessageLocation.chatSend
-                            ,
-                            BImage = MyHeadIcon
-                            ,
-                            MessageOnwer
-                                = AuthenticationTokenStorage.DisplayName
-                            ,
-                            MessageId = re.MessageId
-                        };
-                        ChatInfos.Add(info);
-                        currentChatViewModel.LastMessageTime
-                            = IdManagement.TimeGen() << 20;
-                        CollectionView.View.Refresh();
-                    }
+                        Message = Path.GetFileName(fileName)
+                        ,
+                        SenderId
+                            = AuthenticationTokenStorage.UserId.ToString()
+                        ,
+                        Type = ChatInfoType.FileTypeChat
+                        ,
+                        Role = TypeLocalMessageLocation.chatSend
+                        ,
+                        BImage = MyHeadIcon
+                        ,
+                        MessageOnwer
+                            = AuthenticationTokenStorage.DisplayName
+                        ,
+                        MessageId = re.MessageId
+                    };
+                    ChatInfos.Add(info);
+                    currentChatViewModel.LastMessageTime
+                        = IdManagement.TimeGen() << 20;
+                    CollectionView.View.Refresh();
+                    ListUpdate();
                 }
             }
-            else
+        }
+
+        private void HeadButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBoxX.Show("Head!");
+        }
+
+        private bool _talkSwicth = true;
+
+        private void TalkSwitchButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_talkSwicth != true)
             {
-                MessageBoxX.Show("文件不存在！");
+                SolidColorBrush myBrush1
+                    = new SolidColorBrush(
+                        Color.FromArgb(0xFF, 0xD1, 0xD3, 0xD5));
+                TalkSwitch.Background = (System.Windows.Media.Brush)myBrush1;
+                _talkSwicth = true;
+                SolidColorBrush myBrush2
+                    = new SolidColorBrush(
+                        Color.FromArgb(0xFF, 0xEB, 0xEB, 0xEB));
+                AddressSwitch.Background = (System.Windows.Media.Brush)myBrush2;
+                _addressSwitch = false;
+                ChatListBox.Visibility = Visibility.Visible;
+                ChatView.Visibility = _visibility;
+                AddressPanel.Visibility = Visibility.Collapsed;
+                InfoPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private bool _addressSwitch = false;
+
+        private Visibility _visibility = Visibility.Collapsed;
+
+        public void AddressBookSwitchButton_OnClick(object sender
+            , RoutedEventArgs e)
+        {
+            if (_addressSwitch != true)
+            {
+                SolidColorBrush myBrush1
+                    = new SolidColorBrush(
+                        Color.FromArgb(0xFF, 0xEB, 0xEB, 0xEB));
+                TalkSwitch.Background = (System.Windows.Media.Brush)myBrush1;
+                _talkSwicth = false;
+                SolidColorBrush myBrush2
+                    = new SolidColorBrush(
+                        Color.FromArgb(0xFF, 0xD1, 0xD3, 0xD5));
+                AddressSwitch.Background = (System.Windows.Media.Brush)myBrush2;
+                _addressSwitch = true;
+                _visibility = ChatView.Visibility;
+                ChatListBox.Visibility = Visibility.Collapsed;
+                ChatView.Visibility = Visibility.Collapsed;
+                AddressPanel.Visibility = Visibility.Visible;
+                InfoPanel.Visibility = Visibility.Visible;
             }
         }
     }

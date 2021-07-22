@@ -11,41 +11,36 @@
             Height="640"
             MinWidth="960"
             MinHeight="640"
-            pu:WindowXCaption.Background="#fff"
-            pu:WindowXCaption.Foreground="#EE000000"
-            pu:WindowXCaption.Height="40"
+            pu:WindowXCaption.Background="#0076f6"
+            pu:WindowXCaption.Foreground="#fff"
+            pu:WindowXCaption.Height="39"
             FontSize="20"
             mc:Ignorable="d">
     <pu:WindowXCaption.MinimizeButtonStyle>
         <Style BasedOn="{StaticResource {ComponentResourceKey ResourceId=WindowXMinimizeButtonStyle, TypeInTargetAssembly={x:Type pu:WindowX}}}" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="pu:ButtonHelper.HoverBackground" Value="#33000000" />
-            <Setter Property="pu:ButtonHelper.HoverForeground" Value="Black" />
-            <Setter Property="MaxWidth" Value="30" />
-            <Setter Property="MaxHeight" Value="30" />
-            <Setter Property="Margin" Value="5" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="pu:ButtonHelper.HoverBackground" Value="#33FFFFFF" />
+            <Setter Property="MaxWidth" Value="39" />
+            <Setter Property="MaxHeight" Value="39" />
         </Style>
     </pu:WindowXCaption.MinimizeButtonStyle>
     <pu:WindowXCaption.MaximizeButtonStyle>
         <Style BasedOn="{StaticResource {ComponentResourceKey ResourceId=WindowXMaximizeButtonStyle, TypeInTargetAssembly={x:Type pu:WindowX}}}" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="pu:ButtonHelper.HoverBackground" Value="#33000000" />
-            <Setter Property="pu:ButtonHelper.HoverForeground" Value="Black" />
-            <Setter Property="MaxWidth" Value="30" />
-            <Setter Property="MaxHeight" Value="30" />
-            <Setter Property="Margin" Value="5" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="pu:ButtonHelper.HoverBackground" Value="#33FFFFFF" />
+            <Setter Property="MaxWidth" Value="39" />
+            <Setter Property="MaxHeight" Value="39" />
         </Style>
     </pu:WindowXCaption.MaximizeButtonStyle>
     <pu:WindowXCaption.CloseButtonStyle>
         <Style BasedOn="{StaticResource {ComponentResourceKey ResourceId=WindowXCloseButtonStyle, TypeInTargetAssembly={x:Type pu:WindowX}}}" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Foreground" Value="White" />
             <Setter Property="pu:ButtonHelper.HoverBackground" Value="Red" />
-            <Setter Property="MaxWidth" Value="30" />
-            <Setter Property="MaxHeight" Value="30" />
-            <Setter Property="Margin" Value="5" />
+            <Setter Property="MaxWidth" Value="39" />
+            <Setter Property="MaxHeight" Value="39" />
         </Style>
     </pu:WindowXCaption.CloseButtonStyle>
     <Grid>

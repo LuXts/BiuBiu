@@ -39,7 +39,7 @@
                     <Setter Property="ContentTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <TextBlock Text="Click again ?" />
+                                <TextBlock Text="登录中" />
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
@@ -97,9 +97,10 @@
                 VerticalAlignment="Top"
                 pu:ButtonHelper.CornerRadius="5"
                 Click="LoginButton_OnClick"
-                Content="登录"
                 FontSize="20"
-                Style="{StaticResource SignInButtonStyle}" />
+                Style="{StaticResource SignInButtonStyle}">
+            <TextBlock Text="登录" />
+        </Button>
         <CheckBox Width="Auto"
                   Height="24"
                   Margin="0,0,75,100"

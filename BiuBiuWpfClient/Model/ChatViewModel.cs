@@ -99,7 +99,14 @@ namespace BiuBiuWpfClient.Model
             {
                 _lastMessageTime = value;
                 Notify("LastMessageTime");
+                Notify("LastMessageTimeStr");
             }
+        }
+
+        public string LastMessageTimeStr
+        {
+            get { return IdManagement.GenerateStrById(LastMessageTime); }
+            set { }
         }
 
         public string InputData;
@@ -134,7 +141,6 @@ namespace BiuBiuWpfClient.Model
                     , time << 20);
             }
 
-            Initialization.Logger.Debug(reList.Count);
             foreach (var message in reList)
             {
                 var temp = await MessageToChatInfo.TransformChatInfoModel(message);

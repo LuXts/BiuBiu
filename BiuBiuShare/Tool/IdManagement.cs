@@ -63,24 +63,19 @@ namespace BiuBiuShare.Tool
 
         public static string GenerateStrById(ulong id)
         {
-            ulong oldTime = id >> 20;
-
-            ulong newTime = TimeGen();
-
-            DateTime dtStart
-                = TimeZone.CurrentTimeZone.ToLocalTime(
-                    new DateTime(1970, 1, 1));
-            ulong lTime = oldTime * 10000;
+            ulong timestampId = id >> 20;
+            ulong timestampStart =
+                (ulong)new DateTimeOffset(new DateTime(1970, 1, 1, 8, 0, 0)).ToUnixTimeMilliseconds();
+            DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            ulong lTime = timestampId * 10000;
             TimeSpan toNow = new TimeSpan((long)lTime);
             DateTime targetDt = dtStart.Add(toNow);
-            if (newTime - oldTime >= 3600 * 1000 * 24)
-            {
-                return targetDt.ToString("MM-dd");
-            }
-            else
+            if (targetDt.ToString("d") == DateTime.Now.ToString("d"))
             {
                 return targetDt.ToString("t");
             }
+
+            return targetDt.ToString("MM-dd");
         }
     }
 }
