@@ -87,7 +87,8 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                    <Button Width="60" HorizontalAlignment="Left" Content="详情"/>
+                                    <Button Width="60" HorizontalAlignment="Left" Content="详情" 
+                                            Click="ClickSelectDetails"/>
                                     <Button Width="60" Margin="15,0,0,0" HorizontalAlignment="Right" Content="删除"
                                             Click="ClickDeleteButton"
                                             />

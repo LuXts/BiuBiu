@@ -9,6 +9,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BiuBiuServer.Services;
 using BiuBiuShare.ImInfos;
@@ -16,6 +17,7 @@ using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.UserManagement;
 using Grpc.Net.Client;
 using HandyControl.Data;
+using HandyControl.Tools.Extension;
 
 namespace BiuBiuAdminWpfClient
 {
@@ -36,6 +38,8 @@ namespace BiuBiuAdminWpfClient
             ComboBox1.ItemsSource = categoryList1;
             ComboBox1.DisplayMemberPath = "Name";//显示出来的值
             ComboBox1.SelectedValuePath = "Value";//实际选中后获取的结果的值
+            ComboBox1.SelectedValue = "jobName";
+            ComboBox1.SelectedItem = "用户工号";
 
             List<CategoryInfo2> categoryList2 = new List<CategoryInfo2>();
             categoryList2.Add(new CategoryInfo2 { Name = "普通用户", Value = "NormalUser" });
@@ -52,10 +56,12 @@ namespace BiuBiuAdminWpfClient
 
         //声明一条注册信息
         public RegisterInfo registerInfo { get; set; }
-        //申明一个用户信息列表
+        //声明一个用户信息列表
         public List<UserInfo> UserInfoList { get; set; }
+        //声明一条用户信息
         public UserInfo userInfo { get; set; }
-
+        //test
+        public static ulong userId  { get; set; } 
 
         //位置偏移
         public void WinPosition()
@@ -181,12 +187,27 @@ namespace BiuBiuAdminWpfClient
                 userInfo = await Service.AdminService.SelectByJobNumber(SelectSearch.Text);
 
                 if(userInfo!=null){UserInfoList.Add(userInfo);}
+
             }
             else if ((string)ComboBox1.SelectedValue == "userId")
             {
-                userInfo = await Service.AdminService.SelectByUserId(Convert.ToUInt64((SelectSearch.Text)));
+                if (this.SelectSearch.Text != "")
+                {
+                    try
+                    {
+                        ulong userId = Convert.ToUInt64(this.SelectSearch.Text);
+                        userInfo = await Service.AdminService.SelectByUserId(userId);
+                    }
+                    catch
+                    {
+
+                    }
+                    //userInfo = await Service.AdminService.SelectByUserId(Convert.ToUInt64(this.SelectSearch.Text));
+                }
                 if (userInfo != null) { UserInfoList.Add(userInfo); }
+
             }
+
             SelectR3.ItemsSource = UserInfoList;
         }
 
@@ -211,5 +232,13 @@ namespace BiuBiuAdminWpfClient
             this.UserNameInput.Text = "";
             this.PhoneNumInput.Text = "";
         }
+
+        private void ClickSelectDetails(object sender, RoutedEventArgs e)
+        {
+            userId = userInfo.UserId;
+            MessageBox.Show(userId.ToString());
+            UserInfoDetails details = new UserInfoDetails();
+            details.ShowDialog(); 
+        } 
     }
 }
