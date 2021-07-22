@@ -111,10 +111,12 @@ namespace BiuBiuWpfClient
             if (AuthenticationTokenStorage.UserId == team.OwnerId)
             {
                 AddUserButton.Visibility = Visibility.Visible;
+                this.ModifyButton.IsEnabled = true;
             }
             else
             {
                 AddUserButton.Visibility = Visibility.Collapsed;
+                this.ModifyButton.IsEnabled = false;
             }
             DisplayName = team.TeamName;
             _teamId = team.TeamId;
@@ -136,6 +138,37 @@ namespace BiuBiuWpfClient
             InviteUserWindow window = new InviteUserWindow();
             window.Init(_teamId);
             window.Show();
+        }
+
+        private void ModifyButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.ModifyButton.Visibility = Visibility.Collapsed;
+            this.OKButton.Visibility = Visibility.Collapsed;
+            this.SureButton.Visibility = Visibility.Visible;
+            this.CancelButton.Visibility = Visibility.Visible;
+            ReadOnly = false;
+        }
+
+        private async void SureButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var teamInfo = await Initialization.DataDb.GetTeamInfoByServer(_teamId);
+            teamInfo.Description = Description;
+            teamInfo.TeamName = DisplayName;
+            if ((await Service.ImInfoService.SetTeamInfo(teamInfo)).Success)
+            {
+                MessageBoxX.Show("修改成功！");
+            }
+            else
+            {
+                MessageBoxX.Show("修改失败！");
+            }
+
+            this.Close();
+        }
+
+        private void CancelButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

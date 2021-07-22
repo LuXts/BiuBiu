@@ -9,7 +9,7 @@ namespace BiuBiuAdminWpfClient
 {
     public class Initialization
     {
-        public readonly static string GrpcIp = "192.168.100.4";
+        public readonly static string GrpcIp = "192.168.43.101";
 
         public readonly static string GrpcPort = ":5001";
 

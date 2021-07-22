@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BiuBiuShare.ImInfos;
+using BiuBiuWpfClient.Login;
+using BiuBiuWpfClient.Model;
 using Panuon.UI.Silver;
 
 namespace BiuBiuWpfClient
@@ -132,6 +134,21 @@ namespace BiuBiuWpfClient
 
         public void InitInfo(UserInfo user, BitmapImage image)
         {
+            if (user.UserId == AuthenticationTokenStorage.UserId)
+            {
+                DeleteButton.Visibility = Visibility.Collapsed;
+                DeleteButton.IsEnabled = false;
+                ModifyButton.Visibility = Visibility.Visible;
+                ModifyButton.IsEnabled = true;
+                
+            }
+            else
+            {
+                ModifyButton.Visibility = Visibility.Collapsed;
+                ModifyButton.IsEnabled = false;
+                DeleteButton.Visibility = Visibility.Visible;
+                DeleteButton.IsEnabled = true;
+            }
             DisplayName = user.DisplayName;
             _userId = user.UserId;
             _jobNumber = user.JobNumber;
@@ -143,7 +160,12 @@ namespace BiuBiuWpfClient
 
         private void EditButton_OnClick(object sender, RoutedEventArgs e)
         {
+            this.ModifyButton.Visibility = Visibility.Collapsed;
+            this.OKButton.Visibility = Visibility.Collapsed;
+            this.SureButton.Visibility = Visibility.Visible;
+            this.CancelButton.Visibility = Visibility.Visible;
             ReadOnly = false;
+
         }
 
         private async void OKButton_OnClick(object sender, RoutedEventArgs e)
@@ -152,6 +174,67 @@ namespace BiuBiuWpfClient
             {
                 this.Close();
             }
+        }
+
+        private async void CancelButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var user = await Initialization.DataDb.GetUserInfoByServer(_userId);
+            user.Description = Description;
+            user.Email = Email;
+            user.DisplayName = DisplayName;
+            if ((await Service.ImInfoService.SetUserInfo(user)).Success)
+            {
+                MessageBoxX.Show("修改成功，等待审批！");
+            }
+            else
+            {
+                MessageBoxX.Show("修改失败！");
+            }
+            this.Close();
+        }
+
+        private void SureButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private async void DeleteButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            UserInfo receiver =await Initialization.DataDb.GetUserInfoByServer(_userId);
+            ulong sponsorId = AuthenticationTokenStorage.UserId;
+            UserInfo sponsor = await Initialization.DataDb.GetUserInfoByServer(sponsorId);
+
+            if (await Service.GroFriService.DeleteFriend(sponsor, receiver))
+            {
+                MessageBoxX.Show("删除好友成功！");
+            }
+            else
+            {
+                MessageBoxX.Show("删除好友失败！");
+            }
+
+            foreach (var chat in MainWindow.ChatListCollection)
+            {
+                if (chat.TargetId == _userId)
+                {
+                    MainWindow.ChatListCollection.Remove(chat);
+                    break;
+                }   
+            }
+
+            foreach (var friend in InfoViewModel.FriendCollection)
+            {
+
+                if (friend.InfoId == _userId)
+                {
+                    InfoViewModel.FriendCollection.Remove(friend);
+                    break;
+                }
+            }
+
+           
+
+            this.Close();
         }
     }
 }
