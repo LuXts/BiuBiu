@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,6 +24,7 @@ using HandyControl.Controls;
 using HandyControl.Data;
 using HandyControl.Tools.Extension;
 using Microsoft.Win32;
+using MessageBox = HandyControl.Controls.MessageBox;
 using ScrollViewer = System.Windows.Controls.ScrollViewer;
 
 namespace BiuBiuWpfClient
@@ -80,8 +82,6 @@ namespace BiuBiuWpfClient
                 new SortDescription("LastMessageTime"
                     , ListSortDirection.Descending));
             ChatListBox.ItemsSource = CollectionView.View;
-
-            InfoListBox.ItemsSource = InfoViewModel.FriendCollection;
 
             _userHubClient = new UserHubClient();
             _userHubClient.ConnectAsync(Initialization.GChannel
@@ -152,8 +152,11 @@ namespace BiuBiuWpfClient
                 {
                     InfoId = user.UserId
                     ,
-                    DisplayName = user.DisplayName,
-                    BImage = await Initialization.DataDb.GetBitmapImage(user.IconId)
+                    DisplayName = user.DisplayName
+                    ,
+                    BImage
+                        = await Initialization.DataDb.GetBitmapImage(
+                            user.IconId)
                     ,
                     Type = InfoListItem.InfoType.Friend
                 });
@@ -173,8 +176,11 @@ namespace BiuBiuWpfClient
                 {
                     InfoId = team.TeamId
                     ,
-                    DisplayName = team.TeamName,
-                    BImage = await Initialization.DataDb.GetBitmapImage(team.IconId)
+                    DisplayName = team.TeamName
+                    ,
+                    BImage
+                        = await Initialization.DataDb.GetBitmapImage(
+                            team.IconId)
                     ,
                     Type = InfoListItem.InfoType.Team
                 });
@@ -202,12 +208,14 @@ namespace BiuBiuWpfClient
 
                 InfoViewModel.NewFriendCollection.Add(new InfoListItem()
                 {
-                    BImage = await Initialization.DataDb.GetBitmapImage(user.IconId)
+                    BImage
+                        = await Initialization.DataDb.GetBitmapImage(
+                            user.IconId)
                     ,
                     DisplayName = user.DisplayName
                     ,
                     InfoId = request.RequestId
-                        ,
+                    ,
                     Type = InfoListItem.InfoType.NewFriend
                 });
             }
@@ -215,6 +223,52 @@ namespace BiuBiuWpfClient
             var teamInvitation
                 = await Service.GroFriService.GetGroupInvitation(
                     AuthenticationTokenStorage.UserId);
+            foreach (var invitation in teamInvitation)
+            {
+                Initialization.DataDb.StorageTeamInvitation(invitation);
+
+                var team
+                    = await Initialization.DataDb.GetTeamInfoByServer(invitation
+                        .TeamId);
+
+                InfoViewModel.TeamInvitationCollection.Add(new InfoListItem()
+                {
+                    BImage
+                        = await Initialization.DataDb.GetBitmapImage(
+                            team.IconId)
+                    ,
+                    DisplayName = team.TeamName
+                    ,
+                    InfoId = invitation.InvitationId
+                    ,
+                    Type = InfoListItem.InfoType.TeamInvitation
+                });
+            }
+
+            var teamRequest
+                = await Service.GroFriService.GetGroupRequest(
+                    AuthenticationTokenStorage.UserId);
+            foreach (var request in teamRequest)
+            {
+                Initialization.DataDb.StorageTeamRequestd(request);
+
+                var user
+                    = await Initialization.DataDb.GetUserInfoByServer(
+                        request.SenderId);
+
+                InfoViewModel.TeamInvitationCollection.Add(new InfoListItem()
+                {
+                    BImage
+                        = await Initialization.DataDb.GetBitmapImage(
+                            user.IconId)
+                    ,
+                    DisplayName = user.DisplayName
+                    ,
+                    InfoId = request.RequestId
+                    ,
+                    Type = InfoListItem.InfoType.TeamRequest
+                });
+            }
         }
 
         private void ListBox_SourceUpdated(object sender, EventArgs e)
@@ -295,6 +349,7 @@ namespace BiuBiuWpfClient
             {
                 ChatView.Visibility = Visibility.Visible;
             }
+
             var chatView = ChatListBox.SelectedItem as ChatViewModel;
             if (chatView is null)
             {
@@ -448,8 +503,16 @@ namespace BiuBiuWpfClient
             }
         }
 
-        private void HeadButton_OnClick(object sender, RoutedEventArgs e)
+        private async void HeadButton_OnClick(object sender, RoutedEventArgs e)
         {
+            /*
+            var user
+                = await Initialization.DataDb.GetUserInfoByServer(
+                    AuthenticationTokenStorage.UserId);
+            UserInfoWindow window = new UserInfoWindow();
+            window.InitInfo(user, this.MyHeadIcon);
+            window.ShowDialog();
+            */
         }
 
         private bool _talkSwicth = true;
@@ -466,7 +529,8 @@ namespace BiuBiuWpfClient
                 SolidColorBrush myBrush2
                     = new SolidColorBrush(
                         Color.FromArgb(0xFF, 0xEB, 0xEB, 0xEB));
-                AddressSwitch.Background = (System.Windows.Media.Brush)myBrush2;
+                AddressSwitch.Background
+                    = (System.Windows.Media.Brush)myBrush2;
                 _addressSwitch = false;
                 ChatListBox.Visibility = Visibility.Visible;
                 ChatView.Visibility = _visibility;
@@ -495,7 +559,8 @@ namespace BiuBiuWpfClient
                 SolidColorBrush myBrush2
                     = new SolidColorBrush(
                         Color.FromArgb(0xFF, 0xD1, 0xD3, 0xD5));
-                AddressSwitch.Background = (System.Windows.Media.Brush)myBrush2;
+                AddressSwitch.Background
+                    = (System.Windows.Media.Brush)myBrush2;
                 _addressSwitch = true;
                 _visibility = ChatView.Visibility;
                 ChatListBox.Visibility = Visibility.Collapsed;
@@ -506,17 +571,16 @@ namespace BiuBiuWpfClient
         }
 
         private readonly static SolidColorBrush _noSelectBrush
-            = new SolidColorBrush(
-                Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF));
+            = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF));
 
         private readonly static SolidColorBrush _selectBrush
-            = new SolidColorBrush(
-                Color.FromArgb(0xFF, 0xEF, 0xF0, 0xF1));
+            = new SolidColorBrush(Color.FromArgb(0xFF, 0xEF, 0xF0, 0xF1));
 
         private void AFriendsButton_OnClick(object sender, RoutedEventArgs e)
         {
             InfoPanel.Visibility = Visibility.Visible;
             InfoTitle.Text = "好友";
+            InfoListBox.ItemsSource = InfoViewModel.FriendCollection;
             AFriendsButton.Background = _selectBrush;
             ANewFriendsButton.Background = _noSelectBrush;
             ATeamInvitationButton.Background = _noSelectBrush;
@@ -528,6 +592,7 @@ namespace BiuBiuWpfClient
         {
             InfoPanel.Visibility = Visibility.Visible;
             InfoTitle.Text = "新的好友";
+            InfoListBox.ItemsSource = InfoViewModel.NewFriendCollection;
             AFriendsButton.Background = _noSelectBrush;
             ANewFriendsButton.Background = _selectBrush;
             ATeamInvitationButton.Background = _noSelectBrush;
@@ -539,6 +604,7 @@ namespace BiuBiuWpfClient
         {
             InfoPanel.Visibility = Visibility.Visible;
             InfoTitle.Text = "我的群组";
+            InfoListBox.ItemsSource = InfoViewModel.TeamCollection;
             AFriendsButton.Background = _noSelectBrush;
             ANewFriendsButton.Background = _noSelectBrush;
             ATeamInvitationButton.Background = _noSelectBrush;
@@ -546,10 +612,12 @@ namespace BiuBiuWpfClient
             ATeamsButton.Background = _selectBrush;
         }
 
-        private void ATeamInvitationButton_OnClick(object sender, RoutedEventArgs e)
+        private void ATeamInvitationButton_OnClick(object sender
+            , RoutedEventArgs e)
         {
             InfoPanel.Visibility = Visibility.Visible;
             InfoTitle.Text = "群组邀请";
+            InfoListBox.ItemsSource = InfoViewModel.TeamInvitationCollection;
             AFriendsButton.Background = _noSelectBrush;
             ANewFriendsButton.Background = _noSelectBrush;
             ATeamInvitationButton.Background = _selectBrush;
@@ -557,15 +625,37 @@ namespace BiuBiuWpfClient
             ATeamsButton.Background = _noSelectBrush;
         }
 
-        private void ATeamRequestButton_OnClick(object sender, RoutedEventArgs e)
+        private void ATeamRequestButton_OnClick(object sender
+            , RoutedEventArgs e)
         {
             InfoPanel.Visibility = Visibility.Visible;
             InfoTitle.Text = "入群审核";
+            InfoListBox.ItemsSource = InfoViewModel.TeamRequestCollection;
             AFriendsButton.Background = _noSelectBrush;
             ANewFriendsButton.Background = _noSelectBrush;
             ATeamInvitationButton.Background = _noSelectBrush;
             ATeamRequestButton.Background = _selectBrush;
             ATeamsButton.Background = _noSelectBrush;
+        }
+
+        private async void VideoButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (IdManagement.GenerateIdTypeById(currentTargetId) ==
+                IdType.UserId)
+            {
+                if (currentChatViewModel.Status == "[在线]")
+                {
+                    MessageBoxX.Show("视频功能未完成！");
+                }
+                else
+                {
+                    MessageBoxX.Show("对方不在线！");
+                }
+            }
+            else
+            {
+                MessageBoxX.Show("群组暂时无法视频聊天！");
+            }
         }
     }
 }

@@ -15,7 +15,7 @@
                 <hc:ThemeResources />
                 <hc:Theme />
                 <ResourceDictionary Source="pack://application:,,,/Panuon.UI.Silver;component/Control.xaml" />
-                <ResourceDictionary Source="ChatBubbleListBoxStyle.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="ChatBubbleListBoxStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

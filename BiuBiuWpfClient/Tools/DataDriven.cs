@@ -21,6 +21,8 @@ namespace BiuBiuWpfClient.Tools
 
         private Dictionary<ulong, UserInfoResponse> _userInfoDictionary = new Dictionary<ulong, UserInfoResponse>();
 
+        private Dictionary<ulong, TeamInfoResponse> _teamInfoDictionary = new Dictionary<ulong, TeamInfoResponse>();
+
         private Dictionary<ulong, FriendRequestResponse>
             _friendRequestDictionary
                 = new Dictionary<ulong, FriendRequestResponse>();
@@ -28,6 +30,10 @@ namespace BiuBiuWpfClient.Tools
         private Dictionary<ulong, TeamInvitationResponse>
             _teamInvitationsdDictionary
                 = new Dictionary<ulong, TeamInvitationResponse>();
+
+        private Dictionary<ulong, TeamRequestResponse>
+            _teamRequestDictionary
+                = new Dictionary<ulong, TeamRequestResponse>();
 
         public async Task<UserInfoResponse> GetUserInfoByServer(ulong userId)
         {
@@ -48,6 +54,31 @@ namespace BiuBiuWpfClient.Tools
                     if (!_userInfoDictionary.ContainsKey(userId))
                     {
                         _userInfoDictionary.Add(userId, response);
+                    }
+                }
+            }
+            return response;
+        }
+
+        public async Task<TeamInfoResponse> GetTeamInfoByServer(ulong teamId)
+        {
+            lock (_teamInfoDictionary)
+            {
+                if (_teamInfoDictionary.ContainsKey(teamId))
+                {
+                    return _teamInfoDictionary[teamId];
+                }
+            }
+            var response
+                = await Service.ImInfoService.GetTeamInfo(
+                    new TeamInfo() { TeamId = teamId });
+            if (response.Success)
+            {
+                lock (_teamInfoDictionary)
+                {
+                    if (!_teamInfoDictionary.ContainsKey(teamId))
+                    {
+                        _teamInfoDictionary.Add(teamId, response);
                     }
                 }
             }
@@ -317,7 +348,29 @@ namespace BiuBiuWpfClient.Tools
             lock (_teamInvitationsdDictionary)
             {
                 _teamInvitationsdDictionary[teamInvitation.InvitationId]
-                    = new TeamInvitationResponse(teamInvitation);
+                    = new TeamInvitationResponse(teamInvitation) { Success = true };
+            }
+        }
+
+        public TeamRequestResponse GetTeamRequest(
+            ulong requestId)
+        {
+            lock (_teamRequestDictionary)
+            {
+                if (_teamRequestDictionary.ContainsKey(requestId))
+                {
+                    return _teamRequestDictionary[requestId];
+                }
+            }
+            return TeamRequestResponse.Failed;
+        }
+
+        public void StorageTeamRequestd(TeamRequest teamRequest)
+        {
+            lock (_teamRequestDictionary)
+            {
+                _teamRequestDictionary[teamRequest.RequestId]
+                    = new TeamRequestResponse(teamRequest) { Success = true };
             }
         }
     }

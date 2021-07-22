@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:BiuBiuWpfClient"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
-        Title="VideoWindow"
+        Title=""
         Width="975"
         Height="600"
         MinWidth="975"

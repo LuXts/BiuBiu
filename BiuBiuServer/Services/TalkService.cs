@@ -55,6 +55,12 @@ namespace BiuBiuServer.Services
                     response = MessageResponse.Failed;
                 }
             }
+            else if (message.Type.Equals("Video"))
+            {
+                await ForwardMessage(message);
+                port = 0;
+                response = new MessageResponse() { Success = true };
+            }
             else
             {
                 lock (PortList)

@@ -469,6 +469,7 @@
                                 pu:ButtonHelper.HoverBackground="#DDDEDF"
                                 Background="#0000"
                                 BorderThickness="0"
+                                Click="VideoButton_OnClick"
                                 Focusable="False">
                             <Image Margin="0"
                                    Source="Resource/Images/video.png"

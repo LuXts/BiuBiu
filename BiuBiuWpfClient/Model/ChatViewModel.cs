@@ -80,11 +80,11 @@ namespace BiuBiuWpfClient.Model
 
         private string _displayName;
 
-        private string _status = "";
+        public string Status = "";
 
         public string DisplayName
         {
-            get { return _displayName + _status; }
+            get { return _displayName + Status; }
             set
             {
                 _displayName = value;
@@ -127,11 +127,11 @@ namespace BiuBiuWpfClient.Model
         {
             if (status)
             {
-                _status = "[在线]";
+                Status = "[在线]";
             }
             else
             {
-                _status = "[离线]";
+                Status = "[离线]";
             }
             Notify("DisplayName");
         }
