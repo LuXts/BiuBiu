@@ -178,7 +178,7 @@ namespace BiuBiuServer.Database
                     isAdmin = "false";
                 }
 
-                await Fsql.Ado.QueryAsync<object>("insert into user values (?ui,?dn,?jn,null,?pn,null,'0',?isa,?pd,'0')",
+                await Fsql.Ado.QueryAsync<object>("insert into user values (?ui,?dn,?jn,null,?pn,null,'1705905438572183552',?isa,?pd,'0')",
                     new
                     {
                         ui = userId.ToString(),

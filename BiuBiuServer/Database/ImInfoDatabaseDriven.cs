@@ -432,18 +432,42 @@ namespace BiuBiuServer.Database
             return group;
         }
 
-        // TODO: 获取某用户的最后登录时间 （那个一直没用上的字段）
+        //获取某用户的最后登录时间 （那个一直没用上的字段）
         // 查不到用户就返回 0
         public async UnaryResult<ulong> GetUserLastLoginTime(ulong userId)
         {
-            throw new NotImplementedException();
+            List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select LastExitTime from user where UserId=?ui",
+                new {ui = userId.ToString()});
+
+            if (Target.Count == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return Target[0];
+            }
         }
 
-        // TODO: 设置某用户的最后登录时间 （那个一直没用上的字段）
+        //设置某用户的最后登录时间 （那个一直没用上的字段）
         // 通过 bool 返回是否成功
         public async UnaryResult<bool> SetUserLastLoginTime(ulong userId, ulong lastLoginTime)
         {
-            throw new NotImplementedException();
+            await Fsql.Ado.QueryAsync<object>("update user set LastExitTime = ?lt where UserId = ?ui",
+                new {lt = lastLoginTime.ToString(), ui = userId.ToString()});
+
+            List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>(
+                "select UserId from user where UserId=?ui,LastExitTime=?lt",
+                new {ui = userId.ToString(), lt = lastLoginTime.ToString()});
+
+            if (Target.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }
