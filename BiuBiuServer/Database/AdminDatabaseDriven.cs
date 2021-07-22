@@ -106,25 +106,23 @@ namespace BiuBiuServer.Database
                 await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, ulong, string)>(
                     "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,Icon,IsAdmin from userchange");
 
-            List<bool> IsAdmin = new List<bool>();
-            foreach (var VARIABLE in Target)
-            {
-                if (VARIABLE.Item8 == "false")
-                {
-                    IsAdmin.Add(false);
-                }
-                else
-                {
-                    IsAdmin.Add(true);
-                }
-            }
+            
 
             List<UserInfo> user = new List<UserInfo>();
 
-            int i = 0;
 
             foreach (var VARIABLE in Target)
             {
+
+                bool IsAdmin;
+                if (VARIABLE.Item8 == "false")
+                {
+                    IsAdmin = false;
+                }
+                else
+                {
+                    IsAdmin = true;
+                }
                 UserInfo temp = new UserInfo()
                 {
                     UserId = VARIABLE.Item1,
@@ -134,10 +132,8 @@ namespace BiuBiuServer.Database
                     PhoneNumber = VARIABLE.Item5,
                     Email = VARIABLE.Item6,
                     IconId = VARIABLE.Item7,
-                    Permissions = IsAdmin[i]
+                    Permissions = IsAdmin
                 };
-
-                i++;
 
                 user.Add(temp);
             }
