@@ -283,7 +283,7 @@ namespace BiuBiuServer.Database
             }
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>("select GroupId from team where" +
-                                                                  " GroupId=?gd,GroupName=?gn,Description=?dp,Icon=?ic,OwnerId=?od",
+                                                                  " GroupId=?gd and GroupName=?gn and Description=?dp and Icon=?ic and OwnerId=?od",
                 new
                 {
                     gd = teamInfo.TeamId.ToString(),
@@ -457,7 +457,7 @@ namespace BiuBiuServer.Database
                 new {lt = lastLoginTime.ToString(), ui = userId.ToString()});
 
             List<ulong> Target = await Fsql.Ado.QueryAsync<ulong>(
-                "select UserId from user where UserId=?ui,LastExitTime=?lt",
+                "select UserId from user where UserId=?ui and LastExitTime=?lt",
                 new {ui = userId.ToString(), lt = lastLoginTime.ToString()});
 
             if (Target.Count == 0)
