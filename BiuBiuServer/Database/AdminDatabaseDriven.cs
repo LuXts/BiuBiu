@@ -226,23 +226,22 @@ namespace BiuBiuServer.Database
         //函数功能：按照工号查找用户 输入：用户工号 输出：用户信息
         public async UnaryResult<UserInfo> SelectByJobNumber(string jobNumber)
         {
-            List<(ulong, string, string, string, string, string,string)> Target =
-                await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string,string)>(
+            List<(ulong, string, string, string, string, string, string)> Target =
+                await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, string)>(
                     "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,IsAdmin from user" +
                     " where JobNumber=?jn", new { jn = jobNumber });
 
-            bool IsAdmin;
-            if (Target[0].Item7 == "true")
-            {
-                IsAdmin = true;
-            }
-            else
-            {
-                IsAdmin = false;
-            }
-
             if (Target.Count != 0)
             {
+                bool IsAdmin;
+                if (Target[0].Item7 == "true")
+                {
+                    IsAdmin = true;
+                }
+                else
+                {
+                    IsAdmin = false;
+                }
                 var user = new UserInfo();
                 var temp = Target[0];
 
@@ -265,23 +264,23 @@ namespace BiuBiuServer.Database
         //函数功能：按照用户Id查找用户 输入：用户Id 输出：用户信息
         public async UnaryResult<UserInfo> SelectByUserId(ulong userId)
         {
-            List<(ulong, string, string, string, string, string,string)> Target =
-                await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string,string)>(
+            List<(ulong, string, string, string, string, string, string)> Target =
+                await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, string)>(
                     "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,IsAdmin from user" +
                     " where UserId = ?ui", new { ui = userId.ToString() });
 
             bool IsAdmin;
-            if (Target[0].Item7 == "true")
-            {
-                IsAdmin = true;
-            }
-            else
-            {
-                IsAdmin = false;
-            }
 
             if (Target.Count != 0)
             {
+                if (Target[0].Item7 == "true")
+                {
+                    IsAdmin = true;
+                }
+                else
+                {
+                    IsAdmin = false;
+                }
                 var user = new UserInfo();
                 var temp = Target[0];
 
