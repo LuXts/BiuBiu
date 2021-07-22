@@ -97,7 +97,7 @@
                          BorderThickness="0"
                          FontSize="14"
                          IsReadOnly="{Binding ReadOnly}"
-                         Text="{Binding Desciption}"
+                         Text="{Binding Description}"
                          TextWrapping="Wrap" />
             </StackPanel>
         </ScrollViewer>
@@ -112,13 +112,15 @@
                     Click="AddUserButton_OnClick"
                     Content="邀请用户加入群聊"
                     Foreground="White" />
-            <Grid Grid.Row="2" Height="50">
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0"
+                        x:Name="ModifyButton"
                         Margin="7"
+                        Height="36"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         pu:ButtonHelper.CornerRadius="5"
@@ -126,9 +128,12 @@
                         Background="#ed5736"
                         Content="修改信息"
                         Foreground="White"
-                        IsEnabled="False" />
+                        Click="ModifyButton_OnClick"
+                        IsEnabled="True" />
                 <Button Grid.Column="1"
                         Margin="7"
+                        x:Name="OKButton"
+                        Height="36"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         pu:ButtonHelper.CornerRadius="5"
@@ -136,6 +141,38 @@
                         Background="#3296FA"
                         Click="OKButton_OnClick"
                         Content="确定"
+                        Foreground="White" />
+            </Grid>
+            <Grid Grid.Row="2" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Height="36"
+                        Visibility="Collapsed"
+                        x:Name="SureButton"
+                        Margin="7"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        pu:ButtonHelper.CornerRadius="5"
+                        pu:ButtonHelper.HoverBackground="#dded5736"
+                        Background="#ed5736"
+                        Content="确定"    Click="SureButton_OnClick"
+                        Foreground="White"
+                        IsEnabled="True" />
+                <Button Grid.Column="1"
+                        Visibility="Collapsed"
+                        Height="36"
+                        x:Name="CancelButton"
+                        Margin="7"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        pu:ButtonHelper.CornerRadius="5"
+                        pu:ButtonHelper.HoverBackground="#47A1FA"
+                        Background="#3296FA"
+                        Click="CancelButton_OnClick"
+                        Content="取消"
                         Foreground="White" />
             </Grid>
         </StackPanel>

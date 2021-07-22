@@ -134,7 +134,7 @@
                          BorderThickness="0"
                          FontSize="14"
                          IsReadOnly="{Binding ReadOnly}"
-                         Text="{Binding Desciption}"
+                         Text="{Binding Description}"
                          TextWrapping="Wrap" />
             </StackPanel>
         </ScrollViewer>
@@ -144,6 +144,8 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
+                    x:Name="ModifyButton"
+                    
                     Margin="7"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -155,6 +157,8 @@
                     Foreground="White"
                     IsEnabled="True" />
             <Button Grid.Column="1"
+                    x:Name="OKButton"
+                    
                     Margin="7"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -163,6 +167,50 @@
                     Background="#3296FA"
                     Click="OKButton_OnClick"
                     Content="确定"
+                    Foreground="White" />
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    x:Name="SureButton"
+                    Visibility="Collapsed"
+                    Margin="7"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    pu:ButtonHelper.CornerRadius="5"
+                    pu:ButtonHelper.HoverBackground="#dded5736"
+                    Background="#ed5736"
+                    Click="CancelButton_OnClick"
+                    Content="确定"
+                    Foreground="White"
+                    IsEnabled="True" />
+            <Button Grid.Column="0"
+                    x:Name="DeleteButton"
+                    Visibility="Collapsed"
+                    Margin="7"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    pu:ButtonHelper.CornerRadius="5"
+                    pu:ButtonHelper.HoverBackground="#dded5736"
+                    Background="#ed5736"
+                    Click="DeleteButton_OnClick"
+                    Content="删除好友"
+                    Foreground="White"
+                    IsEnabled="True" />
+            <Button Grid.Column="1"
+                    x:Name="CancelButton"
+                    Visibility="Collapsed"
+                    Margin="7"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    pu:ButtonHelper.CornerRadius="5"
+                    pu:ButtonHelper.HoverBackground="#47A1FA"
+                    Background="#3296FA"
+                    Click="SureButton_OnClick"
+                    Content="取消"
                     Foreground="White" />
         </Grid>
     </Grid>

@@ -145,7 +145,6 @@
 
             <ListBox Name="ChatListBox"
                      Grid.Column="2"
-                     Height="{Binding Height, ElementName=simplePanel}"
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Stretch"
                      HorizontalContentAlignment="Stretch"
