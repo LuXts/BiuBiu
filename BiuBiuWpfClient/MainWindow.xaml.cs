@@ -191,6 +191,8 @@ namespace BiuBiuWpfClient
                     };
                 ChatListCollection.Add(chat);
             }
+
+            InitInfo();
         }
 
         private async void InitInfo()
@@ -256,7 +258,7 @@ namespace BiuBiuWpfClient
                     = await Initialization.DataDb.GetUserInfoByServer(
                         request.SenderId);
 
-                InfoViewModel.TeamInvitationCollection.Add(new InfoListItem()
+                InfoViewModel.TeamRequestCollection.Add(new InfoListItem()
                 {
                     BImage
                         = await Initialization.DataDb.GetBitmapImage(
@@ -503,18 +505,6 @@ namespace BiuBiuWpfClient
             }
         }
 
-        private async void HeadButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            /*
-            var user
-                = await Initialization.DataDb.GetUserInfoByServer(
-                    AuthenticationTokenStorage.UserId);
-            UserInfoWindow window = new UserInfoWindow();
-            window.InitInfo(user, this.MyHeadIcon);
-            window.ShowDialog();
-            */
-        }
-
         private bool _talkSwicth = true;
 
         private void TalkSwitchButton_OnClick(object sender, RoutedEventArgs e)
@@ -656,6 +646,134 @@ namespace BiuBiuWpfClient
             {
                 MessageBoxX.Show("群组暂时无法视频聊天！");
             }
+        }
+
+        private UserInfoWindow uWindow;
+
+        private TeamInfoWindow tWindow;
+
+        private NotificationWindow nWindow;
+
+        private async void InfoListBox_OnSelectionChanged(object sender
+            , SelectionChangedEventArgs e)
+        {
+            var infoListItem = InfoListBox.SelectedItem as InfoListItem;
+            if (infoListItem is null)
+            {
+            }
+            else
+            {
+                if (!(uWindow is null))
+                {
+                    uWindow.Close();
+                }
+
+                if (!(tWindow is null))
+                {
+                    tWindow.Close();
+                }
+
+                if (!(nWindow is null))
+                {
+                    nWindow.Close();
+                }
+
+                if (infoListItem.Type == InfoListItem.InfoType.Friend)
+                {
+                    var user
+                        = await Initialization.DataDb.GetUserInfoByServer(
+                            infoListItem.InfoId);
+                    uWindow = new UserInfoWindow();
+
+                    uWindow.InitInfo(user
+                        , await Initialization.DataDb.GetBitmapImage(
+                            user.IconId));
+                    uWindow.Show();
+                }
+                else if (infoListItem.Type == InfoListItem.InfoType.Team)
+                {
+                    var team
+                        = await Initialization.DataDb.GetTeamInfoByServer(
+                            infoListItem.InfoId);
+                    tWindow = new TeamInfoWindow();
+                    tWindow.InitInfo(team
+                        , await Initialization.DataDb.GetBitmapImage(
+                            team.IconId));
+                    tWindow.Show();
+                }
+                else if (infoListItem.Type == InfoListItem.InfoType.NewFriend)
+                {
+                    var item
+                        = Initialization.DataDb.GetFriendRequest(infoListItem
+                            .InfoId);
+                    var user
+                        = await Initialization.DataDb.GetUserInfoByServer(
+                            item.SenderId);
+                    nWindow = new NotificationWindow();
+                    nWindow.Init(user.DisplayName, item.RequestMessage
+                        , await Initialization.DataDb.GetBitmapImage(
+                            user.IconId));
+                    nWindow.Show();
+                }
+                else if (infoListItem.Type ==
+                         InfoListItem.InfoType.TeamInvitation)
+                {
+                    var item
+                        = Initialization.DataDb.GetTeamInvitation(infoListItem
+                            .InfoId);
+                    var team
+                        = await Initialization.DataDb.GetTeamInfoByServer(
+                            item.TeamId);
+                    nWindow = new NotificationWindow();
+                    nWindow.Init(team.TeamName, item.InvitationMessage
+                        , await Initialization.DataDb.GetBitmapImage(
+                            team.IconId));
+                    nWindow.Show();
+                }
+                else if (infoListItem.Type == InfoListItem.InfoType.TeamRequest)
+                {
+                    var item
+                        = Initialization.DataDb.GetTeamRequest(infoListItem
+                            .InfoId);
+                    var user
+                        = await Initialization.DataDb.GetUserInfoByServer(
+                            item.SenderId);
+                    nWindow = new NotificationWindow();
+                    nWindow.Init(user.DisplayName, item.RequestMessage
+                        , await Initialization.DataDb.GetBitmapImage(
+                            user.IconId));
+                    nWindow.Show();
+                }
+
+                InfoListBox.SelectionMode = SelectionMode.Multiple;
+                InfoListBox.SelectedItems.Remove(infoListItem);
+                InfoListBox.SelectionMode = SelectionMode.Single;
+            }
+        }
+
+        private async void HeadButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!(uWindow is null))
+            {
+                uWindow.Close();
+            }
+
+            if (!(tWindow is null))
+            {
+                tWindow.Close();
+            }
+
+            if (!(nWindow is null))
+            {
+                nWindow.Close();
+            }
+
+            var user
+                = await Initialization.DataDb.GetUserInfoByServer(
+                    AuthenticationTokenStorage.UserId);
+            uWindow = new UserInfoWindow();
+            uWindow.InitInfo(user, this.MyHeadIcon);
+            uWindow.Show();
         }
     }
 }

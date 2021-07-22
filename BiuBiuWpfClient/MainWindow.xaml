@@ -534,6 +534,7 @@
                          pu:ListBoxHelper.ItemsCornerRadius="5"
                          pu:ListBoxHelper.ItemsMargin="5"
                          BorderThickness="0"
+                         SelectionChanged="InfoListBox_OnSelectionChanged"
                          Focusable="False">
                     <ListBox.ItemTemplate>
                         <DataTemplate>

@@ -16,11 +16,18 @@ using Panuon.UI.Silver;
 namespace BiuBiuWpfClient
 {
     /// <summary>
-    /// UserInfoWindow.xaml 的交互逻辑
+    /// TeamInfoWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class UserInfoWindow : WindowX, INotifyPropertyChanged
+    public partial class TeamInfoWindow : WindowX, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void Notify(String propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this
+                    , new PropertyChangedEventArgs(propertyName));
+        }
 
         private string _displayName;
 
@@ -46,26 +53,25 @@ namespace BiuBiuWpfClient
             }
         }
 
-        private ulong _userId;
+        private ulong _teamId;
 
-        public string UserId
+        public string TeamId
         {
-            get { return _userId.ToString(); }
+            get { return _teamId.ToString(); }
             set
             {
-                Notify("UserId");
+                Notify("TeamId");
             }
         }
 
-        private string _jobNumber;
+        private ulong _ownerId;
 
-        public string JobNumber
+        public string OwnerId
         {
-            get { return _jobNumber; }
+            get { return _ownerId.ToString(); }
             set
             {
-                _jobNumber = value;
-                Notify("JobNumber");
+                Notify("OwnerId");
             }
         }
 
@@ -81,30 +87,6 @@ namespace BiuBiuWpfClient
             }
         }
 
-        private string _phoneNumber;
-
-        public string PhoneNumber
-        {
-            get { return _phoneNumber; }
-            set
-            {
-                _phoneNumber = value;
-                Notify("PhoneNumber");
-            }
-        }
-
-        private string _email;
-
-        public string Email
-        {
-            get { return _email; }
-            set
-            {
-                _email = value;
-                Notify("Email");
-            }
-        }
-
         private BitmapImage _bitmap;
 
         public BitmapImage BImage
@@ -117,33 +99,19 @@ namespace BiuBiuWpfClient
             }
         }
 
-        private void Notify(String propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this
-                    , new PropertyChangedEventArgs(propertyName));
-        }
-
-        public UserInfoWindow()
+        public TeamInfoWindow()
         {
             InitializeComponent();
             InfoData.DataContext = this;
         }
 
-        public void InitInfo(UserInfo user, BitmapImage image)
+        public void InitInfo(TeamInfo team, BitmapImage image)
         {
-            DisplayName = user.DisplayName;
-            _userId = user.UserId;
-            _jobNumber = user.JobNumber;
-            Description = user.Description;
-            _phoneNumber = user.PhoneNumber;
-            Email = user.Email;
+            DisplayName = team.TeamName;
+            _teamId = team.TeamId;
+            _ownerId = team.OwnerId;
+            Description = team.Description;
             BImage = image;
-        }
-
-        private void EditButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            ReadOnly = false;
         }
 
         private async void OKButton_OnClick(object sender, RoutedEventArgs e)
