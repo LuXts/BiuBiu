@@ -100,9 +100,45 @@ namespace BiuBiuServer.Database
         /// 获取待审核列表
         /// </summary>
         /// <returns></returns>
-        public UnaryResult<List<UserInfo>> GetModifyInfo()
+        public async UnaryResult<List<UserInfo>> GetModifyInfo()
         {
-            throw new System.NotImplementedException();
+            List<(ulong, string, string, string, string, string, ulong, string)> Target =
+                await Fsql.Ado.QueryAsync<(ulong, string, string, string, string, string, ulong, string)>(
+                    "select UserId,DisplayName,JobNumber,Description,PhoneNumber,Email,Icon,IsAdmin from userchange");
+
+            
+
+            List<UserInfo> user = new List<UserInfo>();
+
+
+            foreach (var VARIABLE in Target)
+            {
+
+                bool IsAdmin;
+                if (VARIABLE.Item8 == "false")
+                {
+                    IsAdmin = false;
+                }
+                else
+                {
+                    IsAdmin = true;
+                }
+                UserInfo temp = new UserInfo()
+                {
+                    UserId = VARIABLE.Item1,
+                    DisplayName = VARIABLE.Item2,
+                    JobNumber = VARIABLE.Item3,
+                    Description = VARIABLE.Item4,
+                    PhoneNumber = VARIABLE.Item5,
+                    Email = VARIABLE.Item6,
+                    IconId = VARIABLE.Item7,
+                    Permissions = IsAdmin
+                };
+
+                user.Add(temp);
+            }
+
+            return user;
         }
 
         //函数功能：根据ID和注册信息注册新用户 输入：注册用户信息 输出：注册信息提示信息(-1表示该工号被注册，-2表示该手机号码被注册，0表示数据库因故障未插入成功,1表示成功)
