@@ -31,7 +31,6 @@ namespace BiuBiuAdminWpfClient
             InitializeComponent();
             WinPosition();
 
-            
             List<CategoryInfo1> categoryList1 = new List<CategoryInfo1>();
             categoryList1.Add(new CategoryInfo1 { Name = "用户工号", Value = "jobName" });
             categoryList1.Add(new CategoryInfo1 { Name = "用户Id", Value = "userId" });
@@ -58,14 +57,22 @@ namespace BiuBiuAdminWpfClient
 
         //声明一条注册信息
         public RegisterInfo registerInfo { get; set; }
+
         //声明一个用户信息列表
-        public List<UserInfo> UserInfoList { get; set; } 
+        public List<UserInfo> UserInfoList { get; set; }
+
         //声明一条用户信息
         public UserInfo userInfo { get; set; }
-        //test
-        public static ulong userId  { get; set; } 
-        //
+
+        //给用户详情页的参数
+        public static ulong userId { get; set; }
+
+        //储存待审核信息
         public List<UserInfo> NeedReviewList;
+
+        //传递给审核详情页的信息
+        public static UserInfo userInfoForCheck;
+
         //位置偏移
         public void WinPosition()
         {
@@ -75,11 +82,12 @@ namespace BiuBiuAdminWpfClient
         }
 
         //下拉框
-            public class CategoryInfo1
+        public class CategoryInfo1
         {
             public string Name { get; set; }
             public string Value { get; set; }
         }
+
         public class CategoryInfo2
         {
             public string Name { get; set; }
@@ -109,7 +117,6 @@ namespace BiuBiuAdminWpfClient
 
         private void IsShowAdd(object sender, RoutedEventArgs e)
         {
-
             this.SelectR2.Visibility = Visibility.Collapsed;
             this.SelectR3.Visibility = Visibility.Collapsed;
             this.CheckR2.Visibility = Visibility.Collapsed;
@@ -117,23 +124,17 @@ namespace BiuBiuAdminWpfClient
             this.AddR.Visibility = Visibility.Visible;
         }
 
-        
-
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
-
         }
 
         private void dtOutlay_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
-
 
         //点击添加按钮
         private async void ClickAddSure(object sender, RoutedEventArgs e)
@@ -144,7 +145,7 @@ namespace BiuBiuAdminWpfClient
             registerInfo.UserName = this.UserNameInput.Text;
             //MessageBox.Show((string)this.PermissionsInput.SelectedValue);
 
-            if ((string)this.PermissionsInput.SelectedValue== "Administrator")
+            if ((string)this.PermissionsInput.SelectedValue == "Administrator")
             {
                 registerInfo.Permissions = true;
             }
@@ -153,15 +154,15 @@ namespace BiuBiuAdminWpfClient
                 registerInfo.Permissions = false;
             }
 
-            int result= await Service.AdminService.RegisteredUsers(registerInfo);
+            int result = await Service.AdminService.RegisteredUsers(registerInfo);
 
             //MessageBox.Show(result.ToString());
 
-            if (result==1)
+            if (result == 1)
             {
                 MessageBox.Show("注册成功！");
             }
-            else if (result==-1)
+            else if (result == -1)
             {
                 MessageBox.Show("注册失败：工号已被注册！");
             }
@@ -173,12 +174,16 @@ namespace BiuBiuAdminWpfClient
             {
                 MessageBox.Show("注册失败！");
             }
-        }
 
+            this.JobNumInput.Text = "";
+            this.PhoneNumInput.Text = "";
+            this.UserNameInput.Text = "";
+            PermissionsInput.SelectedItem = "普通用户";
+            PermissionsInput.SelectedValue = "NormalUser";
+        }
 
         private void SearchBar_TextChanged_1(object sender, TextChangedEventArgs e)
         {
-
         }
 
         //点击查询
@@ -186,12 +191,11 @@ namespace BiuBiuAdminWpfClient
         {
             UserInfoList = new List<UserInfo>();
             //MessageBox.Show((string)ComboBox1.SelectedValue);
-            if ((string)ComboBox1.SelectedValue== "jobName")
+            if ((string)ComboBox1.SelectedValue == "jobName")
             {
                 userInfo = await Service.AdminService.SelectByJobNumber(SelectSearch.Text);
 
-                if(userInfo!=null){UserInfoList.Add(userInfo);}
-
+                if (userInfo != null) { UserInfoList.Add(userInfo); }
             }
             else if ((string)ComboBox1.SelectedValue == "userId")
             {
@@ -204,12 +208,10 @@ namespace BiuBiuAdminWpfClient
                     }
                     catch
                     {
-
                     }
                     //userInfo = await Service.AdminService.SelectByUserId(Convert.ToUInt64(this.SelectSearch.Text));
                 }
                 if (userInfo != null) { UserInfoList.Add(userInfo); }
-
             }
 
             SelectR3.ItemsSource = UserInfoList;
@@ -218,7 +220,6 @@ namespace BiuBiuAdminWpfClient
         //点击删除
         private async void ClickDeleteButton(object sender, RoutedEventArgs e)
         {
-
             if (await Service.AdminService.DeleteUser(userInfo.UserId))
             {
                 MessageBox.Show("删除成功！");
@@ -229,8 +230,6 @@ namespace BiuBiuAdminWpfClient
             {
                 MessageBox.Show("删除失败！");
             }
-
-
         }
 
         //点击取消
@@ -246,7 +245,20 @@ namespace BiuBiuAdminWpfClient
             userId = userInfo.UserId;
             //MessageBox.Show(userId.ToString());
             UserInfoDetails details = new UserInfoDetails();
-            details.ShowDialog(); 
-        } 
+            details.ShowDialog();
+        }
+
+        private void ClickCheckDetails(object sender, RoutedEventArgs e)
+        {
+            userInfoForCheck = (UserInfo)this.CheckR3.SelectedItem;
+            CheckInfoDetails details = new CheckInfoDetails();
+            details.ShowDialog();
+        }
+
+        private async void ClickRefresh(object sender, RoutedEventArgs e)
+        {
+            NeedReviewList = await Service.AdminService.GetModifyInfo();
+            this.CheckR3.ItemsSource = NeedReviewList;
+        }
     }
 }

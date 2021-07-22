@@ -31,7 +31,6 @@ namespace BiuBiuAdminWpfClient
             ComboBox.SelectedValuePath = "Value";
 
             InitValue();
-
         }
 
         public void WinPosition()
@@ -61,7 +60,6 @@ namespace BiuBiuAdminWpfClient
             this.ModifyPassword.Visibility = Visibility.Visible;
             this.ModifyMessage.Visibility = Visibility.Visible;
 
-
             userInfo = await Service.AdminService.SelectByUserId(AdminWindow.userId);
             this.UserIdInput.Text = Convert.ToString((userInfo.UserId));
             this.JobNumInput.Text = userInfo.JobNumber;
@@ -81,9 +79,8 @@ namespace BiuBiuAdminWpfClient
                 ComboBox.SelectedValue = "User";
             }
 
-            MessageBox.Show(userInfo.IconId.ToString());
+            //MessageBox.Show(userInfo.IconId.ToString());
         }
-
 
         public class CategoryInfo
         {
@@ -96,7 +93,7 @@ namespace BiuBiuAdminWpfClient
         {
             this.EmailInput.IsEnabled = true;
             this.IntroductionInput.IsEnabled = true;
-            this.UserNameInput .IsEnabled= true;
+            this.UserNameInput.IsEnabled = true;
             this.ComboBox.IsEnabled = true;
             this.ModifyPassword.Visibility = Visibility.Collapsed;
             this.ModifyMessage.Visibility = Visibility.Collapsed;
@@ -119,7 +116,7 @@ namespace BiuBiuAdminWpfClient
         //当点击修改密码的确定按钮时
         private async void ClickModifyPasswordSure(object sender, RoutedEventArgs e)
         {
-            if (this.PasswordInput.Text=="")
+            if (this.PasswordInput.Text == "")
             {
                 MessageBox.Show("密码不能为空！");
                 InitValue();
@@ -127,7 +124,7 @@ namespace BiuBiuAdminWpfClient
             else
             {
                 string password = this.PasswordInput.Text;
-                if (await Service.AdminService.ChangePassword(AdminWindow.userId,password))
+                if (await Service.AdminService.ChangePassword(AdminWindow.userId, password))
                 {
                     MessageBox.Show("修改密码成功！");
                 }
@@ -146,8 +143,8 @@ namespace BiuBiuAdminWpfClient
             userInfo.Description = this.IntroductionInput.Text;
             userInfo.Email = this.EmailInput.Text;
             userInfo.PhoneNumber = this.PhoneNumInput.Text;
-            userInfo.Permissions = (string) this.ComboBox.SelectedValue == "Admin" ? true : false;
-            MessageBox.Show(userInfo.IconId.ToString());
+            userInfo.Permissions = (string)this.ComboBox.SelectedValue == "Admin" ? true : false;
+            //MessageBox.Show(userInfo.IconId.ToString());
             if (await Service.AdminService.ChangeUserInfo(userInfo))
             {
                 MessageBox.Show("修改基本信息成功！");

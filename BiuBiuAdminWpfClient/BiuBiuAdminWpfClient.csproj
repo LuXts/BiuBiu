@@ -7,6 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="images\Admin.jpg" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Grpc" Version="2.39.0-pre1" />
 		<PackageReference Include="Grpc.Core" Version="2.39.0-pre1" />
 		<PackageReference Include="HandyControls" Version="3.3.7" />
@@ -19,5 +23,11 @@
 	<ItemGroup>
 		<ProjectReference Include="..\BiuBiuServer\BiuBiuServer.csproj" />
 		<ProjectReference Include="..\BiuBiuShare\BiuBiuShare.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="images\Admin.jpg">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Resource>
 	</ItemGroup>
 </Project>

@@ -1,145 +1,251 @@
 ﻿<Window x:Class="BiuBiuAdminWpfClient.AdminWindow"
-        xmlns:local="clr-namespace:BiuBiuAdminWpfClient"
-        xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:BiuBiuAdminWpfClient"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Height="600" Width="1000">
+        Width="1000"
+        Height="600"
+        mc:Ignorable="d">
 
-    <Grid   ShowGridLines="False">
+    <Grid ShowGridLines="False">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="4*"></ColumnDefinition>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" ShowGridLines="False">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.2*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition Height="1.2*" />
+                <RowDefinition Height="3*" />
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" BorderThickness="1" BorderBrush="#B5B5B5">
-                <Image   Source="C:\Users\bye\source\repos\WpfTest\Admin.jpg"/>
+            <Border Grid.Row="0"
+                    BorderBrush="#B5B5B5"
+                    BorderThickness="1">
+                <Image Source="images/Admin.jpg" />
             </Border>
-            <Border Grid.Row="1" BorderThickness="1,0,1,1" BorderBrush="#B5B5B5">
-                <hc:ButtonGroup  Orientation="Vertical" Style="{StaticResource ButtonGroupSolid}">
-                    <RadioButton x:Name="Select" hc:BorderElement.CornerRadius="0" Height="100" Content="查询用户" Checked="IsShowSelect"/>
-                    <RadioButton  hc:BorderElement.CornerRadius="0" Height="100" Content="审核用户" Checked="IsShowCheck"/>
-                    <RadioButton  hc:BorderElement.CornerRadius="0" Height="100" Content="增加用户" Checked="IsShowAdd"/>
+            <Border Grid.Row="1"
+                    BorderBrush="#B5B5B5"
+                    BorderThickness="1,0,1,1">
+                <hc:ButtonGroup Orientation="Vertical" Style="{StaticResource ButtonGroupSolid}">
+                    <RadioButton x:Name="Select"
+                                 Height="100"
+                                 hc:BorderElement.CornerRadius="0"
+                                 Checked="IsShowSelect"
+                                 Content="查询用户" />
+                    <RadioButton Height="100"
+                                 hc:BorderElement.CornerRadius="0"
+                                 Checked="IsShowCheck"
+                                 Content="审核用户" />
+                    <RadioButton Height="100"
+                                 hc:BorderElement.CornerRadius="0"
+                                 Checked="IsShowAdd"
+                                 Content="增加用户" />
                 </hc:ButtonGroup>
             </Border>
         </Grid>
-        <Grid  Grid.Column="1" ShowGridLines="False">
+        <Grid Grid.Column="1" ShowGridLines="False">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="1.5*"></RowDefinition>
-                <RowDefinition Height="10*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <!--第一行文字显示-->
-            <Border Grid.Row="0" BorderThickness="0,1,0,1" BorderBrush="#B5B5B5">
-                <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                    <ContentControl FontFamily=" SimHei" FontSize="30" Content="用户管理系统"/>
+            <!--  第一行文字显示  -->
+            <Border Grid.Row="0"
+                    BorderBrush="#B5B5B5"
+                    BorderThickness="0,1,0,1">
+                <Viewbox Stretch="Uniform" StretchDirection="DownOnly">
+                    <ContentControl Content="用户管理系统"
+                                    FontFamily="SimHei"
+                                    FontSize="30" />
                 </Viewbox>
             </Border>
-            <!--第二行-->
-            <Grid Grid.Row="1" x:Name="SelectR2" ShowGridLines="False">
+            <!--  第二行  -->
+            <Grid x:Name="SelectR2"
+                  Grid.Row="1"
+                  ShowGridLines="False">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="2.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2.5*" />
                 </Grid.ColumnDefinitions>
-                <!--查询界面的下拉框-->
-                <ComboBox  BorderBrush="#C2C2C2" x:Name="ComboBox1" Height="26"  HorizontalAlignment="Right" Width="100" Margin="30,12,15,10"></ComboBox>
-                <!--查询界面的输入框-->
-                <hc:SearchBar Grid.Column="1" 
-                  hc:InfoElement.Placeholder="输入用户账号\工号"
-                  Style="{StaticResource SearchBarExtend}"
-                  HorizontalAlignment="Left" hc:InfoElement.Necessary="True"
-                  Width="400" Height="40"
-                  Background="#F5F5F5" 
-                  SearchStarted="ClickSelectSearch"
-                  x:Name="SelectSearch"/>
+                <!--  查询界面的下拉框  -->
+                <ComboBox x:Name="ComboBox1"
+                          Width="100"
+                          Height="26"
+                          Margin="30,12,15,10"
+                          HorizontalAlignment="Right"
+                          BorderBrush="#C2C2C2" />
+                <!--  查询界面的输入框  -->
+                <hc:SearchBar x:Name="SelectSearch"
+                              Grid.Column="1"
+                              Width="400"
+                              Height="40"
+                              HorizontalAlignment="Left"
+                              hc:InfoElement.Necessary="True"
+                              hc:InfoElement.Placeholder="输入用户账号\工号"
+                              Background="#F5F5F5"
+                              SearchStarted="ClickSelectSearch"
+                              Style="{StaticResource SearchBarExtend}" />
             </Grid>
-            <!--第二行-->
-            <Grid Visibility="Collapsed" x:Name="CheckR2" Grid.Row="1"  ShowGridLines="False">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="2.5*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <!--审核界面的搜索框-->
-                <hc:SearchBar Grid.Column="0" 
+            <!--  第二行  -->
+            <Grid x:Name="CheckR2"
+                  Grid.Row="1"
+                  ShowGridLines="False"
+                  Visibility="Collapsed">
+                <!--  审核界面的搜索框  -->
+                <!--
+                <hc:SearchBar Grid.Column="0"
                               Grid.ColumnSpan="2"
                               hc:InfoElement.Placeholder="输入用户账号"
                               Style="{StaticResource SearchBarExtend}"
                               HorizontalAlignment="Center" hc:InfoElement.Necessary="True"
                               Width="400" Height="40"
-                              Background="#F5F5F5"/>
+                              Background="#F5F5F5" />
+                -->
+                <Button x:Name="Refresh"
+                        Width="80"
+                        Height="40"
+                        Margin="140,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Click="ClickRefresh">
+                    刷新
+                </Button>
             </Grid>
-            <!--第三行-->
-            <!--查询界面的表格-->
-            <DataGrid  Grid.Row="2"  x:Name="SelectR3" AutoGenerateColumns="False" CanUserSortColumns="True"  CanUserAddRows="False" Width="690" Height="400">
+            <!--  第三行  -->
+            <!--  查询界面的表格  -->
+            <DataGrid x:Name="SelectR3"
+                      Grid.Row="2"
+                      Width="690"
+                      Height="400"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserSortColumns="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding UserId}" Width="200" Header="用户Id"/>
-                    <DataGridTextColumn Binding="{Binding JobNumber }" Width="200" Header="工号"/>
-                    <DataGridTextColumn Binding="{Binding Permissions}" Width="100" Header="权限"/>
-                    <DataGridTemplateColumn Header="操作"   Width="180" >
+                    <DataGridTextColumn Width="200"
+                                        Binding="{Binding UserId}"
+                                        Header="用户Id" />
+                    <DataGridTextColumn Width="200"
+                                        Binding="{Binding JobNumber}"
+                                        Header="工号" />
+                    <DataGridTextColumn Width="100"
+                                        Binding="{Binding Permissions}"
+                                        Header="权限" />
+                    <DataGridTemplateColumn Width="180" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                    <Button Width="60" HorizontalAlignment="Left" Content="详情" 
-                                            Click="ClickSelectDetails"/>
-                                    <Button Width="60" Margin="15,0,0,0" HorizontalAlignment="Right" Content="删除"
+                                <StackPanel HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Button Width="60"
+                                            HorizontalAlignment="Left"
+                                            Click="ClickSelectDetails"
+                                            Content="详情" />
+                                    <Button Width="60"
+                                            Margin="15,0,0,0"
+                                            HorizontalAlignment="Right"
                                             Click="ClickDeleteButton"
-                                            />
+                                            Content="删除" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <!--第三行-->
-            <!--审核界面的表格-->
-            <DataGrid  Grid.Row="2"  x:Name="CheckR3" AutoGenerateColumns="False" CanUserSortColumns="True"  CanUserAddRows="False" Width="520" Height="400">
+            <!--  第三行  -->
+            <!--  审核界面的表格  -->
+            <DataGrid x:Name="CheckR3"
+                      Grid.Row="2"
+                      Width="520"
+                      Height="400"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserSortColumns="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding UserId}" Width="200" Header="用户Id"/>
-                    <DataGridTextColumn Binding="{Binding JobNumber}" Width="200" Header="工号"/>
-                    <DataGridTemplateColumn Header="操作"   Width="100" >
+                    <DataGridTextColumn Width="200"
+                                        Binding="{Binding UserId}"
+                                        Header="用户Id" />
+                    <DataGridTextColumn Width="200"
+                                        Binding="{Binding JobNumber}"
+                                        Header="工号" />
+                    <DataGridTemplateColumn Width="100" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                    <Button Width="60" HorizontalAlignment="Left" Content="详情"/>
+                                <StackPanel HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Button Width="60"
+                                            HorizontalAlignment="Left"
+                                            Click="ClickCheckDetails"
+                                            Content="详情" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <!--第三行-->
-            <!--添加用户的选项-->
-            <Grid Grid.Row="2" x:Name="AddR" Visibility="Collapsed">
+            <!--  第三行  -->
+            <!--  添加用户的选项  -->
+            <Grid x:Name="AddR"
+                  Grid.Row="2"
+                  Visibility="Collapsed">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
-                <hc:TextBox x:Name="JobNumInput" Grid.Row="0" BorderBrush="#C2C2C2" hc:InfoElement.Placeholder="输入工号"
-                            Width="300" Height="40"/>
-                <hc:TextBox x:Name="PhoneNumInput" Grid.Row="1" BorderBrush="#C2C2C2" hc:InfoElement.Placeholder="输入手机号"
-                            Width="300" Height="40"/>
-                <hc:TextBox x:Name="UserNameInput" Grid.Row="2" BorderBrush="#C2C2C2" hc:InfoElement.Placeholder="输入用户昵称"
-                            Width="300" Height="40"/>
-                <ComboBox x:Name="PermissionsInput" Grid.Row="3"   BorderBrush="#C2C2C2"  Height="40"  HorizontalAlignment="Center" Width="300" ></ComboBox>
+                <hc:TextBox x:Name="JobNumInput"
+                            Grid.Row="0"
+                            Width="300"
+                            Height="40"
+                            hc:InfoElement.Placeholder="输入工号"
+                            BorderBrush="#C2C2C2" />
+                <hc:TextBox x:Name="PhoneNumInput"
+                            Grid.Row="1"
+                            Width="300"
+                            Height="40"
+                            hc:InfoElement.Placeholder="输入手机号"
+                            BorderBrush="#C2C2C2" />
+                <hc:TextBox x:Name="UserNameInput"
+                            Grid.Row="2"
+                            Width="300"
+                            Height="40"
+                            hc:InfoElement.Placeholder="输入用户昵称"
+                            BorderBrush="#C2C2C2" />
+                <ComboBox x:Name="PermissionsInput"
+                          Grid.Row="3"
+                          Width="300"
+                          Height="40"
+                          HorizontalAlignment="Center"
+                          BorderBrush="#C2C2C2" />
                 <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"></ColumnDefinition>
-                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Height="35" Width="120" Margin="248,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                            Click="ClickCancelButton">取消</Button>
-                    <Button Grid.Column="1" Height="35" Width="120" Margin="28,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.135,0.8" Click="ClickAddSure">确定</Button>
+                    <Button Grid.Column="0"
+                            Width="120"
+                            Height="35"
+                            Margin="248,5,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Click="ClickCancelButton">
+                        取消
+                    </Button>
+                    <Button Grid.Column="1"
+                            Width="120"
+                            Height="35"
+                            Margin="28,5,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Click="ClickAddSure"
+                            RenderTransformOrigin="0.135,0.8">
+                        确定
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
