@@ -28,12 +28,11 @@ namespace BiuBiuWpfClient
         public static void Init()
         {
             var httpClientHandler = new HttpClientHandler();
-            // Return `true` to allow certificates that are untrusted/invalid
             httpClientHandler.ServerCertificateCustomValidationCallback
                 = HttpClientHandler
                     .DangerousAcceptAnyServerCertificateValidator;
             var httpClient = new HttpClient(httpClientHandler);
-
+            Initialization.Logger.Debug("https://" + GrpcIp + GrpcPort);
             GChannel = GrpcChannel.ForAddress("https://" + GrpcIp + GrpcPort
                 , new GrpcChannelOptions { HttpClient = httpClient });
         }

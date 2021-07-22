@@ -26,6 +26,7 @@ namespace BiuBiuWpfClient
 
         private void OkButton_OnClick(object sender, RoutedEventArgs e)
         {
+            Initialization.GrpcIp = IpTextBox.Text;
             Initialization.LiteDb.SetIp(IpTextBox.Text);
             Initialization.Init();
             this.Close();
