@@ -104,5 +104,10 @@ namespace BiuBiuWpfClient
             var window = new IPSettingWindow();
             window.ShowDialog();
         }
+
+        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            LoginButton_OnClick(sender, e);
+        }
     }
 }

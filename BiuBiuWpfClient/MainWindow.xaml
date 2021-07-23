@@ -81,7 +81,14 @@
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="EventSetter_OnHandler" />
         </Style>
         <model:NoReadNumberConverter x:Key="NRNC" />
+        <RoutedUICommand x:Key="Send" />
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource Send}" Executed="CommandBinding_OnExecuted" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="{StaticResource Send}" Gesture="Ctrl+Enter" />
+    </Window.InputBindings>
     <hc:SimplePanel>
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>

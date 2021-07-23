@@ -17,7 +17,9 @@
             MouseLeftButtonDown="Window_MouseLeftButtonDown"
             WindowStartupLocation="CenterScreen"
             mc:Ignorable="d">
+
     <Window.Resources>
+        <RoutedUICommand x:Key="Login" />
         <Style x:Key="SignInButtonStyle"
                BasedOn="{StaticResource {x:Type Button}}"
                TargetType="Button">
@@ -51,6 +53,12 @@
             <Setter Property="Content" Value="登录中" />
         </Style>
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource Login}" Executed="CommandBinding_OnExecuted" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="{StaticResource Login}" Gesture="Enter" />
+    </Window.InputBindings>
     <Grid ShowGridLines="True">
         <Image Width="100"
                Height="100"

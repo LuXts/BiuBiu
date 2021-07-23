@@ -430,7 +430,11 @@ namespace BiuBiuWpfClient
         private async void SendMessageButton_OnClick(object sender
             , RoutedEventArgs e)
         {
-            Initialization.Logger.Debug(currentTargetId);
+            if (ChatInputbox.Text == "")
+            {
+                Growl.Warning("不能发送空消息！");
+                return;
+            }
             var re = await Service.TalkService.SendMessageAsync(new Message()
             {
                 Data = ChatInputbox.Text
@@ -441,7 +445,6 @@ namespace BiuBiuWpfClient
                 ,
                 TargetId = currentTargetId
             });
-            Initialization.Logger.Debug(re.Item1.Success);
             if (re.Item1.Success)
             {
                 var info = new ChatInfoModel
@@ -920,6 +923,14 @@ namespace BiuBiuWpfClient
         {
             var window = new EditPasswordWindow();
             window.ShowDialog();
+        }
+
+        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (ChatView.Visibility == Visibility.Visible)
+            {
+                SendMessageButton_OnClick(sender, e);
+            }
         }
     }
 }
