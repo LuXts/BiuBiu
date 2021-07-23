@@ -132,6 +132,14 @@ namespace BiuBiuWpfClient
                     {
                         ChatListCollection.Add(new ChatViewModel(
                             request.ReceiverId, user.IconId, user.DisplayName));
+                        InfoViewModel.FriendCollection.Add(new InfoListItem()
+                        {
+                            BImage = await Initialization.DataDb.GetBitmapImage(user.IconId)
+                            ,
+                            DisplayName = user.DisplayName,
+                            InfoId = user.UserId,
+                            Type = InfoListItem.InfoType.Friend
+                        });
                         Growl.Info(user.DisplayName + "接受了你的好友请求。");
                     }
                     else
@@ -213,6 +221,14 @@ namespace BiuBiuWpfClient
                     {
                         ChatListCollection.Add(new ChatViewModel(
                             team.TeamId, team.IconId, team.TeamName));
+                        InfoViewModel.TeamCollection.Add(new InfoListItem()
+                        {
+                            BImage = await Initialization.DataDb.GetBitmapImage(team.IconId)
+                            ,
+                            DisplayName = team.TeamName,
+                            InfoId = team.TeamId,
+                            Type = InfoListItem.InfoType.Team
+                        });
                         Growl.Info(team.TeamName + "的群主同意了你的申请，你现在已经成功加入群聊！");
                     }
                     else
