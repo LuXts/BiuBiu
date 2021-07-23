@@ -66,7 +66,8 @@ namespace BiuBiuWpfClient
 
         private ulong _id;
 
-        public void Init(string displayName, string description, BitmapImage bImage, ulong id)
+        public void Init(string displayName, string description
+            , BitmapImage bImage, ulong id)
         {
             _id = id;
             DisplayName = displayName;
@@ -88,7 +89,9 @@ namespace BiuBiuWpfClient
                     var user
                         = await Initialization.DataDb.GetUserInfoByServer(
                             request.SenderId);
-                    MainWindow.ChatListCollection.Add(new ChatViewModel(user.UserId, user.IconId, user.DisplayName));
+                    MainWindow.ChatListCollection.Add(
+                        new ChatViewModel(user.UserId, user.IconId
+                            , user.DisplayName));
 
                     foreach (var item in InfoViewModel.NewFriendCollection)
                     {
@@ -98,21 +101,36 @@ namespace BiuBiuWpfClient
                             break;
                         }
                     }
+
+                    InfoViewModel.FriendCollection.Add(new InfoListItem()
+                    {
+                        BImage
+                            = await Initialization.DataDb.GetBitmapImage(
+                                user.IconId)
+                        ,
+                        DisplayName = user.DisplayName
+                        ,
+                        InfoId = user.UserId
+                        ,
+                        Type = InfoListItem.InfoType.Friend
+                    });
                 }
             }
             else if (IdManagement.GenerateIdTypeById(_id) ==
-                      IdType.TeamInvitationId)
+                     IdType.TeamInvitationId)
             {
                 var request = Initialization.DataDb.GetTeamInvitation(_id);
-                var re = await Service.GroFriService.ReplyGroupInvitation(request
-                    , true);
+                var re = await Service.GroFriService.ReplyGroupInvitation(
+                    request, true);
                 mark = re.Success;
                 if (mark)
                 {
                     var team
                         = await Initialization.DataDb.GetTeamInfoByServer(
                             request.TeamId);
-                    MainWindow.ChatListCollection.Add(new ChatViewModel(team.TeamId, team.IconId, team.TeamName));
+                    MainWindow.ChatListCollection.Add(
+                        new ChatViewModel(team.TeamId, team.IconId
+                            , team.TeamName));
                     foreach (var item in InfoViewModel.TeamInvitationCollection)
                     {
                         if (item.InfoId == _id)
@@ -121,18 +139,23 @@ namespace BiuBiuWpfClient
                             break;
                         }
                     }
+
                     InfoViewModel.TeamCollection.Add(new InfoListItem()
                     {
-                        BImage = await Initialization.DataDb.GetBitmapImage(team.IconId)
+                        BImage
+                            = await Initialization.DataDb.GetBitmapImage(
+                                team.IconId)
                         ,
-                        DisplayName = team.TeamName,
-                        InfoId = team.TeamId,
+                        DisplayName = team.TeamName
+                        ,
+                        InfoId = team.TeamId
+                        ,
                         Type = InfoListItem.InfoType.Team
                     });
                 }
             }
             else if (IdManagement.GenerateIdTypeById(_id) ==
-                   IdType.TeamRequestId)
+                     IdType.TeamRequestId)
             {
                 var request = Initialization.DataDb.GetTeamRequest(_id);
                 var re = await Service.GroFriService.ReplyGroupRequest(request
@@ -159,6 +182,7 @@ namespace BiuBiuWpfClient
             {
                 MessageBoxX.Show("发送失败！");
             }
+
             this.Close();
         }
 
@@ -187,8 +211,8 @@ namespace BiuBiuWpfClient
                      IdType.TeamInvitationId)
             {
                 var request = Initialization.DataDb.GetTeamInvitation(_id);
-                var re = await Service.GroFriService.ReplyGroupInvitation(request
-                    , false);
+                var re = await Service.GroFriService.ReplyGroupInvitation(
+                    request, false);
                 mark = re.Success;
                 if (mark)
                 {
@@ -225,10 +249,12 @@ namespace BiuBiuWpfClient
             {
                 mark = false;
             }
+
             if (!mark)
             {
                 MessageBoxX.Show("发送失败！");
             }
+
             this.Close();
         }
     }
