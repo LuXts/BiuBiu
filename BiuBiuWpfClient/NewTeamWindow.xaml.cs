@@ -22,27 +22,33 @@ namespace BiuBiuWpfClient
             team.IconId = 1706008201157181464;
             team.Description = Introduction.Text;
             team.TeamName = TeamNameBox.Text;
-            var re = await Service.GroFriService.EstablishTeam(
-                await Initialization.DataDb.GetUserInfoByServer(
-                    AuthenticationTokenStorage.UserId), team);
-            if (re.Item1)
+            if (TeamNameBox.Text=="")
             {
-                MainWindow.ChatListCollection.Add(
-                    new ChatViewModel(re.Item2, team.IconId, team.TeamName));
-                InfoViewModel.TeamCollection.Add(new InfoListItem()
-                {
-                    BImage = await Initialization.DataDb.GetBitmapImage(team.IconId)
-                    ,
-                    DisplayName = team.TeamName,
-                    InfoId = re.Item2,
-                    Type = InfoListItem.InfoType.Team
-                });
-                MessageBoxX.Show("建立群聊成功！");
-                this.Close();
+                MessageBoxX.Show("群名不能为空！");
             }
             else
             {
-                MessageBoxX.Show("建立群聊失败！");
+                var re = await Service.GroFriService.EstablishTeam(
+                    await Initialization.DataDb.GetUserInfoByServer(
+                        AuthenticationTokenStorage.UserId), team);
+                if (re.Item1)
+                {
+                    MainWindow.ChatListCollection.Add(
+                        new ChatViewModel(re.Item2, team.IconId, team.TeamName));
+                    InfoViewModel.TeamCollection.Add(new InfoListItem()
+                    {
+                        BImage = await Initialization.DataDb.GetBitmapImage(team.IconId),
+                        DisplayName = team.TeamName,
+                        InfoId = re.Item2,
+                        Type = InfoListItem.InfoType.Team
+                    });
+                    MessageBoxX.Show("建立群聊成功！");
+                    this.Close();
+                }
+                else
+                {
+                    MessageBoxX.Show("建立群聊失败！");
+                }
             }
         }
     }
