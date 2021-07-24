@@ -36,7 +36,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Userhub\" />
+		<Folder Include="UserHub\" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -6,7 +6,7 @@ using Grpc.Net.Client;
 using MagicOnion.Client;
 using System.Threading.Tasks;
 
-namespace BiuBiuServer.Userhub
+namespace BiuBiuServer.UserHub
 {
     public class UserHubClient : IUserHubReceiver
     {

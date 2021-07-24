@@ -1,7 +1,7 @@
 ﻿using BiuBiuServer.Database;
 using BiuBiuServer.Interfaces;
 using BiuBiuServer.TeamHub;
-using BiuBiuServer.Userhub;
+using BiuBiuServer.UserHub;
 using BiuBiuShare.GrouFri;
 using BiuBiuShare.ImInfos;
 using BiuBiuShare.ServiceInterfaces;
