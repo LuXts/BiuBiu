@@ -62,8 +62,6 @@ namespace BiuBiuWpfClient.Login
                 }
             }
 
-            string t = "";
-            t.Equals()
             if (temp)
             {
                 context.CallOptions.Headers.Add("auth-token-bin"
