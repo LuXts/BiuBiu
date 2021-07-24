@@ -3,6 +3,7 @@ using Grpc.Net.Client;
 using MagicOnion.Client;
 using System;
 using System.Threading.Tasks;
+using Panuon.UI.Silver;
 
 namespace BiuBiuWpfClient.Login
 {
@@ -26,22 +27,16 @@ namespace BiuBiuWpfClient.Login
         public async ValueTask<ResponseContext> SendAsync(RequestContext context
             , Func<RequestContext, ValueTask<ResponseContext>> next)
         {
-            if (AuthenticationTokenStorage.Current.IsExpired)
+            if (AuthenticationTokenStorage.Current.IsExpired())
             {
-                Console.WriteLine(
-                    $@"[WithAuthenticationFilter/IAccountService.SignInAsync] Try signing in as '{_signInId}'... ({(AuthenticationTokenStorage.Token == null ? "FirstTime" : "RefreshToken")})");
-
                 var client = MagicOnionClient.Create<IAccountService>(_channel);
                 var authResult
                     = await client.CommonSignInAsync(_signInId, _password);
                 if (!authResult.Success)
                 {
-                    throw new Exception("Failed to sign-in on the server.");
+                    MessageBoxX.Show("无法登录你的账号！");
+                    Environment.Exit(0);
                 }
-
-                Console.WriteLine(authResult.Token);
-                Console.WriteLine(
-                    $@"[WithAuthenticationFilter/IAccountService.SignInAsync] User authenticated as {authResult.DisplayName} (UserId:{authResult.UserId})");
 
                 AuthenticationTokenStorage.Update(authResult.Token
                     , authResult
@@ -52,6 +47,7 @@ namespace BiuBiuWpfClient.Login
                     if (VARIABLE.Key.Equals("auth-token-bin"))
                     {
                         context.CallOptions.Headers.Remove(VARIABLE);
+                        break;
                     }
                 }
             }
@@ -62,6 +58,7 @@ namespace BiuBiuWpfClient.Login
                 if (VARIABLE.Key.Equals("auth-token-bin"))
                 {
                     temp = false;
+                    break;
                 }
             }
 

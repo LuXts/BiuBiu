@@ -130,12 +130,13 @@ namespace BiuBiuServer.Services
             var response = await _noSQLDriven.GetMessagesAsync(message);
             if (response.Success)
             {
+                uint port;
                 lock (PortList)
                 {
-                    uint port = PortList.First.Value + 55000;
+                    port = PortList.First.Value + 45000;
                     PortList.RemoveFirst();
-                    return (response, port);
                 }
+                return (response, port);
             }
             else
             {
@@ -150,7 +151,7 @@ namespace BiuBiuServer.Services
             var re = await _noSQLDriven.GetDataMessage(message, port);
             lock (PortList)
             {
-                PortList.AddFirst(port - 55000);
+                PortList.AddLast(port - 45000);
             }
 
             return re;

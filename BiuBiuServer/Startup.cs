@@ -38,7 +38,7 @@ namespace BiuBiuServer
                     var algorithm = new HS512Algorithm(preSharedKey); // Use Symmetric algorithm (HMAC SHA-512)
                     options.Encoder = new JwtEncoder(algorithm);
                     options.Decoder = new JwtDecoder(new JwtAlgorithmResolver(algorithm));
-                    options.Expire = TimeSpan.FromMinutes(20);
+                    options.Expire = TimeSpan.FromHours(2);
                 });
         }
 

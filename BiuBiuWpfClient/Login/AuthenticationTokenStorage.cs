@@ -20,8 +20,10 @@ namespace BiuBiuWpfClient.Login
         public static string DisplayName;
         public static ulong UserId;
 
-        public bool IsExpired =>
-            Token == null || Expiration < DateTimeOffset.Now;
+        public bool IsExpired()
+        {
+            return Token == null || Expiration < DateTimeOffset.Now;
+        }
 
         public static void Update(byte[] token, DateTimeOffset expiration)
         {

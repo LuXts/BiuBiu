@@ -759,7 +759,7 @@ namespace BiuBiuWpfClient
             ATeamsButton.Background = _noSelectBrush;
         }
 
-        private async void VideoButton_OnClick(object sender, RoutedEventArgs e)
+        private void VideoButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (IdManagement.GenerateIdTypeById(currentTargetId) ==
                 IdType.UserId)

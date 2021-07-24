@@ -5,9 +5,12 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+
 using BiuBiuShare.ImInfos;
+
 using BiuBiuWpfClient.Login;
 using BiuBiuWpfClient.Model;
+
 using Panuon.UI.Silver;
 
 namespace BiuBiuWpfClient
@@ -161,7 +164,7 @@ namespace BiuBiuWpfClient
             ReadOnly = false;
         }
 
-        private async void OKButton_OnClick(object sender, RoutedEventArgs e)
+        private void OKButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (ReadOnly)
             {
@@ -193,7 +196,7 @@ namespace BiuBiuWpfClient
 
         private async void DeleteButton_OnClick(object sender, RoutedEventArgs e)
         {
-            UserInfo receiver =await Initialization.DataDb.GetUserInfoByServer(_userId);
+            UserInfo receiver = await Initialization.DataDb.GetUserInfoByServer(_userId);
             ulong sponsorId = AuthenticationTokenStorage.UserId;
             UserInfo sponsor = await Initialization.DataDb.GetUserInfoByServer(sponsorId);
 

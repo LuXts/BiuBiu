@@ -117,7 +117,7 @@ namespace BiuBiuWpfClient
             BImage = image;
         }
 
-        private async void OKButton_OnClick(object sender, RoutedEventArgs e)
+        private void OKButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (ReadOnly)
             {

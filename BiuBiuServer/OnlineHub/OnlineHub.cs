@@ -39,7 +39,7 @@ namespace BiuBiuServer.OnlineHub
         {
             if (IsOnline)
             {
-                LeaveAsync();
+                await LeaveAsync();
             }
             await base.OnDisconnected();
         }

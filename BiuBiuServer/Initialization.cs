@@ -25,7 +25,7 @@ namespace BiuBiuServer
 
             GChannel = GrpcChannel.ForAddress(GrpcAddress
                 , new GrpcChannelOptions { HttpClient = httpClient });
-            for (uint i = 0; i < 200; i++)
+            for (uint i = 0; i < 2000; i++)
             {
                 TalkService.PortList.AddLast(i);
             }
