@@ -4,6 +4,7 @@ using BiuBiuWpfClient.Login;
 using Panuon.UI.Silver;
 using System;
 using System.Windows;
+using System.Windows.Input;
 
 namespace BiuBiuWpfClient
 {
@@ -68,6 +69,18 @@ namespace BiuBiuWpfClient
             catch
             {
                 MessageBox.Show("出现未知错误！");
+            }
+        }
+
+        private void SelectSearch_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!((e.Key >= Key.D0 && e.Key <= Key.D9)
+                  || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+                  || e.Key == Key.Delete || e.Key == Key.Enter
+                  || e.Key == Key.Back || e.Key == Key.Tab
+                  || e.Key == Key.Right || e.Key == Key.Left))
+            {
+                e.Handled = true;
             }
         }
     }

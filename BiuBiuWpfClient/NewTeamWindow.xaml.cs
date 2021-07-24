@@ -22,7 +22,7 @@ namespace BiuBiuWpfClient
             team.IconId = 1706008201157181464;
             team.Description = Introduction.Text;
             team.TeamName = TeamNameBox.Text;
-            if (TeamNameBox.Text=="")
+            if (TeamNameBox.Text == "")
             {
                 MessageBoxX.Show("群名不能为空！");
             }

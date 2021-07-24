@@ -174,10 +174,25 @@ namespace BiuBiuWpfClient
 
         private async void CancelButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var user = await Initialization.DataDb.GetUserInfoByServer(_userId);
-            user.Description = Description;
-            user.Email = Email;
-            user.DisplayName = DisplayName;
+            var temp = await Initialization.DataDb.GetUserInfoByServer(_userId);
+            UserInfo user = new UserInfo()
+            {
+                UserId = temp.UserId
+                ,
+                Description = Description
+                ,
+                DisplayName = DisplayName
+                ,
+                Email = Email
+                ,
+                IconId = temp.IconId
+                ,
+                JobNumber = temp.JobNumber
+                ,
+                Permissions = temp.Permissions
+                ,
+                PhoneNumber = temp.PhoneNumber
+            };
             if ((await Service.ImInfoService.SetUserInfo(user)).Success)
             {
                 MessageBoxX.Show("修改成功，等待审批！");

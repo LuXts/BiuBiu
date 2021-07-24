@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using BiuBiuShare.ImInfos;
+﻿using BiuBiuShare.ImInfos;
 using MagicOnion;
+using System.Collections.Generic;
 
 namespace BiuBiuServer.Interfaces
 {

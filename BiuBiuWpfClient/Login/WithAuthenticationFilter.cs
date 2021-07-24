@@ -1,9 +1,9 @@
 ﻿using BiuBiuShare.ServiceInterfaces;
 using Grpc.Net.Client;
 using MagicOnion.Client;
+using Panuon.UI.Silver;
 using System;
 using System.Threading.Tasks;
-using Panuon.UI.Silver;
 
 namespace BiuBiuWpfClient.Login
 {

@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using BiuBiuShare.SignIn;
-using BiuBiuShare.TalkInfo;
+﻿using BiuBiuShare.TalkInfo;
 using MagicOnion;
+using System.Collections.Generic;
 
 namespace BiuBiuShare.ServiceInterfaces
 {

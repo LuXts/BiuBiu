@@ -1,10 +1,9 @@
-﻿using System;
-using System.Security.Principal;
-using System.Text.Json;
-using BiuBiuServer.Services;
-using LitJWT;
+﻿using LitJWT;
 using MagicOnion.Server.Authentication.Jwt;
 using Microsoft.Extensions.Options;
+using System;
+using System.Security.Principal;
+using System.Text.Json;
 
 namespace BiuBiuServer.Authentication
 {

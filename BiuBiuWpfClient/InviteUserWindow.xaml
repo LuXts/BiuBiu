@@ -26,8 +26,10 @@
                  Width="300"
                  Height="40"
                  HorizontalAlignment="Center"
+                 pu:TextBoxHelper.ClearButtonVisibility="VisibleOnHoverAndNonnull"
                  pu:TextBoxHelper.CornerRadius="5"
                  pu:TextBoxHelper.Watermark="请输入用户ID"
+                 PreviewKeyDown="SelectSearch_OnPreviewKeyDown"
                  Background="#F1F2F3"
                  BorderThickness="0"
                  InputScope="Number" />

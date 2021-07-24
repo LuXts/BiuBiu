@@ -1,17 +1,13 @@
-﻿using System;
-using System.Threading;
-using BiuBiuServer.Authentication;
+﻿using BiuBiuServer.Authentication;
 using BiuBiuServer.Database;
 using BiuBiuServer.Interfaces;
-using BiuBiuServer.Tests;
-using BiuBiuShare;
-using BiuBiuShare.SignIn;
 using BiuBiuShare.ServiceInterfaces;
-using Grpc.Core;
+using BiuBiuShare.SignIn;
 using MagicOnion;
 using MagicOnion.Server;
 using MagicOnion.Server.Authentication;
 using MagicOnion.Server.Authentication.Jwt;
+using System;
 
 namespace BiuBiuServer.Services
 {

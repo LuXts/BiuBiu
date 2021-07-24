@@ -1,9 +1,8 @@
 ﻿<Application x:Class="BiuBiuAdminWpfClient.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:local="clr-namespace:BiuBiuAdminWpfClient"
              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
              StartupUri="LoginWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -14,7 +13,6 @@
                 <hc:ThemeResources />
                 <hc:Theme />
                 <ResourceDictionary Source="pack://application:,,,/Panuon.UI.Silver;component/Control.xaml" />
-                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

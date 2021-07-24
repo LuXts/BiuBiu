@@ -1,6 +1,6 @@
-﻿using System.Net.Http;
-using BiuBiuServer.Services;
+﻿using BiuBiuServer.Services;
 using Grpc.Net.Client;
+using System.Net.Http;
 
 namespace BiuBiuServer
 {

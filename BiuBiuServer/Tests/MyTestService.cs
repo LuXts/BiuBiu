@@ -1,12 +1,8 @@
-﻿using System;
-using System.Threading;
-using BiuBiuShare.ImInfos;
-using BiuBiuShare.Tests;
-using Grpc.Core;
-using Grpc.Net.Client;
+﻿using BiuBiuShare.Tests;
 using MagicOnion;
 using MagicOnion.Server;
 using MagicOnion.Server.Authentication;
+using System;
 
 namespace BiuBiuServer.Tests
 {

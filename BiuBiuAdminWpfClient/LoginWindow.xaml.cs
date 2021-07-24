@@ -1,20 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using BiuBiuServer;
-using BiuBiuAdminWpfClient.Login;
-using Grpc.Net.Client;
-using NLog.Fluent;
+﻿using BiuBiuAdminWpfClient.Login;
 using Panuon.UI.Silver;
+using System.Windows;
+using System.Windows.Input;
 
 namespace BiuBiuAdminWpfClient
 {
@@ -59,11 +46,10 @@ namespace BiuBiuAdminWpfClient
                 AuthenticationTokenStorage.DisplayName = response.DisplayName;
 
                 Service.InitService();
-                
+
                 AdminWindow mainWindow = new AdminWindow();
                 mainWindow.Show();
                 this.Close();
-                
             }
             else
             {

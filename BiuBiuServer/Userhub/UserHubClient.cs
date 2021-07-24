@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using BiuBiuShare.GrouFri;
+﻿using BiuBiuShare.GrouFri;
 using BiuBiuShare.ImInfos;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.UserHub;
 using Grpc.Net.Client;
 using MagicOnion.Client;
+using System.Threading.Tasks;
 
 namespace BiuBiuServer.Userhub
 {

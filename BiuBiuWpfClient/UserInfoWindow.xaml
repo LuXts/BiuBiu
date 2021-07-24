@@ -145,7 +145,7 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     x:Name="ModifyButton"
-                    
+
                     Margin="7"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -158,7 +158,7 @@
                     IsEnabled="True" />
             <Button Grid.Column="1"
                     x:Name="OKButton"
-                    
+
                     Margin="7"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"

@@ -1,7 +1,7 @@
 ﻿<pu:WindowX x:Class="BiuBiuWpfClient.AddFOrGWindow"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
             Title="添加好友/群聊"
@@ -24,11 +24,12 @@
                  Width="300"
                  Height="40"
                  HorizontalAlignment="Center"
+                 pu:TextBoxHelper.ClearButtonVisibility="VisibleOnHoverAndNonnull"
                  pu:TextBoxHelper.CornerRadius="5"
                  pu:TextBoxHelper.Watermark="请输入用户ID/群组ID"
                  Background="#F1F2F3"
                  BorderThickness="0"
-                 InputScope="Number" />
+                 PreviewKeyDown="SelectSearch_OnPreviewKeyDown" />
         <TextBox x:Name="Introduction"
                  Grid.Row="1"
                  Width="300"

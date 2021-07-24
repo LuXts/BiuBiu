@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using BiuBiuShare.ImInfos;
+﻿using BiuBiuShare.ImInfos;
 using BiuBiuShare.TalkInfo;
 using MagicOnion;
+using System.Threading.Tasks;
 
 namespace BiuBiuShare.TeamHub
 {

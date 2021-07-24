@@ -1,26 +1,15 @@
-﻿using BiuBiuServer.Interfaces;
-using BiuBiuServer.Tests;
-using BiuBiuShare;
-using BiuBiuShare.UserManagement;
-using Grpc.Core;
-using MagicOnion;
-using MagicOnion.Server;
-using System;
-using System.Threading;
-using BiuBiuServer.Database;
-using MagicOnion.Server.Authentication;
-using System.Collections.Generic;
+﻿using BiuBiuServer.Database;
+using BiuBiuServer.Interfaces;
 using BiuBiuServer.TeamHub;
 using BiuBiuServer.Userhub;
 using BiuBiuShare.GrouFri;
 using BiuBiuShare.ImInfos;
-using BiuBiuShare.SignIn;
 using BiuBiuShare.ServiceInterfaces;
-using BiuBiuShare.TalkInfo;
-using BiuBiuShare.TeamHub;
 using BiuBiuShare.Tool;
-using BiuBiuShare.UserHub;
-using Grpc.Net.Client;
+using MagicOnion;
+using MagicOnion.Server;
+using MagicOnion.Server.Authentication;
+using System.Collections.Generic;
 
 namespace BiuBiuServer.Services
 {

@@ -1,5 +1,4 @@
 ﻿using MessagePack;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace BiuBiuShare.ImInfos
 {

@@ -1,9 +1,9 @@
 ﻿using BiuBiuShare.ImInfos;
 using BiuBiuWpfClient.Login;
+using BiuBiuWpfClient.Tools;
 using Panuon.UI.Silver;
 using System.Windows;
 using System.Windows.Input;
-using BiuBiuWpfClient.Tools;
 
 namespace BiuBiuWpfClient
 {

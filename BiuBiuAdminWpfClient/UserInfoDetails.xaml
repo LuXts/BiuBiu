@@ -8,111 +8,111 @@
         mc:Ignorable="d"
         Title="用户详情" Height="600" Width="600">
     <Grid ShowGridLines="False">
-        <Grid.RowDefinitions  >
+        <Grid.RowDefinitions>
 
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1.5*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1.5*" />
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0"  
+        <TextBox Grid.Row="0"
                  x:Name="UserIdInput"
-                 Style = "{StaticResource TextBoxExtend}" 
-                 hc:InfoElement.TitlePlacement = "Left" 
-                 hc:InfoElement.Title = "用户ID"  
-                 Width = "400"  
+                 Style = "{StaticResource TextBoxExtend}"
+                 hc:InfoElement.TitlePlacement = "Left"
+                 hc:InfoElement.Title = "用户ID"
+                 Width = "400"
                  FontSize="20"
                  VerticalAlignment = "Center"
                  Background="#EBEBEB"
-                 IsEnabled="False"/>
-        <TextBox Grid.Row="1"  
+                 IsEnabled="False" />
+        <TextBox Grid.Row="1"
                  x:Name="JobNumInput"
-                 Style = "{StaticResource TextBoxExtend}" 
-                 hc:InfoElement.TitlePlacement = "Left" 
-                 hc:InfoElement.Title = "工号"  
-                 Width = "400"  
+                 Style = "{StaticResource TextBoxExtend}"
+                 hc:InfoElement.TitlePlacement = "Left"
+                 hc:InfoElement.Title = "工号"
+                 Width = "400"
                  FontSize="20"
                  VerticalAlignment = "Center"
                  Background="#EBEBEB"
-                 IsEnabled="False"/>
+                 IsEnabled="False" />
         <TextBox Grid.Row="2"
                  x:Name="UserNameInput"
-                 Style = "{StaticResource TextBoxExtend}" 
-                 hc:InfoElement.TitlePlacement = "Left" 
-                 hc:InfoElement.Title = "用户名"  
-                 Width = "400"  
+                 Style = "{StaticResource TextBoxExtend}"
+                 hc:InfoElement.TitlePlacement = "Left"
+                 hc:InfoElement.Title = "用户名"
+                 Width = "400"
                  FontSize="20"
                  VerticalAlignment = "Center"
                  Background="#EBEBEB"
-                 IsEnabled="False"/>
-        <TextBox Grid.Row="3" 
+                 IsEnabled="False" />
+        <TextBox Grid.Row="3"
                  x:Name="PhoneNumInput"
-                 Style = "{StaticResource TextBoxExtend}" 
-                 hc:InfoElement.TitlePlacement = "Left" 
-                 hc:InfoElement.Title = "电话号码"  
-                 Width = "400"  
+                 Style = "{StaticResource TextBoxExtend}"
+                 hc:InfoElement.TitlePlacement = "Left"
+                 hc:InfoElement.Title = "电话号码"
+                 Width = "400"
                  FontSize="20"
-                 VerticalAlignment = "Center" 
+                 VerticalAlignment = "Center"
                  Background="#EBEBEB"
-                 IsEnabled="False"/>
-        <TextBox Grid.Row="4"  
+                 IsEnabled="False" />
+        <TextBox Grid.Row="4"
                  x:Name="EmailInput"
-                 Style = "{StaticResource TextBoxExtend}" 
-                 hc:InfoElement.TitlePlacement = "Left" 
-                 hc:InfoElement.Title = "邮箱"  
-                 Width = "400"  
+                 Style = "{StaticResource TextBoxExtend}"
+                 hc:InfoElement.TitlePlacement = "Left"
+                 hc:InfoElement.Title = "邮箱"
+                 Width = "400"
                  FontSize="20"
-                 VerticalAlignment = "Center" 
+                 VerticalAlignment = "Center"
                  Background="#EBEBEB"
-                 IsEnabled="False"/>
+                 IsEnabled="False" />
         <ComboBox Grid.Row="5"
                   x:Name="ComboBox"
-                  hc:InfoElement.Title="权限" 
-                    hc:InfoElement.TitlePlacement = "Left" 
+                  hc:InfoElement.Title="权限"
+                    hc:InfoElement.TitlePlacement = "Left"
                   Style="{StaticResource ComboBoxExtend}"
-                    Width = "300"  
+                    Width = "300"
                     FontSize="20"
-            VerticalAlignment = "Center" 
+            VerticalAlignment = "Center"
             HorizontalAlignment="Left"
             Margin="100,0,0,0"
             Background="#EBEBEB"
-            IsEnabled="False"/>
-        <TextBox Grid.Row="6"  
+            IsEnabled="False" />
+        <TextBox Grid.Row="6"
                  x:Name="PasswordInput"
-                 Style = "{StaticResource TextBoxExtend}" 
-                 hc:InfoElement.TitlePlacement = "Left" 
-                 hc:InfoElement.Title = "密码"  
-                 Width = "400"  
+                 Style = "{StaticResource TextBoxExtend}"
+                 hc:InfoElement.TitlePlacement = "Left"
+                 hc:InfoElement.Title = "密码"
+                 Width = "400"
                  FontSize="20"
                  VerticalAlignment = "Center"
                  Background="#EBEBEB"
-                 IsEnabled="False" Margin="100,0,100,0"/>
+                 IsEnabled="False" Margin="100,0,100,0" />
         <Grid Grid.Row="7">
-            <Grid.ColumnDefinitions >
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.8*"></ColumnDefinition>
                 <ColumnDefinition Width="6*"></ColumnDefinition>
-            </Grid.ColumnDefinitions >
+            </Grid.ColumnDefinitions>
             <TextBlock VerticalAlignment="Center"  Grid.Column="0" FontSize="20" Margin="100,0,449,0" Grid.ColumnSpan="2">简介</TextBlock>
-            <TextBox Grid.Column="1" 
+            <TextBox Grid.Column="1"
                      x:Name="IntroductionInput"
-                     Style = "{StaticResource TextBoxExtend}" 
-                     Width = "400"  
+                     Style = "{StaticResource TextBoxExtend}"
+                     Width = "400"
                      FontSize="16"
                      VerticalAlignment = "Center"
                      HorizontalAlignment="Left"
                      Background="#EBEBEB"
-                     IsEnabled="False" Margin="10,0,0,0" Height="72"/>
+                     IsEnabled="False" Margin="10,0,0,0" Height="72" />
         </Grid>
         <Grid Grid.Row="8">
-            <Grid.ColumnDefinitions >
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.5*"></ColumnDefinition>
                 <ColumnDefinition Width="1.5*"></ColumnDefinition>
-            </Grid.ColumnDefinitions >
+            </Grid.ColumnDefinitions>
 
             <Button x:Name="ModifyMessage" Grid.Column="0" Width="80" Height="40" Margin="150,12,70,10"  Click="ClickModifyMessageButton">修改信息
             </Button>

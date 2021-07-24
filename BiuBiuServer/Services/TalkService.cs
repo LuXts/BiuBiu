@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using BiuBiuServer.Database;
+﻿using BiuBiuServer.Database;
 using BiuBiuServer.Interfaces;
 using BiuBiuServer.TeamHub;
 using BiuBiuServer.Userhub;
 using BiuBiuShare.ServiceInterfaces;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.Tool;
-using Grpc.Net.Client;
 using MagicOnion;
 using MagicOnion.Server;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BiuBiuServer.Services
 {

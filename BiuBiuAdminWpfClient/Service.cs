@@ -1,5 +1,4 @@
-﻿using BiuBiuServer;
-using BiuBiuShare.ServiceInterfaces;
+﻿using BiuBiuShare.ServiceInterfaces;
 using MagicOnion.Client;
 
 namespace BiuBiuAdminWpfClient

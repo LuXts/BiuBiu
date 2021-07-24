@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
-using BiuBiuShare.ImInfos;
-using BiuBiuShare.SignIn;
+﻿using BiuBiuShare.ImInfos;
 using BiuBiuShare.TalkInfo;
 using BiuBiuShare.TeamHub;
 using MagicOnion.Server.Hubs;
+using System.Threading.Tasks;
 
 namespace BiuBiuServer.TeamHub
 {

@@ -1,23 +1,14 @@
-﻿using System;
+﻿using BiuBiuShare.ServiceInterfaces;
+using BiuBiuShare.TalkInfo;
+using BiuBiuShare.Tool;
+using Grpc.Net.Client;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using BiuBiuShare;
-using BiuBiuShare.ImInfos;
-using BiuBiuShare.SignIn;
-using BiuBiuShare.ServiceInterfaces;
-using BiuBiuShare.TalkInfo;
-using BiuBiuShare.Tests;
-using BiuBiuShare.Tool;
-using Grpc.Core;
-using Grpc.Net.Client;
-using LitJWT;
-using LitJWT.Algorithms;
-using MagicOnion.Client;
-using Microsoft.VisualBasic;
 
 namespace BiuBiuTerminalClient
 {

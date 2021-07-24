@@ -1,5 +1,4 @@
 ﻿using BiuBiuShare.ImInfos;
-using BiuBiuShare.SignIn;
 using BiuBiuShare.TalkInfo;
 
 namespace BiuBiuShare.TeamHub
