@@ -31,16 +31,17 @@ namespace BiuBiuWpfClient
             _keepAliveService = MagicOnionClient.Create<IKeepAliveService>(
                 Initialization.GChannel, new[] { Initialization.ClientFilter });
 
-            _timer = new Timer(30000);
+            _timer = new Timer(5000);
             _timer.AutoReset = true;
             _timer.Enabled = true;
             _timer.Elapsed += _timer_Elapsed;
             _timer.Start();
         }
 
-        private static void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        private static async void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            var temp = _keepAliveService.SendHeartbeatPacket();
+            var temp = await _keepAliveService.SendHeartbeatPacket();
+            Initialization.Logger.Debug("Keep Alive: " + temp.ToString());
         }
     }
 }

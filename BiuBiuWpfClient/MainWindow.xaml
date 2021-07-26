@@ -63,13 +63,24 @@
                         Width="30"
                         Height="30"
                         Margin="4.5"
+                        Padding="0"
                         HorizontalAlignment="Left"
                         pu:ButtonHelper.CornerRadius="5"
                         pu:ButtonHelper.HoverBackground="#33000000"
                         pu:WindowX.IsDragMoveArea="False"
                         Background="#0000"
                         Click="HeadButton_OnClick">
-                    <Image Name="HeadImage" Source="{Binding MyHeadIcon, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" />
+                    <Border Width="25"
+                            Height="25"
+                            CornerRadius="5"
+                            Style="{StaticResource BorderClip}">
+                        <Image Name="HeadImage"
+                               RenderOptions.BitmapScalingMode="NearestNeighbor"
+                               SnapsToDevicePixels="True"
+                               Source="{Binding MyHeadIcon, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                               UseLayoutRounding="True" />
+                    </Border>
+
                 </Button>
             </StackPanel>
         </DataTemplate>
@@ -115,7 +126,10 @@
                         Background="#D1D3D5"
                         Click="TalkSwitchButton_OnClick"
                         Focusable="False">
-                    <Image Source="Resource/Images/message-text-outline.png" Stretch="Fill" />
+                    <Image RenderOptions.BitmapScalingMode="HighQuality"
+                           Source="Resource/Images/message-text-outline.png"
+                           Stretch="Fill"
+                           UseLayoutRounding="True" />
                 </Button>
                 <Button x:Name="AddressSwitch"
                         Width="50"
@@ -129,7 +143,10 @@
                         pu:ButtonHelper.HoverBackground="#1000"
                         Click="AddressBookSwitchButton_OnClick"
                         Focusable="False">
-                    <Image Source="Resource/Images/account-multiple-outline.png" Stretch="Fill" />
+                    <Image RenderOptions.BitmapScalingMode="HighQuality"
+                           Source="Resource/Images/account-multiple-outline.png"
+                           Stretch="Fill"
+                           UseLayoutRounding="True" />
                 </Button>
                 <Button Width="50"
                         Height="50"
@@ -143,7 +160,10 @@
                         pu:ButtonHelper.HoverBackground="#DDDEDF"
                         Click="SettingButton_OnClick"
                         Focusable="False">
-                    <Image Source="Resource/Images/settings.png" Stretch="Fill" />
+                    <Image RenderOptions.BitmapScalingMode="HighQuality"
+                           Source="Resource/Images/settings.png"
+                           Stretch="Fill"
+                           UseLayoutRounding="True" />
                 </Button>
             </hc:SimplePanel>
             <StackPanel Grid.Column="1"
@@ -159,6 +179,7 @@
                      pu:ListBoxHelper.ItemsMargin="5"
                      pu:ScrollViewerHelper.ScrollBarThickness="5"
                      BorderThickness="0"
+                     ScrollViewer.CanContentScroll="False"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                      SelectionChanged="ChatListBox_OnSelectionChanged">
@@ -169,10 +190,16 @@
                                 HorizontalAlignment="Stretch"
                                 Focusable="False">
                             <DockPanel LastChildFill="True">
-
-                                <Image Width="45"
-                                       Height="45"
-                                       Source="{Binding BImage}" />
+                                <Border Width="45"
+                                        Height="45"
+                                        CornerRadius="10"
+                                        Style="{StaticResource BorderClip}">
+                                    <Image Width="45"
+                                           Height="45"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           Source="{Binding BImage}"
+                                           UseLayoutRounding="True" />
+                                </Border>
                                 <Grid Focusable="False">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
@@ -252,7 +279,10 @@
                                 VerticalAlignment="Center"
                                 Background="#0089FF"
                                 CornerRadius="5">
-                            <Image Margin="5" Source="Resource/Images/好友.png" />
+                            <Image Margin="5"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   Source="Resource/Images/好友.png"
+                                   UseLayoutRounding="True" />
                         </Border>
                         <TextBlock Grid.Column="1"
                                    Margin="5,0,0,0"
@@ -285,7 +315,10 @@
                                 VerticalAlignment="Center"
                                 Background="#FF9F00"
                                 CornerRadius="5">
-                            <Image Margin="5" Source="Resource/Images/新的好友.png" />
+                            <Image Margin="5"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   Source="Resource/Images/新的好友.png"
+                                   UseLayoutRounding="True" />
                         </Border>
                         <TextBlock Grid.Column="1"
                                    Margin="5,0,0,0"
@@ -319,7 +352,10 @@
                                 VerticalAlignment="Center"
                                 Background="#0089FF"
                                 CornerRadius="5">
-                            <Image Margin="5" Source="Resource/Images/我的群组.png" />
+                            <Image Margin="5"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   Source="Resource/Images/我的群组.png"
+                                   UseLayoutRounding="True" />
                         </Border>
                         <TextBlock Grid.Column="1"
                                    Margin="5,0,0,0"
@@ -352,7 +388,10 @@
                                 VerticalAlignment="Center"
                                 Background="#FF9F00"
                                 CornerRadius="5">
-                            <Image Margin="5" Source="Resource/Images/群组邀请.png" />
+                            <Image Margin="5"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   Source="Resource/Images/群组邀请.png"
+                                   UseLayoutRounding="True" />
                         </Border>
                         <TextBlock Grid.Column="1"
                                    Margin="5,0,0,0"
@@ -385,7 +424,10 @@
                                 VerticalAlignment="Center"
                                 Background="#FF9F00"
                                 CornerRadius="5">
-                            <Image Margin="5" Source="Resource/Images/入群审核.png" />
+                            <Image Margin="5"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   Source="Resource/Images/入群审核.png"
+                                   UseLayoutRounding="True" />
                         </Border>
                         <TextBlock Grid.Column="1"
                                    Margin="5,0,0,0"
@@ -418,7 +460,10 @@
                                 VerticalAlignment="Center"
                                 Background="#FF9F00"
                                 CornerRadius="5">
-                            <Image Margin="5" Source="Resource/Images/add Groups.png" />
+                            <Image Margin="5"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   Source="Resource/Images/add Groups.png"
+                                   UseLayoutRounding="True" />
                         </Border>
                         <TextBlock Grid.Column="1"
                                    Margin="5,0,0,0"
@@ -594,10 +639,17 @@
                                     HorizontalAlignment="Stretch"
                                     Focusable="False">
                                 <DockPanel LastChildFill="True">
+                                    <Border Width="45"
+                                            Height="45"
+                                            CornerRadius="5"
+                                            Style="{StaticResource BorderClip}">
+                                        <Image Width="45"
+                                               Height="45"
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               SnapsToDevicePixels="False"
+                                               Source="{Binding BImage}" />
+                                    </Border>
 
-                                    <Image Width="45"
-                                           Height="45"
-                                           Source="{Binding BImage}" />
                                     <Grid Focusable="False">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*" />
