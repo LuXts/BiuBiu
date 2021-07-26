@@ -131,7 +131,7 @@ namespace BiuBiuServer.Services
                 uint port;
                 lock (PortList)
                 {
-                    port = PortList.First.Value + 45000;
+                    port = PortList.First.Value + 55000;
                     PortList.RemoveFirst();
                 }
                 return (response, port);
@@ -149,7 +149,7 @@ namespace BiuBiuServer.Services
             var re = await _noSQLDriven.GetDataMessage(message, port);
             lock (PortList)
             {
-                PortList.AddLast(port - 45000);
+                PortList.AddLast(port - 55000);
             }
 
             return re;
