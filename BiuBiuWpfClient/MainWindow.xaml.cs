@@ -19,6 +19,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using ScrollViewer = System.Windows.Controls.ScrollViewer;
 
 namespace BiuBiuWpfClient
@@ -501,12 +502,30 @@ namespace BiuBiuWpfClient
             ListUpdate();
         }
 
+        private DispatcherTimer timer = new DispatcherTimer();
+
+        public void SourceRefresh()
+        {
+            if (timer.IsEnabled)
+                timer.Stop();
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 200);
+            timer.Tick += (sender, e) =>
+            {
+                timer.Stop();
+                if (null != CollectionView.View)
+                    CollectionView.View.Refresh();
+            };
+            timer.Start();
+        }
+
         private void ChatInputbox_OnTextChanged(object sender
             , TextChangedEventArgs e)
         {
+            Initialization.Logger.Debug(IdManagement.TimeGen());
             currentChatViewModel.LastMessageTime = IdManagement.TimeGen() << 20;
-            currentChatViewModel.InputData = ChatInputbox.Text;
-            CollectionView.View.Refresh();
+            Initialization.Logger.Debug(IdManagement.TimeGen());
+            SourceRefresh();
+            Initialization.Logger.Debug(IdManagement.TimeGen());
         }
 
         private async void LoadImageButton_OnClick(object sender
